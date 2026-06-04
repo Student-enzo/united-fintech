@@ -8,7 +8,7 @@
 
 /* shadcn/ui CSS variable mapping */
 :root {
-  --background:          #0E1118;
+  --background:          #161616;
   --foreground:          #E8EDF2;
   --card:                #141C28;
   --card-foreground:     #E8EDF2;
@@ -85,7 +85,7 @@ html.light {
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: #0E1118;
+  background-color: #161616;
   color: #E8EDF2;
   font-family: "Inter", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -182,4 +182,141 @@ body {
 /* Cyan glow border on focus/active */
 .glow-border:focus-within {
   box-shadow: 0 0 0 2px rgba(43,184,230,0.40);
+}
+
+/* ─── HOP-pattern utility classes ───────────────────────────────────────── */
+
+.photo-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.pexels-credit {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.25);
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  text-decoration: none;
+}
+.pexels-credit:hover {
+  color: rgba(255,255,255,0.5);
+}
+
+.btn-primary {
+  background-color: #2BB8E6;
+  color: #161616;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: box-shadow 0.2s, opacity 0.2s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 28px rgba(43,184,230,0.4);
+  opacity: 0.92;
+}
+
+.btn-secondary {
+  background-color: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #E8EDF2;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  border-color: rgba(43,184,230,0.4);
+  background-color: rgba(255,255,255,0.12);
+}
+
+.uf-feature-card {
+  background-color: #1e1e1e;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 1.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.uf-feature-card:hover {
+  border-color: rgba(43,184,230,0.2);
+  transform: translateY(-2px);
+}
+
+.service-card {
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.2s, box-shadow 0.25s;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  min-height: 280px;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(22,22,22,0.95) 40%, rgba(22,22,22,0.3) 100%);
+  transition: opacity 0.25s;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(43,184,230,0.4);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.service-card:hover::before {
+  opacity: 0.85;
+}
+.service-card-content {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.stat-pill-cyan {
+  background-color: rgba(43,184,230,0.1);
+  border: 1px solid rgba(43,184,230,0.2);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  color: #2BB8E6;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Responsive helpers */
+@media (max-width: 767px) {
+  .mob-pad-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  .mob-pad-hero {
+    padding-top: 4.5rem !important;
+    padding-bottom: 3rem !important;
+  }
+  .photo-hero {
+    background-position: center 30%;
+  }
 }

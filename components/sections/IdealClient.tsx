@@ -99,7 +99,7 @@ function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0
 
 export default function IdealClient() {
   return (
-    <section style={{ backgroundColor: '#0E1118', padding: '6rem 0' }}>
+    <section style={{ backgroundColor: '#161616', padding: '6rem 0' }}>
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

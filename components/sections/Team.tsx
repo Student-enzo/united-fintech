@@ -36,7 +36,7 @@ const TEAM = [
 
 export default function Team() {
   return (
-    <section id="team" style={{ backgroundColor: '#0B0F1A', padding: '6rem 1.5rem' }}>
+    <section id="team" style={{ backgroundColor: '#1a1a1a', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -49,10 +49,10 @@ export default function Team() {
             Our Team
           </p>
           <h2
-            className="chrome-text"
-            style={{ fontFamily: 'var(--font-heading)', fontWeight: 200, fontSize: 'clamp(1.875rem, 4vw, 3rem)', letterSpacing: '0.08em', textTransform: 'uppercase' }}
+            style={{ fontWeight: 800, fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', letterSpacing: '-0.02em', color: '#E8EDF2' }}
           >
-            The People Behind the Network
+            The people behind the{' '}
+            <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>network.</span>
           </h2>
           <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, maxWidth: 520, margin: '1.25rem auto 0' }}>
             Decades of combined experience building financial infrastructure, acquiring relationships, and risk frameworks at the highest levels.

@@ -39,7 +39,7 @@ const linkStyle: React.CSSProperties = {
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#0A0C12', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '4rem 1.5rem 2rem' }}>
+    <footer style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '4rem 1.5rem 2rem' }}>
       <div className="max-w-7xl mx-auto">
 
         <div style={{ display: 'grid', gap: '3rem', marginBottom: '3.5rem' }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5">

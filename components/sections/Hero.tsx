@@ -1,154 +1,175 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { LiquidButton } from '@/components/ui/liquid-glass-button'
+
+const CYAN = '#2BB8E6'
+const BG = '#161616'
+const TEXT = '#E8EDF2'
+const MUTED = '#7E8794'
+
+const STATS = [
+  {
+    value: '30+',
+    label: 'Countries worldwide',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+      </svg>
+    ),
+  },
+  {
+    value: '150+',
+    label: 'Financial institutions',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 22V12M9 22V8M15 22V12M21 22V4" />
+      </svg>
+    ),
+  },
+  {
+    value: '24/7',
+    label: 'Global support desk',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+      </svg>
+    ),
+  },
+  {
+    value: '99.9%',
+    label: 'Processing uptime',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    ),
+  },
+]
 
 export default function Hero() {
   return (
     <section
+      className="photo-hero"
       style={{
-        position: 'relative',
-        width: '100%',
-        height: '100vh',
-        minHeight: 600,
+        backgroundImage: "url('https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
       }}
     >
-      {/* Background image layer with opacity control */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'url(/images/01_hero_global_network.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.5,
-          zIndex: 0,
-        }}
-      />
+      {/* Gradient overlay — heavy left, fades right */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(12,10,6,0.88) 0%, rgba(12,10,6,0.7) 45%, rgba(12,10,6,0.25) 75%, rgba(12,10,6,0.05) 100%)' }} />
+      {/* Bottom fade to site bg */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '18%', background: `linear-gradient(to bottom, transparent, ${BG})` }} />
 
-      {/* Dark overlay with gradient to solid at bottom */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(10,12,18,0.45) 0%, rgba(10,12,18,0.45) 60%, rgba(10,12,18,0.92) 100%)',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Content */}
       <div
         style={{
           position: 'relative',
-          zIndex: 2,
           width: '100%',
-          maxWidth: '80rem',
-          padding: '0 1.5rem',
-          display: 'flex',
-          flexDirection: 'column',
+          maxWidth: 1200,
+          margin: '0 auto',
+          padding: '7rem 1.5rem 5rem',
+          display: 'grid',
+          gap: '3rem',
           alignItems: 'center',
-          textAlign: 'center',
         }}
+        className="grid grid-cols-1 lg:grid-cols-2 mob-pad-hero"
       >
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-        >
-          <p style={{
-            color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700,
-            letterSpacing: '0.2em', textTransform: 'uppercase',
+        {/* Left — headline + CTAs */}
+        <div>
+          {/* Badge pill */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.3rem 0.875rem',
+            backgroundColor: 'rgba(43,184,230,0.12)',
+            border: '1px solid rgba(43,184,230,0.3)',
+            borderRadius: '999px',
             marginBottom: '1.25rem',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
           }}>
-            <span style={{ width: 20, height: 1.5, background: '#2BB8E6', display: 'inline-block', borderRadius: 1 }} />
-            United Fintech — Global Interchange
-            <span style={{ width: 20, height: 1.5, background: '#2BB8E6', display: 'inline-block', borderRadius: 1 }} />
-          </p>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: CYAN, flexShrink: 0, boxShadow: `0 0 6px ${CYAN}` }} />
+            <span style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>GLOBAL INTERCHANGE</span>
+          </div>
 
           <h1 style={{
-            fontFamily: 'var(--font-heading)', fontWeight: 200,
-            fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-            lineHeight: 1.1, marginBottom: '1.5rem',
+            fontSize: 'clamp(2.8rem, 5.5vw, 4.8rem)',
+            fontWeight: 900,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.0,
+            color: TEXT,
+            marginBottom: '0.75rem',
+            textShadow: '0 2px 20px rgba(0,0,0,0.4)',
           }}>
-            <span className="chrome-text">Connecting Markets.</span>
-            <br />
-            <span style={{ color: '#2BB8E6' }}>Creating Opportunities.</span>
+            Connect your business{' '}
+            <span style={{ color: CYAN, fontStyle: 'italic' }}>globally.</span>
           </h1>
 
           <p style={{
-            color: '#7E8794', fontSize: '1.1rem', lineHeight: 1.8,
-            marginBottom: '2.5rem', maxWidth: 520, margin: '0 auto 2.5rem',
+            fontSize: '1rem',
+            color: 'rgba(232,237,242,0.75)',
+            lineHeight: 1.65,
+            marginBottom: '1.75rem',
+            maxWidth: 480,
           }}>
-            Global financial solutions. Seamless execution. Trusted partnerships across 30+ countries and 150+ financial institutions.
+            Merchant accounts, embedded finance, and risk strategy across 30+ countries. Fixed solutions, no guessing, trusted relationships built over years.
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'center' }}>
-            <LiquidButton
-              size="xxl"
-              className="bg-[#2BB8E6] text-[#0A0C12] font-bold tracking-wide rounded-full px-8 py-4"
-              onClick={() => { window.location.href = '#consultation' }}
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href="#consultation"
+              className="btn-primary"
+              style={{ padding: '0.875rem 1.75rem', fontSize: '0.95rem', boxShadow: '0 0 24px rgba(43,184,230,0.3)' }}
             >
-              Book a Consultation →
-            </LiquidButton>
-
+              Book a Consultation
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BG} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </a>
             <Link
               href="#services"
-              style={{
-                color: '#2BB8E6', fontSize: '0.95rem', fontWeight: 600,
-                textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                transition: 'gap 0.15s',
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.gap = '0.65rem' }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.gap = '0.4rem' }}
+              className="btn-secondary"
+              style={{ padding: '0.875rem 1.75rem', fontSize: '0.95rem' }}
             >
-              Discover Our Solutions →
+              Explore Solutions
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={TEXT} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </Link>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Right — stats cards */}
+        <div className="hidden lg:flex" style={{ flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}>
+          {STATS.map((s) => (
+            <div
+              key={s.label}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem',
+                padding: '1rem 1.5rem',
+                backgroundColor: 'rgba(22,22,22,0.8)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(43,184,230,0.15)',
+                borderRadius: 16,
+                minWidth: 260,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+              }}
+            >
+              <div style={{
+                width: 38, height: 38, borderRadius: 10,
+                backgroundColor: 'rgba(43,184,230,0.1)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                {s.icon}
+              </div>
+              <div>
+                <p style={{ color: CYAN, fontWeight: 900, fontSize: '1.5rem', lineHeight: 1, marginBottom: '0.1rem' }}>{s.value}</p>
+                <p style={{ color: MUTED, fontSize: '0.78rem' }}>{s.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          bottom: '2.5rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-      >
-        <span style={{
-          color: 'rgba(126,135,148,0.7)', fontSize: '0.6rem',
-          fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase',
-        }}>
-          Scroll
-        </span>
-        <motion.div
-          style={{
-            width: 1.5,
-            height: 40,
-            background: 'linear-gradient(to bottom, rgba(43,184,230,0.8), rgba(43,184,230,0))',
-            borderRadius: 1,
-          }}
-          animate={{ scaleY: [1, 0.4, 1], opacity: [0.8, 0.3, 0.8] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
+      <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" className="pexels-credit">Photo via Pexels</a>
     </section>
   )
 }

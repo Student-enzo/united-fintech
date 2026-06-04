@@ -71,8 +71,16 @@ export default function BookCall() {
   }
 
   return (
-    <section id="consultation" style={{ backgroundColor: '#0D1B2A', padding: '6rem 1.5rem' }}>
-      <div className="max-w-3xl mx-auto">
+    <section
+      id="consultation"
+      className="photo-hero"
+      style={{
+        backgroundImage: "url('https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+        padding: '6rem 1.5rem',
+      }}
+    >
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,12,18,0.88) 0%, rgba(10,12,18,0.92) 100%)' }} />
+      <div className="max-w-3xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,12 +93,15 @@ export default function BookCall() {
               Get Started
             </p>
             <h2 style={{
-              fontFamily: 'var(--font-outfit)', fontWeight: 200,
-              fontSize: 'clamp(1.875rem, 4vw, 3rem)',
-              letterSpacing: '0.08em', textTransform: 'uppercase',
+              fontWeight: 900,
+              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              letterSpacing: '-0.03em',
+              lineHeight: 1.05,
+              color: '#E8EDF2',
               marginBottom: '1rem',
-            }} className="chrome-text">
-              Book a Consultation
+            }}>
+              Book a{' '}
+              <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>consultation.</span>
             </h2>
             <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
               Tell us about your business and processing needs. We'll review your situation and schedule a strategy session — no commitment required.
@@ -253,6 +264,7 @@ export default function BookCall() {
         </motion.div>
       </div>
 
+      <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" className="pexels-credit">Photo via Pexels</a>
       <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </section>
   )

@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
-import { LiquidButton } from '@/components/ui/liquid-glass-button'
 
 const CYAN = '#2BB8E6'
 const TEXT = '#E8EDF2'
@@ -61,7 +60,7 @@ export default function Navbar() {
           zIndex: 50,
           width: 'calc(100% - 32px)',
           maxWidth: 1120,
-          backgroundColor: scrolled ? 'rgba(10,14,24,0.97)' : 'rgba(10,12,18,0.65)',
+          backgroundColor: scrolled ? 'rgba(18,16,10,0.97)' : 'rgba(18,16,10,0.75)',
           backdropFilter: 'blur(28px) saturate(180%)',
           WebkitBackdropFilter: 'blur(28px) saturate(180%)',
           borderRadius: 999,
@@ -218,11 +217,21 @@ export default function Navbar() {
             >
               Contact Us
             </Link>
-            <LiquidButton size="sm"
-              className="bg-[#2BB8E6] text-[#0A0C12] font-bold rounded-full whitespace-nowrap"
-              onClick={() => { window.location.href = '/#consultation' }}>
+            <a
+              href="/#consultation"
+              style={{
+                backgroundColor: '#2BB8E6', color: '#161616', fontWeight: 700,
+                fontSize: '0.875rem', padding: '0.5rem 1.25rem',
+                borderRadius: 999, textDecoration: 'none',
+                display: 'flex', alignItems: 'center', gap: '0.35rem',
+                whiteSpace: 'nowrap', transition: 'opacity 0.15s, box-shadow 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.boxShadow = '0 0 20px rgba(43,184,230,0.4)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.boxShadow = 'none' }}
+            >
               Book a Consultation
-            </LiquidButton>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#161616" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </a>
           </div>
 
           {/* Mobile hamburger */}
@@ -246,7 +255,7 @@ export default function Navbar() {
         <div style={{
           position: 'fixed', top: 80, left: '50%', transform: 'translateX(-50%)',
           width: 'calc(100% - 32px)', maxWidth: 1120, zIndex: 49,
-          backgroundColor: 'rgba(10,12,18,0.97)',
+          backgroundColor: 'rgba(18,16,10,0.97)',
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
           borderRadius: 20, border: '1px solid rgba(43,184,230,0.15)',
           padding: '1.25rem 1.5rem 1.5rem',

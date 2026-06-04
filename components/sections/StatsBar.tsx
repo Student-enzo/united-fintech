@@ -1,50 +1,44 @@
 'use client'
 
-import { motion } from 'framer-motion'
+const BG2 = '#1c1c1c'
+const TEXT = '#E8EDF2'
+const MUTED = '#7E8794'
+const CYAN = '#2BB8E6'
+const BORDER = 'rgba(255,255,255,0.06)'
 
-// TODO: Confirm real numbers before publish — current values are placeholders from brief.
-
-const STATS = [
-  { value: '30+', label: 'Countries' },
-  { value: '150+', label: 'Financial Institutions' },
-  { value: '24/7', label: 'Global Support' },
-  { value: '99.9%', label: 'Uptime' },
+const FACTS = [
+  { label: 'No hidden fees', icon: '✕', negative: true },
+  { label: 'No mainstream-only networks', icon: '✕', negative: true },
+  { label: 'United Fintech secures your processing', icon: '✓', negative: false },
 ]
 
 export default function StatsBar() {
   return (
-    <section style={{ backgroundColor: '#0E1118', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="max-w-7xl mx-auto px-6" style={{ padding: '2.5rem 1.5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}
-          className="grid grid-cols-4">
-          {STATS.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              style={{ textAlign: 'center' }}
-            >
-              <div style={{
-                fontFamily: 'var(--font-outfit)', fontWeight: 300,
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                letterSpacing: '0.04em', color: '#2BB8E6',
-                lineHeight: 1,
-              }}>
-                {stat.value}
-              </div>
-              <div style={{
-                marginTop: '0.5rem',
-                color: '#7E8794', fontSize: '0.7rem',
-                fontWeight: 600, letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-              }}>
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+    <section style={{ backgroundColor: BG2, borderBottom: `1px solid ${BORDER}`, padding: '0.875rem 1.5rem' }}>
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0',
+          flexWrap: 'wrap',
+        }}
+      >
+        {FACTS.map((item, i) => (
+          <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 1.25rem', flexShrink: 0 }}>
+            {i > 0 && (
+              <span style={{ color: BORDER, marginRight: '1.25rem', fontSize: '1.2rem', fontWeight: 200 }}>|</span>
+            )}
+            <span style={{ color: item.negative ? '#E8504A' : CYAN, fontWeight: 700, fontSize: '0.85rem' }}>
+              {item.icon}
+            </span>
+            <span style={{ color: item.negative ? MUTED : TEXT, fontSize: '0.85rem', fontWeight: item.negative ? 400 : 600 }}>
+              {item.label}
+            </span>
+          </div>
+        ))}
       </div>
     </section>
   )

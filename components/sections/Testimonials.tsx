@@ -48,7 +48,7 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section style={{ backgroundColor: "#0E1118" }}>
+    <section style={{ backgroundColor: "#161616" }}>
       {/* Sticky header */}
       <div
         style={{
@@ -75,15 +75,14 @@ export default function Testimonials() {
         </p>
         <h2
           style={{
-            fontFamily: "var(--font-outfit)",
-            fontWeight: 200,
-            fontSize: "clamp(1.875rem, 4vw, 3rem)",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
+            fontWeight: 800,
+            fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+            letterSpacing: "-0.02em",
+            color: "#E8EDF2",
           }}
-          className="chrome-text"
         >
-          Trusted by Global Merchants
+          Trusted by global{" "}
+          <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
         </h2>
       </div>
 

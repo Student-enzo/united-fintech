@@ -1,127 +1,128 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { StackedCardsInteraction } from '@/components/ui/stacked-cards-interaction'
-import type { CardData } from '@/components/ui/stacked-cards-interaction'
 
-const SERVICE_CARDS: CardData[] = [
-  {
-    image:  '/images/09_modular_fintech_blocks.jpg',
-    name:   'Global acquiring for high-risk & complex eCommerce',
-    sub:    'Merchant Processing',
-    from:   '30+ Countries',
-    time:   '24/7 Support',
-    href:   '/services/merchant-processing',
-  },
-  {
-    image:  '/images/07_digital_payment_network.jpg',
-    name:   'Banking infrastructure built into your platform',
-    sub:    'Embedded Finance',
-    from:   'BaaS Ready',
-    time:   'API First',
-    href:   '/services/embedded-finance',
-  },
-  {
-    image:  '/images/10_market_chart_abstract.jpg',
-    name:   'Multi-processor redundancy & chargeback protection',
-    sub:    'Risk Mitigation',
-    from:   'Zero Downtime',
-    time:   'PCI Compliant',
-    href:   '/services/risk-mitigation',
-  },
-]
+const BG = '#161616'
+const CARD = '#1e1e1e'
+const TEXT = '#E8EDF2'
+const MUTED = '#7E8794'
+const CYAN = '#2BB8E6'
+const BORDER = 'rgba(255,255,255,0.06)'
 
 const SERVICES = [
   {
-    title: 'Merchant Processing Solutions',
-    description:
-      'End-to-end merchant account acquisition for global and complex eCommerce businesses. We connect you with acquiring banks and processors across 30+ countries — from mainstream to high-risk verticals.',
+    name: 'Global acquiring for high-risk & complex eCommerce',
+    sub: 'Merchant Processing',
+    from: '30+ Countries',
+    time: '24/7 Support',
     href: '/services/merchant-processing',
+    bg: 'https://images.pexels.com/photos/6771985/pexels-photo-6771985.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
   },
   {
-    title: 'Embedded Finance',
-    description:
-      'Integrate banking infrastructure directly into your platform. From embedded accounts and card issuing to BaaS relationships, we structure the financial layer your product needs to scale.',
+    name: 'Banking infrastructure built directly into your platform',
+    sub: 'Embedded Finance',
+    from: 'BaaS Ready',
+    time: 'API First',
     href: '/services/embedded-finance',
+    bg: 'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
   },
   {
-    title: 'Risk Mitigation Strategy',
-    description:
-      'Protect your business from account terminations, chargebacks, and processing instability. We design multi-processor redundancy and compliance frameworks that keep your revenue flowing.',
+    name: 'Multi-processor redundancy & chargeback protection',
+    sub: 'Risk Mitigation',
+    from: 'Zero Downtime',
+    time: 'PCI Compliant',
     href: '/services/risk-mitigation',
+    bg: 'https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
+  },
+  {
+    name: 'Strategic advisory from setup through ongoing scale',
+    sub: 'Advisory & Strategy',
+    from: 'Long-Term',
+    time: 'Dedicated Team',
+    href: '/#consultation',
+    bg: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
+  },
+  {
+    name: 'Global markets and cross-border payment corridors',
+    sub: 'Market Coverage',
+    from: '150+ Partners',
+    time: 'Multi-currency',
+    href: '/#markets',
+    bg: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
+  },
+  {
+    name: 'Tailored FX, treasury, and capital flow solutions',
+    sub: 'FX & Treasury',
+    from: 'Real-time FX',
+    time: 'Hedging Desk',
+    href: '/#consultation',
+    bg: 'https://images.pexels.com/photos/95916/pexels-photo-95916.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
   },
 ]
 
 export default function ServicesGrid() {
   return (
-    <section id="services" style={{ backgroundColor: '#0E1118', padding: '6rem 1.5rem' }}>
-      <div className="max-w-7xl mx-auto">
+    <section id="services" className="mob-pad-section" style={{ backgroundColor: BG, padding: '5rem 1.5rem' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '5rem' }}
-        >
-          <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-            What We Do
-          </p>
-          <h2 style={{
-            fontFamily: 'var(--font-heading)', fontWeight: 200,
-            fontSize: 'clamp(1.875rem, 4vw, 3rem)',
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-          }} className="chrome-text">
-            Solutions That Drive Global Finance
-          </h2>
-        </motion.div>
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '3rem' }}>
+          <div>
+            <p style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>WHAT WE DO</p>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', fontWeight: 800, color: TEXT, letterSpacing: '-0.02em' }}>
+              Solutions that drive global finance.
+            </h2>
+          </div>
+          <Link
+            href="/about"
+            style={{ color: CYAN, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0, transition: 'gap 0.15s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.gap = '0.65rem' }}
+            onMouseLeave={(e) => { e.currentTarget.style.gap = '0.4rem' }}
+          >
+            All solutions
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
+        </div>
 
-        {/* Two-column: text list left, stacked cards right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-          {/* Left — service list */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-            {SERVICES.map((service, i) => (
-              <div key={i} style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-                {/* Step number */}
+        {/* Card grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
+          {SERVICES.map((s) => (
+            <Link
+              key={s.href + s.sub}
+              href={s.href}
+              className="service-card"
+              style={{ backgroundImage: `url('${s.bg}')` }}
+            >
+              <div className="service-card-content">
+                {/* Tag */}
                 <div style={{
-                  width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                  background: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.25)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'absolute', top: '1.25rem', left: '1.25rem',
+                  padding: '0.25rem 0.75rem',
+                  backgroundColor: 'rgba(43,184,230,0.18)',
+                  border: '1px solid rgba(43,184,230,0.35)',
+                  borderRadius: 999,
+                  color: CYAN,
+                  fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.06em',
+                  zIndex: 2,
                 }}>
-                  <span style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700 }}>0{i + 1}</span>
+                  {s.sub.toUpperCase()}
                 </div>
-                <div>
-                  <h3 style={{
-                    fontFamily: 'var(--font-heading)', fontWeight: 500,
-                    fontSize: '1.05rem', color: '#E8EDF2',
-                    letterSpacing: '0.02em', marginBottom: '0.625rem',
-                  }}>
-                    {service.title}
-                  </h3>
-                  <div style={{ width: 28, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '0.75rem' }} />
-                  <p style={{ color: '#7E8794', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '0.75rem' }}>
-                    {service.description}
-                  </p>
-                  <Link href={service.href}
-                    style={{ color: '#2BB8E6', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                    Learn More →
-                  </Link>
+
+                {/* Bottom content */}
+                <p style={{ color: TEXT, fontWeight: 700, fontSize: '1rem', lineHeight: 1.3, marginBottom: '0.75rem' }}>
+                  {s.name}
+                </p>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <span style={{ color: CYAN, fontWeight: 700, fontSize: '0.82rem' }}>{s.from}</span>
+                  <span style={{ width: 1, height: 12, backgroundColor: BORDER }} />
+                  <span style={{ color: MUTED, fontSize: '0.78rem' }}>{s.time}</span>
+                  <span style={{ marginLeft: 'auto' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Right — animated stacked cards */}
-          <div className="hidden lg:flex items-center justify-center" style={{ minHeight: 580 }}>
-            <StackedCardsInteraction
-              cards={SERVICE_CARDS}
-              spreadDistance={56}
-              rotationAngle={8}
-            />
-          </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
