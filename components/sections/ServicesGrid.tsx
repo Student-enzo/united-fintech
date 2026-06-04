@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { ServicesCarousel, ServiceItem } from '@/components/ui/services-carousel'
 
 const CYAN = '#1EA8D4'
@@ -82,21 +81,24 @@ export default function ServicesGrid() {
               Solutions Built for Global Scale
             </h2>
           </div>
-          <Link
-            href="/services"
+          <a
+            href="#consultation"
             style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-              color: CYAN, fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
-              whiteSpace: 'nowrap', transition: 'gap 0.15s',
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              background: CYAN, color: '#0A0C12',
+              fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
+              borderRadius: '0.375rem', whiteSpace: 'nowrap',
+              transition: 'opacity 0.15s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.gap = '0.65rem')}
-            onMouseLeave={(e) => (e.currentTarget.style.gap = '0.4rem')}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            All services
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5">
+            Book a Consultation
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0C12" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </Link>
+          </a>
         </div>
 
         {/* Carousel */}
