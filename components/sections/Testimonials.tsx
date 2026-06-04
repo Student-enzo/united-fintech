@@ -9,21 +9,21 @@ const TESTIMONIALS = [
       'United Fintech opened doors we had been knocking on for years. Within 60 days we had three new acquiring relationships across EU and APAC — and a processing stack that actually makes sense for our volume.',
     name: 'Alex Mercer',
     designation: 'CEO, Global Commerce Group — placeholder',
-    src: '/testimonials/placeholder-1.jpg',
+    src: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     quote:
       'After our previous processor terminated our account without notice, United Fintech stepped in and built us a redundant solution in record time. Their network and advisory made the difference between shutdown and scale.',
     name: 'Jordan Blake',
     designation: 'CFO, eCommerce Platform — placeholder',
-    src: '/testimonials/placeholder-2.jpg',
+    src: 'https://images.pexels.com/photos/3790811/pexels-photo-3790811.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     quote:
       'What sets them apart is that they stay involved. Most brokers disappear after the deal. United Fintech treats you like a long-term partner — they\'re still optimizing our processing costs 18 months later.',
     name: 'Sam Rivera',
     designation: 'COO, Digital Marketplace — placeholder',
-    src: '/testimonials/placeholder-3.jpg',
+    src: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
 ]
 

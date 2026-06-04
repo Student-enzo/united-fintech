@@ -61,7 +61,7 @@ export default function Navbar() {
           zIndex: 50,
           width: 'calc(100% - 32px)',
           maxWidth: 1120,
-          backgroundColor: scrolled ? 'rgba(10,12,18,0.97)' : 'rgba(13,27,42,0.80)',
+          backgroundColor: scrolled ? 'rgba(10,12,18,0.97)' : 'rgba(10,12,18,0.65)',
           backdropFilter: 'blur(28px) saturate(180%)',
           WebkitBackdropFilter: 'blur(28px) saturate(180%)',
           borderRadius: 999,

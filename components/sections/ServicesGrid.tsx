@@ -6,7 +6,7 @@ import type { CardData } from '@/components/ui/stacked-cards-interaction'
 
 const SERVICE_CARDS: CardData[] = [
   {
-    image:  '/brand-building.png',
+    image:  'https://images.pexels.com/photos/6476259/pexels-photo-6476259.jpeg?auto=compress&cs=tinysrgb&w=800',
     name:   'Global acquiring for high-risk & complex eCommerce',
     sub:    'Merchant Processing',
     from:   '30+ Countries',
@@ -14,7 +14,7 @@ const SERVICE_CARDS: CardData[] = [
     href:   '/services/merchant-processing',
   },
   {
-    image:  '/brand-app.png',
+    image:  'https://images.pexels.com/photos/6863183/pexels-photo-6863183.jpeg?auto=compress&cs=tinysrgb&w=800',
     name:   'Banking infrastructure built into your platform',
     sub:    'Embedded Finance',
     from:   'BaaS Ready',
@@ -22,7 +22,7 @@ const SERVICE_CARDS: CardData[] = [
     href:   '/services/embedded-finance',
   },
   {
-    image:  '/brand-identity.png',
+    image:  'https://images.pexels.com/photos/7620764/pexels-photo-7620764.jpeg?auto=compress&cs=tinysrgb&w=800',
     name:   'Multi-processor redundancy & chargeback protection',
     sub:    'Risk Mitigation',
     from:   'Zero Downtime',

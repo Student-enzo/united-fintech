@@ -121,7 +121,7 @@ export default function Footer() {
           <p style={{ color: '#7E8794', fontSize: '0.8rem' }}>
             © {new Date().getFullYear()} United Fintech. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
             {[
               { label: 'Privacy Policy', href: '/privacy' },
               { label: 'Terms of Service', href: '/terms' },
@@ -133,6 +133,14 @@ export default function Footer() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              href="/admin"
+              style={{ color: 'rgba(255,255,255,0.18)', fontSize: '0.75rem', textDecoration: 'none', transition: 'color 0.15s' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.18)' }}
+            >
+              Admin
+            </Link>
           </div>
         </div>
       </div>

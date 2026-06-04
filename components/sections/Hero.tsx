@@ -2,20 +2,50 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import { LiquidButton } from '@/components/ui/liquid-glass-button'
 
 export default function Hero() {
   return (
-    <ScrollExpandMedia
-      mediaType="image"
-      mediaSrc="/brand-billboard.png"
-      bgImageSrc="/brand-hero.png"
-      title="Connecting Markets Creating Opportunities"
-      scrollToExpand="Scroll to explore"
+    <section
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        minHeight: 600,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        backgroundImage: 'url(https://images.pexels.com/photos/3483098/pexels-photo-3483098.jpeg?auto=compress&cs=tinysrgb&w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
-      {/* Revealed after full expansion */}
-      <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+      {/* Dark overlay with gradient to solid at bottom */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(10,12,18,0.55) 0%, rgba(10,12,18,0.55) 60%, rgba(10,12,18,1) 100%)',
+          zIndex: 1,
+        }}
+      />
+
+      {/* Content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          width: '100%',
+          maxWidth: '80rem',
+          padding: '0 1.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,6 +104,41 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
-    </ScrollExpandMedia>
+
+      {/* Scroll indicator */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          bottom: '2.5rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem',
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <span style={{
+          color: 'rgba(126,135,148,0.7)', fontSize: '0.6rem',
+          fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase',
+        }}>
+          Scroll
+        </span>
+        <motion.div
+          style={{
+            width: 1.5,
+            height: 40,
+            background: 'linear-gradient(to bottom, rgba(43,184,230,0.8), rgba(43,184,230,0))',
+            borderRadius: 1,
+          }}
+          animate={{ scaleY: [1, 0.4, 1], opacity: [0.8, 0.3, 0.8] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </motion.div>
+    </section>
   )
 }
