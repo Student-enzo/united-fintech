@@ -48,46 +48,36 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section style={{ backgroundColor: "#161616" }}>
-      {/* Sticky header */}
-      <div
-        style={{
-          padding: "5rem 1.5rem 0",
-          textAlign: "center",
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backgroundColor: "#0E1118",
-          paddingBottom: "2rem",
-        }}
-      >
-        <p
-          style={{
-            color: "#2BB8E6",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            marginBottom: "1rem",
-          }}
-        >
-          CLIENT STORIES
-        </p>
-        <h2
-          style={{
-            fontWeight: 800,
-            fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
-            letterSpacing: "-0.02em",
-            color: "#E8EDF2",
-          }}
-        >
-          Trusted by global{" "}
-          <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
-        </h2>
-      </div>
-
-      {/* Scroll-stacked cards */}
+    <section id="insights" style={{ backgroundColor: "#161616" }}>
       <ContainerScroll className="h-[300vh]">
+        {/* Heading — scrolls away naturally, no sticky */}
+        <div style={{ padding: "5rem 1.5rem 0", textAlign: "center" }}>
+          <p
+            style={{
+              color: "#2BB8E6",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              marginBottom: "1rem",
+            }}
+          >
+            CLIENT STORIES
+          </p>
+          <h2
+            style={{
+              fontWeight: 800,
+              fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+              letterSpacing: "-0.02em",
+              color: "#E8EDF2",
+            }}
+          >
+            Trusted by global{" "}
+            <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
+          </h2>
+        </div>
+
+        {/* Sticky card stack */}
         <div
           style={{
             position: "sticky",
@@ -98,12 +88,7 @@ export default function Testimonials() {
             justifyContent: "center",
           }}
         >
-          <CardsContainer
-            style={{
-              width: 380,
-              height: 420,
-            }}
-          >
+          <CardsContainer style={{ width: 380, height: 420 }}>
             {TESTIMONIALS.map((t, i) => (
               <CardTransformed
                 key={t.id}
@@ -147,14 +132,7 @@ export default function Testimonials() {
                 </p>
 
                 {/* Avatar row */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    marginTop: 4,
-                  }}
-                >
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
                   <Image
                     src={t.avatar}
                     alt={t.name}
@@ -168,33 +146,13 @@ export default function Testimonials() {
                     unoptimized
                   />
                   <div style={{ textAlign: "left" }}>
-                    <p
-                      style={{
-                        fontWeight: 700,
-                        color: "#E8EDF2",
-                        fontSize: "0.85rem",
-                        lineHeight: 1.2,
-                      }}
-                    >
+                    <p style={{ fontWeight: 700, color: "#E8EDF2", fontSize: "0.85rem", lineHeight: 1.2 }}>
                       {t.name}
                     </p>
-                    <p
-                      style={{
-                        color: "#7E8794",
-                        fontSize: "0.75rem",
-                        lineHeight: 1.3,
-                      }}
-                    >
+                    <p style={{ color: "#7E8794", fontSize: "0.75rem", lineHeight: 1.3 }}>
                       {t.role}
                     </p>
-                    <p
-                      style={{
-                        color: "#2BB8E6",
-                        fontSize: "0.65rem",
-                        letterSpacing: "0.08em",
-                        marginTop: 2,
-                      }}
-                    >
+                    <p style={{ color: "#2BB8E6", fontSize: "0.65rem", letterSpacing: "0.08em", marginTop: 2 }}>
                       {t.region}
                     </p>
                   </div>

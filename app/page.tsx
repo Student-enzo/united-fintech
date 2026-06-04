@@ -76,7 +76,7 @@ export default function HomePage() {
       <div id="partners"><WhyUs /></div>
       <Team />
       <IdealClient />
-      <div id="insights"><Testimonials /></div>
+      <Testimonials />
       <PartnersGravity />
       <BookCall />
       <Footer />
