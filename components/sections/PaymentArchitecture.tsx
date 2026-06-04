@@ -103,12 +103,12 @@ export default function PaymentArchitecture() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '480px' }}
           >
             <CpuArchitecture
               className="text-[rgba(30,168,212,0.35)]"
               width="100%"
-              height="100%"
+              height="480px"
               showCpuConnections
               animateLines
               animateMarkers
