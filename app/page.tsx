@@ -18,8 +18,8 @@ export default function HomePage() {
       <StatsBar />
       <ScrollExpandMedia
         mediaType="image"
-        mediaSrc="https://images.pexels.com/photos/7414258/pexels-photo-7414258.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        bgImageSrc="https://images.pexels.com/photos/3483098/pexels-photo-3483098.jpeg?auto=compress&cs=tinysrgb&w=1920"
+        mediaSrc="/uf-globe.jpg"
+        bgImageSrc="/uf-data-wave.jpg"
         title="Scale Without Limits Globally"
         scrollToExpand="Scroll to expand"
       >
@@ -77,11 +77,11 @@ export default function HomePage() {
           </a>
         </div>
       </ScrollExpandMedia>
-      <GlobalNetwork />
+      <div id="markets"><GlobalNetwork /></div>
       <ServicesGrid />
-      <WhyUs />
+      <div id="partners"><WhyUs /></div>
       <IdealClient />
-      <Testimonials />
+      <div id="insights"><Testimonials /></div>
       <BookCall />
       <Footer />
     </main>

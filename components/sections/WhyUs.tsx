@@ -1,45 +1,27 @@
 'use client'
 
-import { FocusRail, FocusRailItem } from '@/components/ui/focus-rail'
+import Image from 'next/image'
 
-const ITEMS: FocusRailItem[] = [
+const ADVANTAGES = [
   {
-    id: 'expertise',
     title: 'Deep Expertise',
-    description: 'We specialize in merchant categories that mainstream brokers avoid — high-risk verticals, cross-border businesses, and complex payment use cases.',
-    imageSrc: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&h=800&fit=crop',
-    meta: 'Strategy',
-    href: '/about',
+    description: 'Specialists in high-risk, cross-border, and complex payment verticals that mainstream brokers decline.',
   },
   {
-    id: 'network',
     title: 'Global Provider Network',
-    description: 'Years of relationship-building with acquiring banks, card networks, and payment processors across 30+ countries.',
-    imageSrc: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=800&fit=crop',
-    meta: 'Network',
-    href: '/about',
+    description: '150+ acquiring banks and processors across 30+ countries — relationships built over years, not databases.',
   },
   {
-    id: 'stability',
-    title: 'Stability & Optionality',
-    description: 'Multiple processors, redundant acquiring, failover routing — your revenue never stops because one provider has an issue.',
-    imageSrc: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=800&fit=crop',
-    meta: 'Infrastructure',
+    title: 'Stability & Redundancy',
+    description: 'Multi-processor setups with failover routing so your revenue never stops because one provider has an issue.',
   },
   {
-    id: 'risk',
-    title: 'Risk Mitigation',
-    description: 'From chargeback management to reserve negotiation to PCI compliance frameworks — protection built into your payment stack from the start.',
-    imageSrc: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=800&fit=crop',
-    meta: 'Protection',
+    title: 'Risk Mitigation Built-In',
+    description: 'Chargeback management, reserve negotiation, and PCI compliance frameworks from day one.',
   },
   {
-    id: 'advisory',
     title: 'Strategic Advisory',
-    description: 'United Fintech is a strategic partner, not a lead-gen broker. We stay involved in structuring, onboarding, and ongoing optimization.',
-    imageSrc: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=800&fit=crop',
-    meta: 'Advisory',
-    href: '/about',
+    description: 'We stay involved after the deal — onboarding, optimization, and ongoing strategy.',
   },
 ]
 
@@ -47,26 +29,82 @@ export default function WhyUs() {
   return (
     <section style={{ backgroundColor: '#0D1B2A', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
-        {/* Heading */}
-        <div style={{ marginBottom: '3rem' }}>
-          <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-            Why Choose Us
-          </p>
-          <h2 style={{
-            fontFamily: 'var(--font-heading)', fontWeight: 200,
-            fontSize: 'clamp(1.875rem, 4vw, 3rem)',
-            letterSpacing: '0.08em', textTransform: 'uppercase', maxWidth: 560,
-          }} className="chrome-text">
-            Why United Fintech
-          </h2>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
-        <FocusRail
-          items={ITEMS}
-          autoPlay={true}
-          interval={5000}
-          className="rounded-2xl overflow-hidden"
-        />
+          {/* Left column */}
+          <div>
+            <p style={{
+              color: '#2BB8E6',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+            }}>
+              Why Choose Us
+            </p>
+            <h2
+              className="chrome-text"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 200,
+                fontSize: 'clamp(1.875rem, 4vw, 3rem)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '2.5rem',
+              }}
+            >
+              Why United Fintech
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {ADVANTAGES.map((item) => (
+                <div key={item.title} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.875rem' }}>
+                  <span
+                    style={{
+                      width: '0.5rem',
+                      height: '0.5rem',
+                      borderRadius: '50%',
+                      backgroundColor: '#2BB8E6',
+                      flexShrink: 0,
+                      marginTop: '0.35rem',
+                    }}
+                  />
+                  <div>
+                    <p style={{ color: '#E8EDF2', fontWeight: 700, fontSize: '0.9375rem', marginBottom: '0.25rem' }}>
+                      {item.title}
+                    </p>
+                    <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.6 }}>
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right column — brand image */}
+          <div
+            className="rounded-2xl"
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: 480,
+              boxShadow: '0 0 60px rgba(43,184,230,0.15)',
+              border: '1px solid rgba(43,184,230,0.2)',
+              borderRadius: '1rem',
+              overflow: 'hidden',
+            }}
+          >
+            <Image
+              src="/uf-boardroom.jpg"
+              alt="Global Network"
+              fill
+              style={{ objectFit: 'cover', borderRadius: '1rem' }}
+            />
+          </div>
+
+        </div>
       </div>
     </section>
   )
