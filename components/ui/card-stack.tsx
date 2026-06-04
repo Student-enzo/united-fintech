@@ -121,13 +121,13 @@ export function CardStack<T extends CardStackItem>({
   };
 
   React.useEffect(() => {
-    if (!autoAdvance || reduceMotion || !len) return;
+    if (!autoAdvance || !len) return;
     if (pauseOnHover && hovering) return;
     const id = window.setInterval(() => {
       if (loop || active < len - 1) next();
     }, Math.max(700, intervalMs));
     return () => window.clearInterval(id);
-  }, [autoAdvance, intervalMs, hovering, pauseOnHover, reduceMotion, len, loop, active, next]);
+  }, [autoAdvance, intervalMs, hovering, pauseOnHover, len, loop, active, next]);
 
   if (!len) return null;
 
