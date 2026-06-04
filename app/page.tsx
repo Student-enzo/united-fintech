@@ -26,7 +26,7 @@ export default function HomePage() {
         textBlend={false}
       >
         <div className="hidden md:block" style={{ maxWidth: '52rem', margin: '0 auto', textAlign: 'center' }}>
-          <p style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '1rem', textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>UNITED FINTECH</p>
+          <p style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '1rem', textShadow: '0 1px 3px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,0.95)' }}>UNITED FINTECH</p>
           <h2 style={{
             fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
             fontWeight: 800,
@@ -34,12 +34,12 @@ export default function HomePage() {
             letterSpacing: '-0.02em',
             marginBottom: '1.25rem',
             lineHeight: 1.2,
-            textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,0.9)',
+            textShadow: '0 1px 2px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,0.98), 0 8px 40px rgba(0,0,0,0.9)',
           }}>
             The world&apos;s financial infrastructure,{' '}
-            <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>simplified.</span>
+            <span style={{ color: '#2BB8E6', fontStyle: 'italic', textShadow: '0 1px 2px rgba(0,0,0,1), 0 2px 10px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,0.95)' }}>simplified.</span>
           </h2>
-          <p style={{ color: 'rgba(232,237,242,0.9)', fontSize: '1rem', lineHeight: 1.75, maxWidth: '36rem', margin: '0 auto 2rem', textShadow: '0 1px 12px rgba(0,0,0,0.95)' }}>
+          <p style={{ color: 'rgba(232,237,242,0.95)', fontSize: '1rem', lineHeight: 1.75, maxWidth: '36rem', margin: '0 auto 2rem', textShadow: '0 1px 3px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,1), 0 6px 28px rgba(0,0,0,0.95)' }}>
             From acquiring banks to embedded finance layers — we connect ambitious businesses with the global infrastructure they need to scale without friction.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
