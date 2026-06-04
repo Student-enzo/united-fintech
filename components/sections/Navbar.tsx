@@ -18,10 +18,10 @@ const SOLUTIONS = [
 ]
 
 const NAV_LINKS = [
-  { label: 'About', href: '/about' },
-  { label: 'Markets', href: '/#markets' },
-  { label: 'Partners', href: '/#partners' },
-  { label: 'Insights', href: '/blog' },
+  { label: 'About', href: '/about', anchor: null },
+  { label: 'Markets', href: '/#markets', anchor: 'markets' },
+  { label: 'Partners', href: '/#partners', anchor: 'partners' },
+  { label: 'Insights', href: '/blog', anchor: null },
 ]
 
 export default function Navbar() {
@@ -52,6 +52,11 @@ export default function Navbar() {
   useEffect(() => { setMobileOpen(false) }, [pathname])
 
   const isActive = (href: string) => pathname === href
+
+  const scrollTo = (anchor: string) => {
+    const el = document.getElementById(anchor)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   // When NOT scrolled: translateX(0) → stays at right:16px
   // When scrolled: translateX(calc(-50vw + 50% + 16px)) → centers the pill
@@ -174,6 +179,7 @@ export default function Navbar() {
         {/* Nav links */}
         {NAV_LINKS.map((link) => (
           <Link key={link.href} href={link.href}
+            onClick={link.anchor ? (e) => { e.preventDefault(); scrollTo(link.anchor!) } : undefined}
             style={{
               color: isActive(link.href) ? TEXT : MUTED,
               fontSize: '0.875rem', fontWeight: 500,
@@ -243,7 +249,7 @@ export default function Navbar() {
       </nav>
 
       {/* ── Mobile header ── */}
-      <div className="md:hidden" style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px' }}>
+      <div className="md:hidden" style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 50, alignItems: 'center', justifyContent: 'space-between', padding: '0 16px' }}>
         {/* Mobile logo */}
         <motion.div
           animate={{ opacity: scrolled ? 0 : 1 }}
@@ -299,7 +305,10 @@ export default function Navbar() {
           </div>
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.75rem' }}>
             {NAV_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
+              <Link key={link.href} href={link.href}
+                onClick={link.anchor
+                  ? (e) => { e.preventDefault(); setMobileOpen(false); scrollTo(link.anchor!) }
+                  : () => setMobileOpen(false)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', color: TEXT, fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.95rem' }}>
                 {link.label}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
