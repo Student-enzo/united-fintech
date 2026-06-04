@@ -34,11 +34,11 @@ const inputStyle: React.CSSProperties = {
   WebkitAppearance: 'none',
 }
 
-export default function BookCall() {
+export default function BookCall({ initialInterest, contextTopic }: { initialInterest?: string, contextTopic?: string }) {
   const submitRef = useCursorArrow<HTMLDivElement>()
   const [form, setForm] = useState<ConsultationFormData>({
     name: '', email: '', phone: '', company: '',
-    monthly_volume: '', service_interest: 'all', message: '',
+    monthly_volume: '', service_interest: (initialInterest as ConsultationFormData['service_interest']) || 'all', message: '',
   })
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -133,6 +133,27 @@ export default function BookCall() {
             <form onSubmit={handleSubmit}
               className="uf-card"
               style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+
+              {/* Context banner — shown when user arrives from a specific CTA */}
+              {contextTopic && (
+                <div style={{
+                  marginBottom: '2rem',
+                  padding: '1rem 1.25rem',
+                  backgroundColor: 'rgba(30,168,212,0.1)',
+                  border: '1px solid rgba(30,168,212,0.3)',
+                  borderRadius: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1EA8D4" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  <p style={{ color: '#E8EDF2', fontSize: '0.9rem', margin: 0 }}>
+                    We noticed you&apos;re interested in <strong style={{ color: '#1EA8D4' }}>{contextTopic}</strong> — let&apos;s find the right solution together.
+                  </p>
+                </div>
+              )}
 
               {/* Name + Email */}
               <div style={{ display: 'grid', gap: '1rem' }} className="grid grid-cols-1 sm:grid-cols-2">

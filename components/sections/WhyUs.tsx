@@ -13,36 +13,41 @@ const CARDS: CardStackItem[] = [
     id: 1,
     title: 'High-Risk, Approved.',
     description: 'We place the accounts every mainstream broker declines.',
-    imageSrc: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80',
+    imageSrc: '/ugc-merchant-processing.jpg',
     tag: 'Our Specialty',
+    href: '/contact?interest=merchant_processing&topic=High-Risk+Account+Approval',
   },
   {
     id: 2,
     title: '150+ Banking Partners',
     description: 'Real relationships built over years — not scraped from a database.',
-    imageSrc: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
+    imageSrc: '/ugc-embedded-finance.jpg',
     tag: 'The Network',
+    href: '/contact?interest=all&topic=Banking+Network+Access',
   },
   {
     id: 3,
     title: '30+ Countries',
     description: 'Cross-border coverage that actually delivers for complex merchants.',
-    imageSrc: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+    imageSrc: '/ugc-market-coverage.jpg',
     tag: 'Global Reach',
+    href: '/contact?interest=all&topic=Cross-Border+Payments',
   },
   {
     id: 4,
     title: 'Chargeback Defense.',
     description: 'Reserves, disputes, compliance — handled from day one, not day ninety.',
-    imageSrc: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+    imageSrc: '/ugc-risk-mitigation.jpg',
     tag: 'Risk Control',
+    href: '/contact?interest=risk_mitigation&topic=Chargeback+Defense',
   },
   {
     id: 5,
     title: '$5B+ Annual Volume',
     description: "You're in good company. Serious merchants trust us with serious money.",
-    imageSrc: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80',
+    imageSrc: '/ugc-advisory-strategy.jpg',
     tag: 'Scale',
+    href: '/contact?interest=merchant_processing&topic=High-Volume+Processing',
   },
 ]
 
@@ -139,7 +144,7 @@ export default function WhyUs() {
 
             <a
               ref={consultationRef}
-              href="#consultation"
+              href="/contact?interest=all"
               className="btn-cyan"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',

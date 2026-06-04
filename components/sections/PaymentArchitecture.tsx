@@ -72,7 +72,7 @@ export default function PaymentArchitecture() {
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               <a
                 ref={consultationRef}
-                href="#consultation"
+                href="/contact?interest=all&topic=Payment+Architecture"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                   padding: '0.75rem 1.75rem', borderRadius: 999,

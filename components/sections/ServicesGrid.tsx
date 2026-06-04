@@ -38,7 +38,7 @@ const SERVICES: ServiceItem[] = [
     title: 'Strategic Advisory from Setup Through Scale',
     excerpt: 'From initial setup through ongoing expansion, our dedicated team guides your payments strategy — processor selection, contract negotiation, and long-term optimization.',
     imageUrl: '/brand-office.png',
-    href: '/#consultation',
+    href: '/contact?interest=all&topic=Strategic+Advisory',
   },
   {
     id: 5,
@@ -46,7 +46,7 @@ const SERVICES: ServiceItem[] = [
     title: 'Global Markets & Cross-Border Payment Corridors',
     excerpt: '150+ acquiring and banking partners across six continents. Multi-currency settlement, local payment methods, and cross-border routing built for global operations.',
     imageUrl: '/brand-globe-network.png',
-    href: '/#consultation',
+    href: '/contact?interest=all&topic=Global+Markets+%26+Cross-Border',
   },
   {
     id: 6,
@@ -54,7 +54,7 @@ const SERVICES: ServiceItem[] = [
     title: 'Tailored FX, Treasury & Capital Flow Solutions',
     excerpt: 'Real-time FX, treasury management, and capital flow solutions with a dedicated hedging desk. Protect margins on international settlements and streamline cash repatriation.',
     imageUrl: '/brand-platform.png',
-    href: '/#consultation',
+    href: '/contact?interest=all&topic=FX+%26+Treasury+Solutions',
   },
 ]
 

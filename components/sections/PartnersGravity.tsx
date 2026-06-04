@@ -30,7 +30,7 @@ const FLOAT_CSS = `
 @keyframes uf-f5{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-20px,-8px)rotate(-4deg)}66%{transform:translate(8px,18px)rotate(3deg)}}
 `
 
-const FLOAT_DURATIONS = [6, 7, 5.5, 8, 6.5, 7.5, 6.2, 8.2, 5.8, 7.2, 6.8, 8.5]
+const FLOAT_DURATIONS = [4, 4.5, 3.8, 5, 4.2, 4.8, 4.1, 5.2, 3.9, 4.6, 4.4, 5.5]
 
 type PosData = {
   left: number   // % across container width
@@ -65,16 +65,16 @@ function PartnerPill({
       controls.set({ y: -520, opacity: 1 })
 
       // Stagger: each pill falls like a raindrop with slight delay
-      await new Promise<void>(r => setTimeout(r, idx * 65))
+      await new Promise<void>(r => setTimeout(r, idx * 35))
 
       // Fall to floor with natural gravity + overshoot
       await controls.start({
         y: CONTAINER_H + 15,
         transition: {
           type: 'spring',
-          damping: 5,
-          stiffness: 55,
-          mass: 2,
+          damping: 8,
+          stiffness: 120,
+          mass: 1,
           velocity: 18,
         },
       })
@@ -84,8 +84,8 @@ function PartnerPill({
         y: pos.finalY,
         transition: {
           type: 'spring',
-          damping: 9,
-          stiffness: 110,
+          damping: 14,
+          stiffness: 220,
           mass: 1,
         },
       })

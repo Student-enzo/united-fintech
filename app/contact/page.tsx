@@ -1,4 +1,6 @@
 'use client'
+import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Navbar from '@/components/sections/Navbar'
 import BookCall from '@/components/sections/BookCall'
@@ -11,7 +13,11 @@ const CONTACT_DETAILS = [
   { label: 'Response Time', value: '1–2 business days', href: null },
 ]
 
-export default function ContactPage() {
+function ContactPageContent() {
+  const params = useSearchParams()
+  const interest = params.get('interest') ?? undefined
+  const topic = params.get('topic') ?? undefined
+
   return (
     <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
@@ -35,7 +41,7 @@ export default function ContactPage() {
               letterSpacing: '0.01em', textTransform: 'uppercase',
               marginBottom: '1.5rem', lineHeight: 1.1,
             }} className="chrome-text">
-              Contact Us
+              {topic ? topic : 'Contact Us'}
             </h1>
             <p style={{ color: '#7E8794', fontSize: '1.125rem', lineHeight: 1.8, maxWidth: 520, margin: '0 auto' }}>
               Whether you have a specific processing challenge or just want to explore what&apos;s possible, we&apos;re here to help. Fill out the form below or reach us directly.
@@ -69,8 +75,16 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <BookCall />
+      <BookCall initialInterest={interest} contextTopic={topic} />
       <Footer />
     </main>
+  )
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactPageContent />
+    </Suspense>
   )
 }
