@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import { motion } from 'framer-motion'
 import { submitConsultation } from '@/app/actions/consultation'
 import type { ConsultationFormData } from '@/app/actions/consultation'
+import { LiquidButton } from '@/components/ui/liquid-glass-button'
 
 const VOLUME_OPTIONS = [
   { value: '', label: 'Select monthly volume' },
@@ -222,11 +223,12 @@ export default function BookCall() {
               )}
 
               {/* Submit */}
-              <button
+              <LiquidButton
                 type="submit"
                 disabled={isPending}
-                className="btn-cyan"
-                style={{ padding: '1rem 2rem', fontSize: '0.95rem', fontWeight: 700, cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.7 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', border: 'none' }}
+                size="xxl"
+                className="w-full bg-[#2BB8E6] text-[#0A0C12] font-bold tracking-wide rounded-full justify-center"
+                style={{ opacity: isPending ? 0.7 : 1, cursor: isPending ? 'not-allowed' : 'pointer' }}
               >
                 {isPending ? (
                   <>
@@ -238,11 +240,10 @@ export default function BookCall() {
                   </>
                 ) : (
                   <>
-                    Request Strategy Session
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                    Request Strategy Session →
                   </>
                 )}
-              </button>
+              </LiquidButton>
 
               <p style={{ color: '#7E8794', fontSize: '0.78rem', textAlign: 'center', lineHeight: 1.6 }}>
                 No spam. No commitment. We'll review your situation and follow up within 1–2 business days.

@@ -1,31 +1,54 @@
 'use client'
+
 import Link from 'next/link'
-import { CreditCard, Building2, Shield } from 'lucide-react'
+import { StackedCardsInteraction } from '@/components/ui/stacked-cards-interaction'
+import type { CardData } from '@/components/ui/stacked-cards-interaction'
+
+const SERVICE_CARDS: CardData[] = [
+  {
+    image:  '/brand-building.png',
+    name:   'Global acquiring for high-risk & complex eCommerce',
+    sub:    'Merchant Processing',
+    from:   '30+ Countries',
+    time:   '24/7 Support',
+    href:   '/services/merchant-processing',
+  },
+  {
+    image:  '/brand-app.png',
+    name:   'Banking infrastructure built into your platform',
+    sub:    'Embedded Finance',
+    from:   'BaaS Ready',
+    time:   'API First',
+    href:   '/services/embedded-finance',
+  },
+  {
+    image:  '/brand-identity.png',
+    name:   'Multi-processor redundancy & chargeback protection',
+    sub:    'Risk Mitigation',
+    from:   'Zero Downtime',
+    time:   'PCI Compliant',
+    href:   '/services/risk-mitigation',
+  },
+]
 
 const SERVICES = [
   {
-    icon: CreditCard,
     title: 'Merchant Processing Solutions',
     description:
-      'End-to-end merchant account acquisition for global and complex eCommerce businesses. We connect you with acquiring banks, card networks, and payment processors across 30+ countries — from mainstream to high-risk verticals.',
+      'End-to-end merchant account acquisition for global and complex eCommerce businesses. We connect you with acquiring banks and processors across 30+ countries — from mainstream to high-risk verticals.',
     href: '/services/merchant-processing',
-    slug: 'merchant-processing',
   },
   {
-    icon: Building2,
     title: 'Embedded Finance',
     description:
-      'Integrate banking infrastructure directly into your platform. From embedded accounts and card issuing to BaaS relationships, we structure the financial layer your product needs to scale without friction.',
+      'Integrate banking infrastructure directly into your platform. From embedded accounts and card issuing to BaaS relationships, we structure the financial layer your product needs to scale.',
     href: '/services/embedded-finance',
-    slug: 'embedded-finance',
   },
   {
-    icon: Shield,
     title: 'Risk Mitigation Strategy',
     description:
-      'Protect your business from account terminations, chargebacks, and processing instability. We design multi-processor redundancy, reserve strategies, and compliance frameworks that keep your revenue flowing.',
+      'Protect your business from account terminations, chargebacks, and processing instability. We design multi-processor redundancy and compliance frameworks that keep your revenue flowing.',
     href: '/services/risk-mitigation',
-    slug: 'risk-mitigation',
   },
 ]
 
@@ -35,12 +58,12 @@ export default function ServicesGrid() {
       <div className="max-w-7xl mx-auto">
 
         {/* Heading */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
           <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
             What We Do
           </p>
           <h2 style={{
-            fontFamily: 'var(--font-outfit)', fontWeight: 200,
+            fontFamily: 'var(--font-heading)', fontWeight: 200,
             fontSize: 'clamp(1.875rem, 4vw, 3rem)',
             letterSpacing: '0.08em', textTransform: 'uppercase',
           }} className="chrome-text">
@@ -48,65 +71,50 @@ export default function ServicesGrid() {
           </h2>
         </div>
 
-        {/* Cards grid */}
-        <div style={{ display: 'grid', gap: '1.5rem' }} className="grid grid-cols-1 md:grid-cols-3">
-          {SERVICES.map((service) => {
-            const Icon = service.icon
-            return (
-              <div
-                key={service.slug}
-                className="uf-card"
-                style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', transition: 'border-color 0.2s, transform 0.2s' }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLDivElement
-                  el.style.borderColor = 'rgba(43,184,230,0.3)'
-                  el.style.transform = 'translateY(-4px)'
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLDivElement
-                  el.style.borderColor = 'rgba(255,255,255,0.08)'
-                  el.style.transform = 'translateY(0)'
-                }}
-              >
-                {/* Icon */}
+        {/* Two-column: text list left, stacked cards right */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left — service list */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+            {SERVICES.map((service, i) => (
+              <div key={i} style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
+                {/* Step number */}
                 <div style={{
-                  width: 48, height: 48, borderRadius: 12,
-                  backgroundColor: 'rgba(43,184,230,0.10)',
-                  border: '1px solid rgba(43,184,230,0.20)',
+                  width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                  background: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.25)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Icon size={22} color="#2BB8E6" strokeWidth={1.5} />
+                  <span style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700 }}>0{i + 1}</span>
                 </div>
-
-                {/* Title */}
-                <h3 style={{
-                  fontFamily: 'var(--font-outfit)', fontWeight: 400,
-                  fontSize: '1.125rem', color: '#E8EDF2',
-                  letterSpacing: '0.02em',
-                }}>
-                  {service.title}
-                </h3>
-
-                {/* Cyan underline */}
-                <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1 }} />
-
-                {/* Description */}
-                <p style={{ color: '#7E8794', fontSize: '0.9rem', lineHeight: 1.75, flex: 1 }}>
-                  {service.description}
-                </p>
-
-                {/* Learn More */}
-                <Link
-                  href={service.href}
-                  style={{ color: '#2BB8E6', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', transition: 'gap 0.15s' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.gap = '0.6rem' }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.gap = '0.35rem' }}
-                >
-                  Learn More →
-                </Link>
+                <div>
+                  <h3 style={{
+                    fontFamily: 'var(--font-heading)', fontWeight: 500,
+                    fontSize: '1.05rem', color: '#E8EDF2',
+                    letterSpacing: '0.02em', marginBottom: '0.625rem',
+                  }}>
+                    {service.title}
+                  </h3>
+                  <div style={{ width: 28, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '0.75rem' }} />
+                  <p style={{ color: '#7E8794', fontSize: '0.9rem', lineHeight: 1.75, marginBottom: '0.75rem' }}>
+                    {service.description}
+                  </p>
+                  <Link href={service.href}
+                    style={{ color: '#2BB8E6', fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    Learn More →
+                  </Link>
+                </div>
               </div>
-            )
-          })}
+            ))}
+          </div>
+
+          {/* Right — animated stacked cards */}
+          <div className="hidden lg:flex items-center justify-center" style={{ minHeight: 580 }}>
+            <StackedCardsInteraction
+              cards={SERVICE_CARDS}
+              spreadDistance={56}
+              rotationAngle={8}
+            />
+          </div>
         </div>
       </div>
     </section>

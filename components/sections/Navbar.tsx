@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { LiquidButton } from '@/components/ui/liquid-glass-button'
 
 const CYAN = '#2BB8E6'
 const TEXT = '#E8EDF2'
@@ -76,22 +78,15 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 8px 6px 14px', height: 56 }}>
 
           {/* Logo */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none', flexShrink: 0 }}>
-            {/* UF Monogram */}
-            <div style={{
-              width: 36, height: 36, borderRadius: 8,
-              background: 'linear-gradient(135deg, #2BB8E6 0%, #0E8FB8 100%)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(43,184,230,0.35)',
-              flexShrink: 0,
-            }}>
-              <span style={{ color: '#0A0C12', fontFamily: 'var(--font-outfit)', fontWeight: 600, fontSize: '0.95rem', letterSpacing: '-0.02em' }}>UF</span>
-            </div>
-            {/* Wordmark */}
-            <div className="hidden sm:block">
-              <div style={{ fontFamily: 'var(--font-outfit)', fontWeight: 300, fontSize: '0.75rem', letterSpacing: '0.14em', color: TEXT, textTransform: 'uppercase', lineHeight: 1.2 }}>United Fintech</div>
-              <div style={{ fontFamily: 'var(--font-outfit)', fontWeight: 300, fontSize: '0.58rem', letterSpacing: '0.18em', color: CYAN, textTransform: 'uppercase', lineHeight: 1 }}>Global Interchange</div>
-            </div>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
+            <Image
+              src="/logo.png"
+              alt="United Fintech — Global Interchange"
+              width={160}
+              height={40}
+              style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+              priority
+            />
           </Link>
 
           {/* Desktop nav — centered */}
@@ -196,13 +191,11 @@ export default function Navbar() {
             >
               Contact Us
             </Link>
-            <Link
-              href="/#consultation"
-              className="btn-cyan"
-              style={{ fontSize: '0.875rem', padding: '0.5rem 1.25rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap' }}
-            >
+            <LiquidButton size="sm"
+              className="bg-[#2BB8E6] text-[#0A0C12] font-bold rounded-full whitespace-nowrap"
+              onClick={() => { window.location.href = '/#consultation' }}>
               Book a Consultation
-            </Link>
+            </LiquidButton>
           </div>
 
           {/* Mobile hamburger */}
