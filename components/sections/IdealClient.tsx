@@ -1,160 +1,136 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { useCursorArrow } from '@/components/ui/cursor-arrow'
+import { ServicesCarousel, ServiceItem } from '@/components/ui/services-carousel'
 
-const SERVICES = [
+const SERVICES: ServiceItem[] = [
   {
-    image: '/brand-merchant.png',
-    category: 'MERCHANT PROCESSING',
+    id: 1,
+    subtitle: 'Merchant Processing',
     title: 'Global Acquiring & Payment Infrastructure',
-    desc: 'End-to-end merchant account acquisition across 30+ countries — from mainstream to high-risk verticals.',
+    excerpt: 'End-to-end merchant account acquisition across 30+ countries — from mainstream to high-risk verticals. We connect you to the right acquiring relationships fast.',
+    imageUrl: '/brand-merchant.png',
     href: '/services/merchant-processing',
   },
   {
-    image: '/brand-embedded.png',
-    category: 'EMBEDDED FINANCE',
+    id: 2,
+    subtitle: 'Embedded Finance',
     title: 'Banking Infrastructure for Your Platform',
-    desc: 'BaaS relationships, embedded accounts, card issuing, and API-first financial infrastructure.',
+    excerpt: 'BaaS relationships, embedded accounts, card issuing, and API-first financial infrastructure. Build financial products without becoming a bank.',
+    imageUrl: '/brand-embedded.png',
     href: '/services/embedded-finance',
   },
   {
-    image: '/brand-risk.png',
-    category: 'RISK MITIGATION',
+    id: 3,
+    subtitle: 'Risk Mitigation',
     title: 'Multi-Processor Redundancy & Protection',
-    desc: 'Chargeback management, reserve negotiation, and compliance frameworks that keep revenue flowing.',
+    excerpt: 'Chargeback management, reserve negotiation, and compliance frameworks that keep revenue flowing. Redundant routing so a single processor failure never takes you down.',
+    imageUrl: '/brand-risk.png',
     href: '/services/risk-mitigation',
+  },
+  {
+    id: 4,
+    subtitle: 'Advisory & Strategy',
+    title: 'Strategic Advisory from Setup Through Scale',
+    excerpt: 'From initial setup through ongoing expansion, our dedicated team guides your payments strategy — processor selection, contract negotiation, and long-term optimization.',
+    imageUrl: '/brand-office.png',
+    href: '/#consultation',
+  },
+  {
+    id: 5,
+    subtitle: 'Market Coverage',
+    title: 'Global Markets & Cross-Border Payment Corridors',
+    excerpt: '150+ acquiring and banking partners across six continents. Multi-currency settlement, local payment methods, and cross-border routing built for global operations.',
+    imageUrl: '/brand-globe-network.png',
+    href: '/#consultation',
+  },
+  {
+    id: 6,
+    subtitle: 'FX & Treasury',
+    title: 'Tailored FX, Treasury & Capital Flow Solutions',
+    excerpt: 'Real-time FX, treasury management, and capital flow solutions with a dedicated hedging desk. Protect margins on international settlements and streamline cash repatriation.',
+    imageUrl: '/brand-platform.png',
+    href: '/#consultation',
   },
 ]
 
-function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0]) {
-  const [hovered, setHovered] = useState(false)
-  const learnMoreRef = useCursorArrow<HTMLAnchorElement>()
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        backgroundColor: '#141C28',
-        border: `1px solid ${hovered ? 'rgba(43,184,230,0.28)' : 'rgba(255,255,255,0.08)'}`,
-        borderRadius: 16,
-        overflow: 'hidden',
-        transition: 'border-color 0.2s ease',
-      }}
-    >
-      <img
-        src={image}
-        alt={title}
-        style={{
-          width: '100%',
-          height: 220,
-          objectFit: 'cover',
-          borderRadius: '12px 12px 0 0',
-          display: 'block',
-        }}
-      />
-      <div style={{ padding: '1.5rem' }}>
-        <p style={{
-          color: '#2BB8E6',
-          fontSize: '0.65rem',
-          fontWeight: 700,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          marginBottom: '0.625rem',
-        }}>
-          {category}
-        </p>
-        <p style={{
-          color: '#E8EDF2',
-          fontWeight: 700,
-          fontSize: '1rem',
-          lineHeight: 1.4,
-          marginBottom: '0.625rem',
-        }}>
-          {title}
-        </p>
-        <p style={{
-          color: '#7E8794',
-          fontSize: '0.875rem',
-          lineHeight: 1.6,
-          marginBottom: '1.25rem',
-        }}>
-          {desc}
-        </p>
-        <a
-          ref={learnMoreRef}
-          href={href}
-          style={{
-            color: '#2BB8E6',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            textDecoration: 'none',
-          }}
-        >
-          Learn More →
-        </a>
-      </div>
-    </div>
-  )
-}
+const CYAN = '#2BB8E6'
+const TEXT = '#E8EDF2'
 
 export default function IdealClient() {
   return (
-    <section style={{ backgroundColor: '#161616', padding: '6rem 0' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="services" style={{ backgroundColor: '#161616', padding: '6rem 1.5rem' }}>
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header row — HOP style: left title + right CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '4rem' }}
+          style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            marginBottom: '3.5rem',
+            flexWrap: 'wrap',
+            gap: '1rem',
+          }}
         >
-          <p style={{
-            color: '#2BB8E6',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-          }}>
-            Our Services
-          </p>
-          <h2
-            className="chrome-text"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: 300,
-              fontSize: 'clamp(1.875rem, 4vw, 3rem)',
-              letterSpacing: '0.08em',
+          <div>
+            <p style={{
+              color: CYAN,
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.2em',
               textTransform: 'uppercase',
+              marginBottom: '0.75rem',
+            }}>
+              Our Services
+            </p>
+            <h2
+              className="chrome-text"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 300,
+                fontSize: 'clamp(1.875rem, 4vw, 3rem)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                margin: 0,
+              }}
+            >
+              Solutions Built for Global Scale
+            </h2>
+          </div>
+
+          <Link
+            href="/services"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+              color: CYAN, fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
+              whiteSpace: 'nowrap', transition: 'gap 0.15s',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.gap = '0.65rem')}
+            onMouseLeave={(e) => (e.currentTarget.style.gap = '0.4rem')}
           >
-            Solutions Built for Global Scale
-          </h2>
-          <p style={{
-            color: '#7E8794',
-            fontSize: '1rem',
-            marginTop: '1.25rem',
-            maxWidth: 520,
-            margin: '1.25rem auto 0',
-          }}>
-            A complete platform for merchant processing, risk management, and financial infrastructure.
-          </p>
+            All services
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </motion.div>
 
+        {/* Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          transition={{ duration: 0.6, delay: 0.15 }}
         >
-          {SERVICES.map((service) => (
-            <ServiceCard key={service.href} {...service} />
-          ))}
+          <ServicesCarousel items={SERVICES} />
         </motion.div>
+
       </div>
     </section>
   )
