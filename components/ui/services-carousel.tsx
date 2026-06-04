@@ -212,22 +212,10 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
               <FaArrowRight size={14} color={hoverNext ? '#161616' : TEXT} />
             </button>
 
-            {/* Dots */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginLeft: '0.25rem' }}>
-              {items.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setActiveIndex(i); stopAutoplay() }}
-                  aria-label={`Service ${i + 1}`}
-                  style={{
-                    width: i === activeIndex ? 18 : 6, height: 6, borderRadius: 999,
-                    backgroundColor: i === activeIndex ? CYAN : 'rgba(255,255,255,0.2)',
-                    border: 'none', cursor: 'pointer', padding: 0,
-                    transition: 'width 0.3s, background-color 0.3s',
-                  }}
-                />
-              ))}
-            </div>
+            {/* current index counter */}
+            <span style={{ color: MUTED, fontSize: '0.78rem', fontVariantNumeric: 'tabular-nums' }}>
+              {String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+            </span>
 
             {/* Learn More CTA */}
             <Link
@@ -247,6 +235,70 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
               </svg>
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* Service track — full-width selector */}
+      <div style={{ marginTop: '2.5rem', position: 'relative' }}>
+        {/* Base line */}
+        <div style={{
+          position: 'absolute', top: '10px', left: 0, right: 0, height: '1px',
+          backgroundColor: 'rgba(255,255,255,0.08)',
+        }} />
+        {/* Progress fill */}
+        <div style={{
+          position: 'absolute', top: '10px', left: 0, height: '1px',
+          backgroundColor: CYAN,
+          width: `${(activeIndex / (items.length - 1)) * 100}%`,
+          transition: 'width 0.5s cubic-bezier(0.4,0,0.2,1)',
+          boxShadow: `0 0 8px ${CYAN}`,
+        }} />
+
+        {/* Nodes + labels */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+          {items.map((item, i) => {
+            const isActive = i === activeIndex
+            const isPast = i < activeIndex
+            return (
+              <button
+                key={item.id}
+                onClick={() => { setActiveIndex(i); stopAutoplay() }}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem',
+                  background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                  minWidth: 0,
+                }}
+              >
+                {/* Node dot */}
+                <div style={{
+                  width: isActive ? 14 : 8,
+                  height: isActive ? 14 : 8,
+                  borderRadius: '50%',
+                  backgroundColor: isActive ? CYAN : isPast ? CYAN : 'rgba(255,255,255,0.15)',
+                  border: isActive ? `2px solid ${CYAN}` : '1px solid rgba(255,255,255,0.15)',
+                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(43,184,230,0.4)` : 'none',
+                  transition: 'all 0.3s ease',
+                  flexShrink: 0,
+                }} />
+                {/* Label */}
+                <span style={{
+                  fontSize: '0.65rem',
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? CYAN : isPast ? 'rgba(43,184,230,0.5)' : MUTED,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.3s',
+                  maxWidth: '5rem',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                  {item.subtitle}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
