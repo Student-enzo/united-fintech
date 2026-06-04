@@ -41,10 +41,6 @@ const linkStyle: React.CSSProperties = {
 export default function Footer() {
   return (
     <footer style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-      {/* Scanner card stream — full bleed */}
-      <ScannerCardStream initialSpeed={110} direction={-1} repeat={5} cardGap={40} />
-      {/* Divider */}
-      <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(30,168,212,0.18), transparent)' }} />
       <div style={{ padding: '4rem 1.5rem 2rem' }}>
       <div className="max-w-7xl mx-auto">
 
@@ -68,7 +64,7 @@ export default function Footer() {
             </p>
 
             {/* Contact quick-links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.75rem' }}>
               {CONTACT.map((c) => (
                 <a key={c.href} href={c.href}
                   style={{ color: '#7E8794', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s' }}
@@ -77,6 +73,11 @@ export default function Footer() {
                   {c.label}
                 </a>
               ))}
+            </div>
+
+            {/* Scanner card stream — nested under brand copy */}
+            <div style={{ marginLeft: '-1.5rem', marginRight: '1rem', overflow: 'hidden', borderRadius: 12, opacity: 0.85 }}>
+              <ScannerCardStream initialSpeed={110} direction={-1} repeat={5} cardGap={40} />
             </div>
           </div>
 
