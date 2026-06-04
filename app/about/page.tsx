@@ -33,9 +33,9 @@ export default function AboutPage() {
               Who We Are
             </p>
             <h1 style={{
-              fontFamily: 'var(--font-heading)', fontWeight: 300,
+              fontFamily: 'var(--font-heading)', fontWeight: 700,
               fontSize: 'clamp(2rem, 5vw, 4rem)',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
+              letterSpacing: '0.01em', textTransform: 'uppercase',
               marginBottom: '1.5rem', lineHeight: 1.1,
             }} className="chrome-text">
               About United Fintech
@@ -53,7 +53,7 @@ export default function AboutPage() {
           <div style={{ display: 'grid', gap: '4rem' }} className="grid grid-cols-1 lg:grid-cols-2">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Our Mission</p>
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.01em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Making Global Finance Accessible
               </h2>
               <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.5rem' }} />
@@ -66,7 +66,7 @@ export default function AboutPage() {
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
               <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>What We Do</p>
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.01em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Strategy, Connections, Execution
               </h2>
               <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.5rem' }} />
@@ -86,7 +86,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>Our Principles</p>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.08em', textTransform: 'uppercase' }} className="chrome-text">
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.01em', textTransform: 'uppercase' }} className="chrome-text">
               How We Work
             </h2>
           </motion.div>

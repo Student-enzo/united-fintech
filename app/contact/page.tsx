@@ -30,9 +30,9 @@ export default function ContactPage() {
               Get in Touch
             </p>
             <h1 style={{
-              fontFamily: 'var(--font-heading)', fontWeight: 300,
+              fontFamily: 'var(--font-heading)', fontWeight: 700,
               fontSize: 'clamp(2rem, 5vw, 4rem)',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
+              letterSpacing: '0.01em', textTransform: 'uppercase',
               marginBottom: '1.5rem', lineHeight: 1.1,
             }} className="chrome-text">
               Contact Us

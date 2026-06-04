@@ -1,19 +1,12 @@
 import type { Metadata } from 'next'
-import { Rajdhani, Barlow } from 'next/font/google'
+import { Barlow } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
-
-const rajdhani = Rajdhani({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
-})
 
 const barlow = Barlow({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   display: 'swap',
 })
 
@@ -34,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${rajdhani.variable} ${barlow.variable}`}>
+    <html lang="en" className={barlow.variable}>
       <body className={barlow.className}>
         <Providers>{children}</Providers>
       </body>

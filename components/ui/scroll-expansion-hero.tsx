@@ -231,8 +231,8 @@ const ScrollExpandMedia = ({
             style={{
               fontFamily: 'var(--font-heading)',
               fontSize: 'clamp(3rem,8vw,7rem)',
-              fontWeight: 300,
-              letterSpacing: '0.06em',
+              fontWeight: 800,
+              letterSpacing: '0.01em',
               textTransform: 'uppercase',
               color: '#2BB8E6',
               lineHeight: 1,

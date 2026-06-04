@@ -66,7 +66,7 @@ html.light {
   --color-uf-danger:      #E8504A;
 
   /* Typography */
-  --font-heading: "Rajdhani", system-ui, sans-serif;
+  --font-heading: "Barlow", system-ui, sans-serif;
   --font-sans:    "Barlow", system-ui, sans-serif;
 
   /* Spacing */
@@ -172,11 +172,11 @@ body {
   border-radius: 1px;
 }
 
-/* Thin uppercase letter-spaced heading (matches the wordmark) */
+/* Uppercase label heading (section eyebrow labels) */
 .heading-tracked {
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-weight: 300;
+  font-weight: 700;
 }
 
 /* Cyan glow border on focus/active */

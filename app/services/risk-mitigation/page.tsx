@@ -37,9 +37,9 @@ export default function RiskMitigationPage() {
             <span style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Risk Mitigation</span>
           </div>
           <h1 style={{
-            fontFamily: 'var(--font-heading)', fontWeight: 300,
+            fontFamily: 'var(--font-heading)', fontWeight: 700,
             fontSize: 'clamp(2rem, 5vw, 4rem)',
-            letterSpacing: '0.06em', textTransform: 'uppercase',
+            letterSpacing: '0.01em', textTransform: 'uppercase',
             marginBottom: '1.5rem', lineHeight: 1.1,
           }} className="chrome-text">
             Risk Mitigation Strategy
@@ -59,7 +59,7 @@ export default function RiskMitigationPage() {
         <div className="max-w-6xl mx-auto">
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>What We Deliver</p>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.08em', textTransform: 'uppercase' }} className="chrome-text">
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.01em', textTransform: 'uppercase' }} className="chrome-text">
               Protection Built Into Your Stack
             </h2>
           </div>
