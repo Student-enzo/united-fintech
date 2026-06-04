@@ -80,41 +80,64 @@ export default function Hero() {
       >
         {/* Left — headline + CTAs */}
         <div>
-          {/* Badge pill */}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-            padding: '0.3rem 0.875rem',
-            backgroundColor: 'rgba(43,184,230,0.12)',
-            border: '1px solid rgba(43,184,230,0.3)',
-            borderRadius: '999px',
-            marginBottom: '1.25rem',
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: CYAN, flexShrink: 0, boxShadow: `0 0 6px ${CYAN}` }} />
-            <span style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>GLOBAL INTERCHANGE</span>
+          {/* Three-word badge row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+            {['Strategic', 'Scalable', 'Trusted'].map((word, i) => (
+              <span key={word} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                {i > 0 && <span style={{ color: 'rgba(43,184,230,0.4)', fontSize: '0.7rem' }}>·</span>}
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+                  padding: '0.25rem 0.8rem',
+                  backgroundColor: 'rgba(43,184,230,0.10)',
+                  border: '1px solid rgba(43,184,230,0.28)',
+                  borderRadius: '999px',
+                }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: CYAN, flexShrink: 0, boxShadow: `0 0 5px ${CYAN}` }} />
+                  <span style={{ color: CYAN, fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{word}</span>
+                </span>
+              </span>
+            ))}
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(2.8rem, 5.5vw, 4.8rem)',
+            fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
             fontWeight: 900,
             letterSpacing: '-0.03em',
-            lineHeight: 1.0,
+            lineHeight: 1.05,
             color: TEXT,
-            marginBottom: '0.75rem',
+            marginBottom: '1rem',
             textShadow: '0 2px 20px rgba(0,0,0,0.4)',
           }}>
-            Connect your business{' '}
-            <span style={{ color: CYAN, fontStyle: 'italic' }}>globally.</span>
+            The financial partner<br />
+            <span style={{ color: CYAN, fontStyle: 'italic' }}>complex merchants trust.</span>
           </h1>
 
           <p style={{
             fontSize: '1rem',
-            color: 'rgba(232,237,242,0.75)',
-            lineHeight: 1.65,
-            marginBottom: '1.75rem',
-            maxWidth: 480,
+            color: 'rgba(232,237,242,0.72)',
+            lineHeight: 1.7,
+            marginBottom: '1.25rem',
+            maxWidth: 460,
           }}>
-            Merchant accounts, embedded finance, and risk strategy across 30+ countries. Fixed solutions, no guessing, trusted relationships built over years.
+            We secure merchant processing accounts, deliver embedded banking solutions, and build risk protection strategies — giving global eCommerce businesses the stability and optionality to scale.
           </p>
+
+          {/* 3-service strip */}
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
+            {[
+              { label: 'Merchant Processing' },
+              { label: 'Embedded Finance' },
+              { label: 'Risk Protection' },
+            ].map((s) => (
+              <span key={s.label} style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                color: 'rgba(232,237,242,0.6)', fontSize: '0.8rem', fontWeight: 500,
+              }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                {s.label}
+              </span>
+            ))}
+          </div>
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <a
@@ -139,15 +162,6 @@ export default function Hero() {
 
         {/* Right — interactive globe */}
         <div className="hidden lg:flex" style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', transform: 'translateX(8%)' }}>
-          {/* Ambient glow behind globe */}
-          <div style={{
-            position: 'absolute',
-            width: '60%', height: '60%',
-            background: 'radial-gradient(circle, rgba(43,184,230,0.18) 0%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(40px)',
-            pointerEvents: 'none',
-          }} />
           <GlobeCdn className="w-full max-w-[520px]" speed={0.003} />
           {/* Stats row below globe */}
           <div style={{

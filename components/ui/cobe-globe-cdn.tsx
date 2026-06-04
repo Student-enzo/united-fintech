@@ -203,7 +203,7 @@ export function GlobeCdn({
         mapBrightness: 8,
         baseColor: [0.92, 0.94, 0.97],
         markerColor: DARK_RGB,
-        glowColor: [0.55, 0.58, 0.62],
+        glowColor: [0.06, 0.06, 0.08],
         markerElevation: 0.02,
         markers: markers.map((m) => ({ location: m.location, size: 0.035 })),
         arcs: arcs.map((a) => ({ from: a.from, to: a.to })),
@@ -260,16 +260,6 @@ export function GlobeCdn({
         }}
       />
 
-      {/* Subtle outer ring */}
-      <div
-        style={{
-          position: "absolute",
-          inset: "-3%",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, transparent 44%, rgba(180,190,205,0.18) 68%, transparent 100%)",
-          pointerEvents: "none",
-        }}
-      />
 
       {/* City / node labels */}
       {showLabels && markers.map((m, i) => (
