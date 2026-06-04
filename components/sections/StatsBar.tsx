@@ -3,7 +3,7 @@
 const BG2 = '#161616'
 const TEXT = '#E8EDF2'
 const MUTED = '#7E8794'
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const BORDER = 'rgba(255,255,255,0.06)'
 
 const FACTS = [

@@ -198,8 +198,8 @@ export function FeatureCarousel() {
                         : "bg-transparent border-white/10 text-white/40 hover:border-white/25 hover:text-white/65"
                     )}
                     style={isActive ? {
-                      backgroundColor: "#2BB8E6",
-                      borderColor: "#2BB8E6",
+                      backgroundColor: "#1EA8D4",
+                      borderColor: "#1EA8D4",
                       color: "#0A0C12",
                     } : {}}
                   >
@@ -272,7 +272,7 @@ export function FeatureCarousel() {
                     padding: 9,
                     background: "linear-gradient(145deg, #333 0%, #1a1a1a 100%)",
                     boxShadow: isActive
-                      ? "0 40px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.1), 0 0 60px rgba(43,184,230,0.18)"
+                      ? "0 40px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.1), 0 0 60px rgba(30,168,212,0.18)"
                       : "0 20px 50px rgba(0,0,0,0.6)",
                     transition: "box-shadow 0.5s ease",
                   }}>
@@ -307,14 +307,14 @@ export function FeatureCarousel() {
                         <div style={{
                           display: "inline-flex", alignItems: "center", gap: "0.4rem",
                           padding: "0.25rem 0.875rem",
-                          backgroundColor: "rgba(43,184,230,0.18)",
-                          border: "1px solid rgba(43,184,230,0.35)",
+                          backgroundColor: "rgba(30,168,212,0.18)",
+                          border: "1px solid rgba(30,168,212,0.35)",
                           borderRadius: 999,
                           marginBottom: "0.5rem",
                           backdropFilter: "blur(12px)",
                         }}>
-                          <Icon size={11} strokeWidth={2.5} color="#2BB8E6" />
-                          <span style={{ color: "#2BB8E6", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                          <Icon size={11} strokeWidth={2.5} color="#1EA8D4" />
+                          <span style={{ color: "#1EA8D4", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
                             {feature.label}
                           </span>
                         </div>

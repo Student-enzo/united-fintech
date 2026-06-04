@@ -52,7 +52,7 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
         style={{ opacity: isActive ? 1 : 0, textAlign: 'center' }}
       >
         <p style={{
-          color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 800,
+          color: '#1EA8D4', fontSize: '0.72rem', fontWeight: 800,
           letterSpacing: '0.2em', marginBottom: '0.75rem',
           textShadow: '0 0 12px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1)',
           fontFamily: 'var(--font-heading)',

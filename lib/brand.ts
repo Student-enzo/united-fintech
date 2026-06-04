@@ -9,8 +9,8 @@ export const BRAND = {
   cardAlt:      '#1A1F2A',   // alternate card / hover
 
   // Signature cyan accent (CTAs, links, logo F-bar, orbit node, "Global Interchange")
-  cyan:         '#2BB8E6',
-  cyanBright:   '#46D4F2',   // glow highlight
+  cyan:         '#1EA8D4',
+  cyanBright:   '#33BEDE',   // glow highlight
   cyanDeep:     '#0E8FB8',   // teal "Global Interchange" tone
 
   // Chrome / silver (wordmark, logo)
@@ -24,7 +24,7 @@ export const BRAND = {
 
   // Borders
   border:       'rgba(255,255,255,0.08)',
-  borderCyan:   'rgba(43,184,230,0.25)',
+  borderCyan:   'rgba(30,168,212,0.25)',
 
   // Status
   success:      '#3DD68C',
@@ -32,8 +32,8 @@ export const BRAND = {
   danger:       '#E8504A',
 
   // Glow helpers
-  glowCyan:     '0 0 24px rgba(43,184,230,0.30)',
-  glowCyanLg:   '0 0 48px rgba(43,184,230,0.20)',
+  glowCyan:     '0 0 24px rgba(30,168,212,0.30)',
+  glowCyanLg:   '0 0 48px rgba(30,168,212,0.20)',
 } as const
 
 export type BrandColors = typeof BRAND

@@ -63,8 +63,8 @@ export default function BookCall() {
 
   const focusStyle = {
     onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      e.currentTarget.style.borderColor = 'rgba(43,184,230,0.5)'
-      e.currentTarget.style.boxShadow = '0 0 0 2px rgba(43,184,230,0.15)'
+      e.currentTarget.style.borderColor = 'rgba(30,168,212,0.5)'
+      e.currentTarget.style.boxShadow = '0 0 0 2px rgba(30,168,212,0.15)'
     },
     onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
@@ -91,7 +91,7 @@ export default function BookCall() {
         >
           {/* Heading */}
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+            <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
               Get Started
             </p>
             <h2 style={{
@@ -103,7 +103,7 @@ export default function BookCall() {
               marginBottom: '1rem',
             }}>
               Book a{' '}
-              <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>consultation.</span>
+              <span style={{ color: '#1EA8D4', fontStyle: 'italic' }}>consultation.</span>
             </h2>
             <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
               Tell us about your business and processing needs. We'll review your situation and schedule a strategy session — no commitment required.
@@ -200,14 +200,14 @@ export default function BookCall() {
                     <label key={opt.value} style={{
                       display: 'flex', alignItems: 'center', gap: '0.75rem',
                       padding: '0.75rem 1rem', borderRadius: 10, cursor: 'pointer',
-                      border: form.service_interest === opt.value ? '1px solid rgba(43,184,230,0.4)' : '1px solid rgba(255,255,255,0.08)',
-                      backgroundColor: form.service_interest === opt.value ? 'rgba(43,184,230,0.06)' : 'rgba(255,255,255,0.02)',
+                      border: form.service_interest === opt.value ? '1px solid rgba(30,168,212,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                      backgroundColor: form.service_interest === opt.value ? 'rgba(30,168,212,0.06)' : 'rgba(255,255,255,0.02)',
                       transition: 'border-color 0.2s, background-color 0.2s',
                     }}>
                       <input type="radio" name="service_interest" value={opt.value}
                         checked={form.service_interest === opt.value}
                         onChange={handleChange}
-                        style={{ accentColor: '#2BB8E6', width: 16, height: 16 }} />
+                        style={{ accentColor: '#1EA8D4', width: 16, height: 16 }} />
                       <span style={{ color: form.service_interest === opt.value ? '#E8EDF2' : '#7E8794', fontSize: '0.875rem', fontWeight: 500 }}>
                         {opt.label}
                       </span>
@@ -241,7 +241,7 @@ export default function BookCall() {
                 type="submit"
                 disabled={isPending}
                 size="xxl"
-                className="w-full bg-[#2BB8E6] text-[#0A0C12] font-bold tracking-wide rounded-full justify-center"
+                className="w-full bg-[#1EA8D4] text-[#0A0C12] font-bold tracking-wide rounded-full justify-center"
                 style={{ opacity: isPending ? 0.7 : 1, cursor: isPending ? 'not-allowed' : 'pointer' }}
               >
                 {isPending ? (

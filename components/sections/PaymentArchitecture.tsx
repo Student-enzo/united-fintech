@@ -2,20 +2,10 @@
 
 import { motion } from 'framer-motion'
 import { useCursorArrow } from '@/components/ui/cursor-arrow'
+import { CpuArchitecture } from '@/components/ui/cpu-architecture'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const MUTED = '#7E8794'
-
-const NETWORKS = [
-  { name: 'Visa',             region: 'Global' },
-  { name: 'Mastercard',       region: 'Global' },
-  { name: 'American Express', region: 'Global' },
-  { name: 'Discover / Diners',region: 'Global' },
-  { name: 'UnionPay',         region: 'Asia Pacific' },
-  { name: 'JCB',              region: 'Asia Pacific' },
-  { name: 'SWIFT',            region: 'Cross-border' },
-  { name: 'ACH / SEPA',       region: 'Americas · EU' },
-]
 
 const STATS = [
   { value: '150+', label: 'Acquiring institutions' },
@@ -107,89 +97,24 @@ export default function PaymentArchitecture() {
             </div>
           </motion.div>
 
-          {/* ── Right: terminal-style network panel ── */}
+          {/* ── Right: CPU architecture diagram ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <div style={{
-              border: '1px solid rgba(43,184,230,0.15)',
-              borderRadius: 16,
-              overflow: 'hidden',
-              backgroundColor: 'rgba(255,255,255,0.02)',
-            }}>
-              {/* Terminal header bar */}
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '0.875rem 1.25rem',
-                borderBottom: '1px solid rgba(43,184,230,0.1)',
-                backgroundColor: 'rgba(43,184,230,0.04)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />
-                  <span style={{ color: CYAN, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.15em', fontFamily: 'monospace' }}>
-                    ROUTING LAYER — ACTIVE
-                  </span>
-                </div>
-                <span style={{ color: 'rgba(43,184,230,0.4)', fontSize: '0.65rem', fontFamily: 'monospace' }}>
-                  LIVE
-                </span>
-              </div>
-
-              {/* Network rows */}
-              <div style={{ padding: '0.5rem 0' }}>
-                {NETWORKS.map((n, i) => (
-                  <motion.div
-                    key={n.name}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: 0.05 * i }}
-                    style={{
-                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                      padding: '0.65rem 1.25rem',
-                      borderBottom: i < NETWORKS.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <span style={{
-                        width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
-                        backgroundColor: CYAN, opacity: 0.7,
-                      }} />
-                      <span style={{ color: '#E8EDF2', fontSize: '0.875rem', fontWeight: 500 }}>
-                        {n.name}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ color: MUTED, fontSize: '0.72rem', letterSpacing: '0.04em' }}>
-                        {n.region}
-                      </span>
-                      <span style={{
-                        width: 5, height: 5, borderRadius: '50%',
-                        backgroundColor: '#22c55e', flexShrink: 0,
-                      }} />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Footer line */}
-              <div style={{
-                padding: '0.875rem 1.25rem',
-                borderTop: '1px solid rgba(43,184,230,0.1)',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                backgroundColor: 'rgba(43,184,230,0.03)',
-              }}>
-                <span style={{ color: MUTED, fontSize: '0.72rem', letterSpacing: '0.06em' }}>
-                  + 142 ACQUIRING INSTITUTIONS
-                </span>
-                <span style={{ color: 'rgba(43,184,230,0.5)', fontSize: '0.65rem', fontFamily: 'monospace' }}>
-                  30+ COUNTRIES
-                </span>
-              </div>
-            </div>
+            <CpuArchitecture
+              className="text-[rgba(30,168,212,0.35)]"
+              width="100%"
+              height="100%"
+              showCpuConnections
+              animateLines
+              animateMarkers
+              animateText
+              lineMarkerSize={18}
+            />
           </motion.div>
 
         </div>

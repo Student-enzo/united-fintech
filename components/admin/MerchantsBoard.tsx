@@ -6,17 +6,17 @@ import { LayoutGrid, List, Search, X, Plus } from 'lucide-react'
 import type { Merchant, PipelineStage } from '@/lib/db'
 import { fmtCurrency, fmtDate } from '@/lib/utils'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 
 const STAGE_META: Record<PipelineStage, {
   label: string; color: string; bg: string; border: string
 }> = {
   new_lead:                { label: 'New Lead',        color: '#93C5FD', bg: 'rgba(96,165,250,0.10)',  border: 'rgba(96,165,250,0.22)' },
   application_started:     { label: 'Application',     color: '#FCD34D', bg: 'rgba(251,191,36,0.10)',  border: 'rgba(251,191,36,0.22)' },
-  submitted_to_processor:  { label: 'Submitted',       color: CYAN,      bg: 'rgba(43,184,230,0.10)',  border: 'rgba(43,184,230,0.22)' },
+  submitted_to_processor:  { label: 'Submitted',       color: CYAN,      bg: 'rgba(30,168,212,0.10)',  border: 'rgba(30,168,212,0.22)' },
   underwriting:            { label: 'Underwriting',    color: '#F0B23E', bg: 'rgba(240,178,62,0.10)',  border: 'rgba(240,178,62,0.22)' },
   approved:                { label: 'Approved',        color: '#3DD68C', bg: 'rgba(61,214,140,0.10)',  border: 'rgba(61,214,140,0.22)' },
-  live:                    { label: 'Live',             color: '#46D4F2', bg: 'rgba(70,212,242,0.12)',  border: 'rgba(70,212,242,0.28)' },
+  live:                    { label: 'Live',             color: '#33BEDE', bg: 'rgba(70,212,242,0.12)',  border: 'rgba(70,212,242,0.28)' },
   closed_lost:             { label: 'Closed Lost',     color: 'rgba(255,255,255,0.28)', bg: 'rgba(255,255,255,0.04)', border: 'rgba(255,255,255,0.10)' },
 }
 
@@ -116,7 +116,7 @@ function KanbanCard({ merchant, onStageChange }: {
         )}
         <Link href={`/admin/merchants/${merchant.id}`}
           className="flex-1 text-center text-[10px] font-semibold py-1.5 rounded-lg transition-opacity hover:opacity-80"
-          style={{ backgroundColor: 'rgba(43,184,230,0.12)', color: CYAN, border: '1px solid rgba(43,184,230,0.22)' }}>
+          style={{ backgroundColor: 'rgba(30,168,212,0.12)', color: CYAN, border: '1px solid rgba(30,168,212,0.22)' }}>
           View
         </Link>
       </div>
@@ -186,7 +186,7 @@ export default function MerchantsBoard() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center rounded-lg overflow-hidden"
-            style={{ border: '1px solid rgba(43,184,230,0.2)' }}>
+            style={{ border: '1px solid rgba(30,168,212,0.2)' }}>
             <button onClick={() => setView('kanban')}
               className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors"
               style={{
@@ -215,7 +215,7 @@ export default function MerchantsBoard() {
       {/* Search */}
       <div className="relative mb-5">
         <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ color: 'rgba(43,184,230,0.5)' }} />
+          style={{ color: 'rgba(30,168,212,0.5)' }} />
         <input
           type="text"
           placeholder="Search by name, country, business type, stage…"
@@ -224,15 +224,15 @@ export default function MerchantsBoard() {
           className="w-full pl-11 pr-10 py-2.5 text-sm rounded-xl focus:outline-none focus:ring-2"
           style={{
             backgroundColor: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(43,184,230,0.18)',
+            border: '1px solid rgba(30,168,212,0.18)',
             color: 'rgba(255,255,255,0.85)',
             // @ts-expect-error vendor prefix
-            '--tw-ring-color': 'rgba(43,184,230,0.25)',
+            '--tw-ring-color': 'rgba(30,168,212,0.25)',
           }}
         />
         {search && (
           <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2"
-            style={{ color: 'rgba(43,184,230,0.6)' }}>
+            style={{ color: 'rgba(30,168,212,0.6)' }}>
             <X size={13} />
           </button>
         )}
@@ -284,11 +284,11 @@ export default function MerchantsBoard() {
             style={{ backgroundColor: '#141821', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead style={{ backgroundColor: 'rgba(43,184,230,0.06)', borderBottom: '1px solid rgba(43,184,230,0.12)' }}>
+                <thead style={{ backgroundColor: 'rgba(30,168,212,0.06)', borderBottom: '1px solid rgba(30,168,212,0.12)' }}>
                   <tr>
                     {['Merchant', 'Stage', 'Country', 'Volume / mo', 'Risk', 'Added', ''].map(h => (
                       <th key={h} className="text-left px-5 py-3 text-[10px] uppercase tracking-widest font-semibold"
-                        style={{ color: 'rgba(43,184,230,0.6)' }}>
+                        style={{ color: 'rgba(30,168,212,0.6)' }}>
                         {h}
                       </th>
                     ))}
@@ -325,7 +325,7 @@ export default function MerchantsBoard() {
                       <td className="px-5 py-3">
                         <Link href={`/admin/merchants/${m.id}`}
                           className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
-                          style={{ backgroundColor: 'rgba(43,184,230,0.12)', color: CYAN, border: '1px solid rgba(43,184,230,0.22)' }}>
+                          style={{ backgroundColor: 'rgba(30,168,212,0.12)', color: CYAN, border: '1px solid rgba(30,168,212,0.22)' }}>
                           View
                         </Link>
                       </td>

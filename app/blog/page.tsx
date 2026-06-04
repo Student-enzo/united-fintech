@@ -77,7 +77,7 @@ export default function BlogPage() {
             transition={{ duration: 0.6 }}
           >
             <p style={{
-              color: '#2BB8E6',
+              color: '#1EA8D4',
               fontSize: '0.7rem',
               fontWeight: 700,
               letterSpacing: '0.2em',
@@ -150,7 +150,7 @@ export default function BlogPage() {
                   {/* Category tag */}
                   <span style={{
                     display: 'inline-block',
-                    color: '#2BB8E6',
+                    color: '#1EA8D4',
                     fontSize: '0.65rem',
                     fontWeight: 700,
                     letterSpacing: '0.15em',
@@ -190,7 +190,7 @@ export default function BlogPage() {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.3rem',
-                      color: '#2BB8E6',
+                      color: '#1EA8D4',
                       fontSize: '0.8rem',
                       fontWeight: 700,
                       letterSpacing: '0.06em',

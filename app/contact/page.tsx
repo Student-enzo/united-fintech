@@ -21,12 +21,12 @@ export default function ContactPage() {
         <div aria-hidden style={{
           position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
           width: 600, height: 400, borderRadius: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(43,184,230,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(30,168,212,0.07) 0%, transparent 70%)',
           zIndex: 0,
         }} />
         <div className="max-w-4xl mx-auto relative" style={{ zIndex: 1, textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
               Get in Touch
             </p>
             <h1 style={{
@@ -56,7 +56,7 @@ export default function ContactPage() {
                 }}>
                   <p style={{ color: '#7E8794', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>{d.label}</p>
                   {d.href ? (
-                    <a href={d.href} style={{ color: '#2BB8E6', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}>
+                    <a href={d.href} style={{ color: '#1EA8D4', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none' }}>
                       {d.value}
                     </a>
                   ) : (

@@ -37,9 +37,9 @@ function AppShell({ children }: { children: React.ReactNode }) {
           <button
             className="md:hidden mb-5 flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
             style={{
-              backgroundColor: 'rgba(43,184,230,0.1)',
-              color: '#2BB8E6',
-              border: '1px solid rgba(43,184,230,0.2)',
+              backgroundColor: 'rgba(30,168,212,0.1)',
+              color: '#1EA8D4',
+              border: '1px solid rgba(30,168,212,0.2)',
             }}
             onClick={toggleSidebar}
             aria-label="Open navigation"

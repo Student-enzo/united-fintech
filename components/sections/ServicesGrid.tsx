@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { ServicesCarousel, ServiceItem } from '@/components/ui/services-carousel'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 const MUTED = '#7E8794'
 

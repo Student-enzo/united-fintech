@@ -220,7 +220,7 @@ export function FocusRail({
                 className="space-y-2"
               >
                 {activeItem.meta && (
-                  <span className="text-xs font-medium uppercase tracking-wider" style={{ color: "#2BB8E6" }}>
+                  <span className="text-xs font-medium uppercase tracking-wider" style={{ color: "#1EA8D4" }}>
                     {activeItem.meta}
                   </span>
                 )}

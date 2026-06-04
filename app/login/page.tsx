@@ -3,10 +3,10 @@
 import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 
-const CYAN   = '#2BB8E6'
+const CYAN   = '#1EA8D4'
 const BG     = '#0A0C12'
 const CARD   = '#141821'
-const BORDER = 'rgba(43,184,230,0.18)'
+const BORDER = 'rgba(30,168,212,0.18)'
 
 function LoginContent() {
   const router = useRouter()
@@ -53,7 +53,7 @@ function LoginContent() {
         style={{
           top: '-160px', left: '50%', transform: 'translateX(-50%)',
           width: '700px', height: '500px',
-          background: `radial-gradient(ellipse at center, rgba(43,184,230,0.07) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse at center, rgba(30,168,212,0.07) 0%, transparent 70%)`,
         }}
       />
 
@@ -64,7 +64,7 @@ function LoginContent() {
             backgroundColor: 'rgba(20,24,33,0.96)',
             border: `1px solid ${BORDER}`,
             backdropFilter: 'blur(14px)',
-            boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(43,184,230,0.06)',
+            boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(30,168,212,0.06)',
           }}
         >
           {/* Logo / Wordmark */}
@@ -75,7 +75,7 @@ function LoginContent() {
               style={{
                 background: `linear-gradient(135deg, ${CYAN} 0%, #0E8FB8 100%)`,
                 color: '#fff',
-                boxShadow: `0 0 24px rgba(43,184,230,0.35)`,
+                boxShadow: `0 0 24px rgba(30,168,212,0.35)`,
               }}
             >
               UF
@@ -90,10 +90,10 @@ function LoginContent() {
             >
               United Fintech
             </p>
-            <div className="mt-3 w-10 h-px" style={{ backgroundColor: `rgba(43,184,230,0.25)` }} />
+            <div className="mt-3 w-10 h-px" style={{ backgroundColor: `rgba(30,168,212,0.25)` }} />
             <p
               className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em]"
-              style={{ color: 'rgba(43,184,230,0.55)' }}
+              style={{ color: 'rgba(30,168,212,0.55)' }}
             >
               Admin Portal
             </p>
@@ -129,7 +129,7 @@ function LoginContent() {
                   border: error ? '1px solid rgba(232,80,74,0.5)' : `1px solid ${BORDER}`,
                   color: 'rgba(255,255,255,0.9)',
                 }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(43,184,230,0.55)' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(30,168,212,0.55)' }}
                 onBlur={e  => { e.currentTarget.style.borderColor = error ? 'rgba(232,80,74,0.5)' : BORDER }}
               />
             </div>
@@ -154,7 +154,7 @@ function LoginContent() {
                   border: error ? '1px solid rgba(232,80,74,0.5)' : `1px solid ${BORDER}`,
                   color: 'rgba(255,255,255,0.9)',
                 }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(43,184,230,0.55)' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(30,168,212,0.55)' }}
                 onBlur={e  => { e.currentTarget.style.borderColor = error ? 'rgba(232,80,74,0.5)' : BORDER }}
               />
               {error && (
@@ -167,10 +167,10 @@ function LoginContent() {
               disabled={disabled}
               className="w-full py-3 rounded-xl text-sm font-semibold transition-all mt-1"
               style={{
-                backgroundColor: disabled ? 'rgba(43,184,230,0.25)' : CYAN,
+                backgroundColor: disabled ? 'rgba(30,168,212,0.25)' : CYAN,
                 color:           disabled ? 'rgba(255,255,255,0.35)' : '#fff',
                 cursor:          disabled ? 'not-allowed' : 'pointer',
-                boxShadow:       disabled ? 'none' : '0 0 20px rgba(43,184,230,0.25)',
+                boxShadow:       disabled ? 'none' : '0 0 20px rgba(30,168,212,0.25)',
               }}
             >
               {loading ? 'Signing in…' : 'Sign In →'}

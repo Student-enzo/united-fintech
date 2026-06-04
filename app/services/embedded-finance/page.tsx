@@ -23,17 +23,17 @@ export default function EmbeddedFinancePage() {
         <div aria-hidden style={{
           position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
           width: 700, height: 500, borderRadius: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(43,184,230,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(30,168,212,0.07) 0%, transparent 70%)',
           zIndex: 0,
         }} />
         <div className="max-w-4xl mx-auto relative" style={{ zIndex: 1, textAlign: 'center' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-            backgroundColor: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.25)',
+            backgroundColor: 'rgba(30,168,212,0.10)', border: '1px solid rgba(30,168,212,0.25)',
             borderRadius: 999, padding: '0.35rem 1rem', marginBottom: '1.5rem',
           }}>
-            <Building2 size={14} color="#2BB8E6" strokeWidth={2} />
-            <span style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Embedded Finance</span>
+            <Building2 size={14} color="#1EA8D4" strokeWidth={2} />
+            <span style={{ color: '#1EA8D4', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Embedded Finance</span>
           </div>
           <h1 style={{
             fontFamily: 'var(--font-heading)', fontWeight: 700,
@@ -57,7 +57,7 @@ export default function EmbeddedFinancePage() {
       <section style={{ backgroundColor: '#0E1118', padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>What We Deliver</p>
+            <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>What We Deliver</p>
             <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.01em', textTransform: 'uppercase' }} className="chrome-text">
               Financial Infrastructure, Built In
             </h2>
@@ -67,10 +67,10 @@ export default function EmbeddedFinancePage() {
               const Icon = b.icon
               return (
                 <div key={b.title} className="uf-card" style={{ padding: '2rem', display: 'flex', gap: '1.25rem', transition: 'border-color 0.2s' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(43,184,230,0.25)' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(30,168,212,0.25)' }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)' }}>
-                  <div style={{ width: 48, height: 48, borderRadius: 12, backgroundColor: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon size={22} color="#2BB8E6" strokeWidth={1.5} />
+                  <div style={{ width: 48, height: 48, borderRadius: 12, backgroundColor: 'rgba(30,168,212,0.10)', border: '1px solid rgba(30,168,212,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon size={22} color="#1EA8D4" strokeWidth={1.5} />
                   </div>
                   <div>
                     <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: '1rem', color: '#E8EDF2', marginBottom: '0.5rem' }}>{b.title}</h3>

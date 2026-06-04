@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { GlobeCdn } from '@/components/ui/cobe-globe-cdn'
 import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const BG = '#161616'
 const TEXT = '#E8EDF2'
 const MUTED = '#7E8794'
@@ -84,12 +84,12 @@ export default function Hero() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
             {['Strategic', 'Scalable', 'Trusted'].map((word, i) => (
               <span key={word} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                {i > 0 && <span style={{ color: 'rgba(43,184,230,0.4)', fontSize: '0.7rem' }}>·</span>}
+                {i > 0 && <span style={{ color: 'rgba(30,168,212,0.4)', fontSize: '0.7rem' }}>·</span>}
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
                   padding: '0.25rem 0.8rem',
-                  backgroundColor: 'rgba(43,184,230,0.10)',
-                  border: '1px solid rgba(43,184,230,0.28)',
+                  backgroundColor: 'rgba(30,168,212,0.10)',
+                  border: '1px solid rgba(30,168,212,0.28)',
                   borderRadius: '999px',
                 }}>
                   <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: CYAN, flexShrink: 0, boxShadow: `0 0 5px ${CYAN}` }} />
@@ -145,7 +145,7 @@ export default function Hero() {
               ref={consultationRef}
               href="#consultation"
               className="btn-primary"
-              style={{ padding: '0.875rem 1.75rem', fontSize: '0.95rem', boxShadow: '0 0 24px rgba(43,184,230,0.3)' }}
+              style={{ padding: '0.875rem 1.75rem', fontSize: '0.95rem', boxShadow: '0 0 24px rgba(30,168,212,0.3)' }}
             >
               Book a Consultation
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BG} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
@@ -185,7 +185,7 @@ export default function Hero() {
                   backgroundColor: 'rgba(22,22,22,0.75)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(43,184,230,0.15)',
+                  border: '1px solid rgba(30,168,212,0.15)',
                   borderRadius: 12,
                   textAlign: 'center',
                 }}

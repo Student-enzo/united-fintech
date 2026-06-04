@@ -55,7 +55,7 @@ const SERVICES: ServiceItem[] = [
   },
 ]
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 
 export default function IdealClient() {

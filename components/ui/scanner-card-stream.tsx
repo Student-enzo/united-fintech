@@ -26,13 +26,12 @@ type ScannerCardStreamProps = {
   scanEffect?: 'clip' | 'scramble'
 }
 
-// Finance-themed images matching UF brand
 const defaultCardImages = [
-  'https://images.pexels.com/photos/6771985/pexels-photo-6771985.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop',
-  'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop',
-  'https://images.pexels.com/photos/186461/pexels-photo-186461.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop',
-  'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop',
-  'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop',
+  'https://cdn.prod.website-files.com/68789c86c8bc802d61932544/689f20b55e654d1341fb06f8_4.1.png',
+  'https://cdn.prod.website-files.com/68789c86c8bc802d61932544/689f20b5a080a31ee7154b19_1.png',
+  'https://cdn.prod.website-files.com/68789c86c8bc802d61932544/689f20b5c1e4919fd69672b8_3.png',
+  'https://cdn.prod.website-files.com/68789c86c8bc802d61932544/689f20b5f6a5e232e7beb4be_2.png',
+  'https://cdn.prod.website-files.com/68789c86c8bc802d61932544/689f20b5bea2f1b07392d936_4.png',
 ]
 
 export function ScannerCardStream({
@@ -353,8 +352,8 @@ export function ScannerCardStream({
         className={`uf-scan-pulse absolute top-1/2 left-1/2 w-px pointer-events-none z-20 rounded-full transition-opacity duration-300 ${isScanning ? 'opacity-100' : 'opacity-0'}`}
         style={{
           height: 220,
-          background: 'linear-gradient(to bottom, transparent, #2BB8E6, transparent)',
-          boxShadow: '0 0 10px #2BB8E6, 0 0 22px #2BB8E6, 0 0 40px rgba(43,184,230,0.5)',
+          background: 'linear-gradient(to bottom, transparent, #1EA8D4, transparent)',
+          boxShadow: '0 0 10px #1EA8D4, 0 0 22px #1EA8D4, 0 0 40px rgba(30,168,212,0.5)',
         }}
       />
 
@@ -390,7 +389,7 @@ export function ScannerCardStream({
                   style={{
                     fontSize: 11,
                     lineHeight: '13px',
-                    color: 'rgba(43,184,230,0.55)',
+                    color: 'rgba(30,168,212,0.55)',
                     maskImage: 'linear-gradient(to right,rgba(0,0,0,1) 0%,rgba(0,0,0,0.7) 40%,rgba(0,0,0,0.3) 80%,transparent 100%)',
                     WebkitMaskImage: 'linear-gradient(to right,rgba(0,0,0,1) 0%,rgba(0,0,0,0.7) 40%,rgba(0,0,0,0.3) 80%,transparent 100%)',
                   }}

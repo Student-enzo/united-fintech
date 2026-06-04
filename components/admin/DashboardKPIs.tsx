@@ -5,7 +5,7 @@ import { Users, FileText, TrendingUp, DollarSign, BarChart2 } from 'lucide-react
 import { useColors } from '@/lib/theme'
 import { fmtCurrency, fmtPercent } from '@/lib/utils'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 
 type KPIs = {
   merchantsLive:   number
@@ -34,7 +34,7 @@ export default function DashboardKPIs() {
       sub:      'active accounts',
       icon:     Users,
       color:    CYAN,
-      bg:       'rgba(43,184,230,0.08)',
+      bg:       'rgba(30,168,212,0.08)',
     },
     {
       label:    'Deals in Pipeline',
@@ -49,7 +49,7 @@ export default function DashboardKPIs() {
       value:    kpis ? fmtCurrency(kpis.mtdResidual) : '—',
       sub:      'current month',
       icon:     TrendingUp,
-      color:    '#46D4F2',
+      color:    '#33BEDE',
       bg:       'rgba(70,212,242,0.08)',
     },
     {

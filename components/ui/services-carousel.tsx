@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 const MUTED = '#7E8794'
 
@@ -143,7 +143,7 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                 <span style={{
                   padding: '0.2rem 0.65rem', borderRadius: 999,
-                  backgroundColor: 'rgba(43,184,230,0.1)', color: CYAN,
+                  backgroundColor: 'rgba(30,168,212,0.1)', color: CYAN,
                   fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                 }}>
@@ -276,7 +276,7 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
                   borderRadius: '50%',
                   backgroundColor: isActive ? CYAN : isPast ? CYAN : 'rgba(255,255,255,0.2)',
                   border: isActive ? `2px solid ${CYAN}` : `1px solid rgba(255,255,255,0.25)`,
-                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(43,184,230,0.4)` : isPast ? `0 0 6px rgba(43,184,230,0.3)` : 'none',
+                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(30,168,212,0.4)` : isPast ? `0 0 6px rgba(30,168,212,0.3)` : 'none',
                   transition: 'all 0.3s ease',
                   flexShrink: 0,
                 }} />
@@ -284,7 +284,7 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
                 <span style={{
                   fontSize: '0.72rem',
                   fontWeight: isActive ? 700 : 500,
-                  color: isActive ? CYAN : isPast ? 'rgba(43,184,230,0.5)' : MUTED,
+                  color: isActive ? CYAN : isPast ? 'rgba(30,168,212,0.5)' : MUTED,
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
                   textAlign: 'center',

@@ -38,8 +38,8 @@ export const DARK: Colors = {
   inputBorder:    BRAND.borderCyan,
   rowHover:       'rgba(255,255,255,0.03)',
   tableHead:      'rgba(255,255,255,0.03)',
-  tableBorder:    'rgba(43,184,230,0.08)',
-  pillBg:         'rgba(43,184,230,0.1)',
+  tableBorder:    'rgba(30,168,212,0.08)',
+  pillBg:         'rgba(30,168,212,0.1)',
   accent:         BRAND.cyan,
 }
 
@@ -52,13 +52,13 @@ export const LIGHT: Colors = {
   textSecondary:  'rgba(15,23,42,0.58)',
   textMuted:      'rgba(15,23,42,0.38)',
   border:         'rgba(0,0,0,0.08)',
-  borderAccent:   'rgba(43,184,230,0.35)',
+  borderAccent:   'rgba(30,168,212,0.35)',
   inputBg:        'rgba(0,0,0,0.04)',
   inputBorder:    'rgba(0,0,0,0.14)',
   rowHover:       'rgba(0,0,0,0.025)',
   tableHead:      'rgba(0,0,0,0.03)',
   tableBorder:    'rgba(0,0,0,0.06)',
-  pillBg:         'rgba(43,184,230,0.15)',
+  pillBg:         'rgba(30,168,212,0.15)',
   accent:         BRAND.cyanDeep,
 }
 

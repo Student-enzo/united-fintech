@@ -14,7 +14,7 @@ const PARTNERS = [
   { name: 'Braintree',   x: '83%', y: '36%', d: 1.8, a: -5, fi: 1, style: { background: '#009CDE', color: '#fff' } },
   { name: 'Visa',        x: '6%',  y: '72%', d: 2.2, a:  2, fi: 2, style: { background: '#1A1F71', color: '#FAA61A' } },
   { name: 'Adyen',       x: '36%', y: '66%', d: 1.2, a: -4, fi: 3, style: { background: '#0ABF53', color: '#fff' } },
-  { name: 'Airwallex',   x: '66%', y: '70%', d: 0.2, a:  6, fi: 4, style: { background: '#1B2B4B', color: '#2BB8E6' } },
+  { name: 'Airwallex',   x: '66%', y: '70%', d: 0.2, a:  6, fi: 4, style: { background: '#1B2B4B', color: '#1EA8D4' } },
   { name: 'PayPal',      x: '86%', y: '60%', d: 1.6, a: -2, fi: 5, style: { background: '#003087', color: '#F7C94B' } },
 ]
 
@@ -107,8 +107,8 @@ export default function PartnersGravity() {
     <section style={{
       backgroundColor: '#161616',
       backgroundImage: `
-        linear-gradient(rgba(43,184,230,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(43,184,230,0.05) 1px, transparent 1px)
+        linear-gradient(rgba(30,168,212,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,168,212,0.05) 1px, transparent 1px)
       `,
       backgroundSize: '44px 44px',
       overflow: 'hidden',
@@ -117,12 +117,12 @@ export default function PartnersGravity() {
 
       {/* Header */}
       <div style={{ textAlign: 'center', padding: '4rem 1.5rem 2rem' }}>
-        <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+        <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
           Technology Partners
         </p>
         <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', letterSpacing: '-0.03em', color: '#E8EDF2', marginBottom: '0.75rem' }}>
           Connected to the world&apos;s{' '}
-          <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>payment rails.</span>
+          <span style={{ color: '#1EA8D4', fontStyle: 'italic' }}>payment rails.</span>
         </h2>
         <p style={{ color: 'rgba(232,237,242,0.55)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
           Touch a logo and watch it drop. We integrate natively with every major processor, gateway, and banking partner.

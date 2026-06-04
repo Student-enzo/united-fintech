@@ -29,7 +29,7 @@ const SECTION_LABEL: React.CSSProperties = {
   fontWeight: 700,
   textTransform: 'uppercase',
   letterSpacing: '0.18em',
-  color: 'rgba(43,184,230,0.7)',
+  color: 'rgba(30,168,212,0.7)',
   marginBottom: 4,
 }
 
@@ -62,7 +62,7 @@ export default function DashboardCharts() {
         <p style={SECTION_TITLE}>Processing Volume &amp; Net Residual — Last 12 Months</p>
         <div className="flex items-center gap-4 mb-4">
           <span className="flex items-center gap-1.5 text-[11px]" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            <span className="inline-block w-3 h-3 rounded-sm" style={{ background: 'linear-gradient(180deg,#2BB8E6 0%,#0E8FB8 100%)' }} />
+            <span className="inline-block w-3 h-3 rounded-sm" style={{ background: 'linear-gradient(180deg,#1EA8D4 0%,#0E8FB8 100%)' }} />
             Processing Volume
           </span>
           <span className="flex items-center gap-1.5 text-[11px]" style={{ color: 'rgba(255,255,255,0.45)' }}>

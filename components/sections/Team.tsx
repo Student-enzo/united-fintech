@@ -45,14 +45,14 @@ export default function Team() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+          <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
             Our Team
           </p>
           <h2
             style={{ fontWeight: 800, fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', letterSpacing: '-0.02em', color: '#E8EDF2' }}
           >
             The people behind the{' '}
-            <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>network.</span>
+            <span style={{ color: '#1EA8D4', fontStyle: 'italic' }}>network.</span>
           </h2>
           <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, maxWidth: 520, margin: '1.25rem auto 0' }}>
             Decades of combined experience building financial infrastructure, acquiring relationships, and risk frameworks at the highest levels.
@@ -74,7 +74,7 @@ export default function Team() {
                 overflow: 'hidden',
                 transition: 'box-shadow 0.2s, transform 0.2s',
               }}
-              whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(43,184,230,0.15)' }}
+              whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(30,168,212,0.15)' }}
             >
               <div style={{ position: 'relative', width: '100%', height: 220 }}>
                 <Image
@@ -88,7 +88,7 @@ export default function Team() {
                 <p style={{ color: '#E8EDF2', fontWeight: 700, fontSize: '1rem', marginBottom: '0.25rem' }}>
                   {member.name}
                 </p>
-                <p style={{ color: '#2BB8E6', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', marginBottom: '0.875rem', textTransform: 'uppercase' }}>
+                <p style={{ color: '#1EA8D4', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', marginBottom: '0.875rem', textTransform: 'uppercase' }}>
                   {member.role}
                 </p>
                 <p style={{ color: '#7E8794', fontSize: '0.85rem', lineHeight: 1.65 }}>

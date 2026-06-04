@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 const MUTED = '#9BA5B0'
 
@@ -92,20 +92,14 @@ export default function Navbar() {
           position: 'fixed', top: 14, right: 16, zIndex: 50,
           alignItems: 'center', gap: '0.25rem',
           height: 56, borderRadius: 999,
-          border: `1px solid ${scrolled ? 'rgba(43,184,230,0.22)' : 'rgba(255,255,255,0)'}`,
-          backgroundColor: scrolled ? 'rgba(12,14,20,0.97)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(28px) saturate(180%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(28px) saturate(180%)' : 'none',
-          boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(43,184,230,0.05)' : 'none',
-          padding: scrolled ? '0 8px 0 16px' : '0',
+          border: '1px solid rgba(255,255,255,0.10)',
+          backgroundColor: 'rgba(10,12,18,0.97)',
+          backdropFilter: 'blur(28px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.55)',
+          padding: '0 8px 0 16px',
           transform: navTransform,
-          transition: [
-            'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
-            'background-color 0.35s ease',
-            'border-color 0.35s ease',
-            'box-shadow 0.35s ease',
-            'padding 0.35s ease',
-          ].join(', '),
+          transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
           overflow: 'visible', whiteSpace: 'nowrap',
         }}
       >
@@ -123,9 +117,9 @@ export default function Navbar() {
               display: 'flex', alignItems: 'center', gap: '0.25rem',
               padding: '0.4rem 0.875rem', borderRadius: 999,
               transition: 'color 0.15s, background-color 0.15s',
-              backgroundColor: solutionsOpen ? 'rgba(43,184,230,0.08)' : 'transparent',
+              backgroundColor: solutionsOpen ? 'rgba(30,168,212,0.08)' : 'transparent',
               whiteSpace: 'nowrap',
-              textShadow: scrolled ? 'none' : '0 1px 4px rgba(0,0,0,0.8)',
+              textShadow: 'none',
             }}
           >
             Solutions
@@ -144,7 +138,7 @@ export default function Navbar() {
               <div style={{
                 backgroundColor: 'rgba(10,12,18,0.98)',
                 backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)',
-                border: '1px solid rgba(43,184,230,0.18)',
+                border: '1px solid rgba(30,168,212,0.18)',
                 borderRadius: 20, padding: '1rem',
                 boxShadow: '0 24px 60px rgba(0,0,0,0.7)',
               }}>
@@ -154,7 +148,7 @@ export default function Navbar() {
                 {SOLUTIONS.map((s) => (
                   <Link key={s.href} href={s.href} onClick={() => setSolutionsOpen(false)}
                     style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem', padding: '0.625rem 0.5rem', borderRadius: 12, textDecoration: 'none', transition: 'background-color 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.05)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(30,168,212,0.05)')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     <span style={{ color: TEXT, fontSize: '0.875rem', fontWeight: 600 }}>{s.label}</span>
@@ -164,7 +158,7 @@ export default function Navbar() {
                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: '0.625rem', paddingTop: '0.625rem' }}>
                   <Link href="/about" onClick={() => setSolutionsOpen(false)}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.4rem 0.5rem', color: CYAN, fontSize: '0.8rem', fontWeight: 700, textDecoration: 'none', borderRadius: 8, transition: 'background-color 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.07)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(30,168,212,0.07)')}
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     About United Fintech
@@ -186,11 +180,11 @@ export default function Navbar() {
               textDecoration: 'none', padding: '0.4rem 0.875rem', borderRadius: 999,
               transition: 'color 0.15s, background-color 0.15s',
               whiteSpace: 'nowrap',
-              backgroundColor: isActive(link.href) ? 'rgba(43,184,230,0.08)' : 'transparent',
-              textShadow: scrolled ? 'none' : '0 1px 4px rgba(0,0,0,0.8)',
+              backgroundColor: isActive(link.href) ? 'rgba(30,168,212,0.08)' : 'transparent',
+              textShadow: 'none',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = TEXT; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = isActive(link.href) ? TEXT : MUTED; e.currentTarget.style.backgroundColor = isActive(link.href) ? 'rgba(43,184,230,0.08)' : 'transparent' }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = isActive(link.href) ? TEXT : MUTED; e.currentTarget.style.backgroundColor = isActive(link.href) ? 'rgba(30,168,212,0.08)' : 'transparent' }}
           >
             {link.label}
           </Link>
@@ -222,10 +216,10 @@ export default function Navbar() {
           style={{
             fontSize: '0.875rem', padding: '0.5rem 1.25rem', textDecoration: 'none',
             display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap',
-            border: `1px solid ${CYAN}`, color: CYAN, borderRadius: 999,
+            border: '1px solid rgba(255,255,255,0.35)', color: TEXT, borderRadius: 999,
             transition: 'background-color 0.15s',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.10)' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
           onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
         >
           Contact Us
@@ -234,17 +228,17 @@ export default function Navbar() {
         {/* Book a Consultation */}
         <a ref={consultationRef} href="/#consultation"
           style={{
-            backgroundColor: CYAN, color: '#161616', fontWeight: 700,
+            backgroundColor: '#ffffff', color: '#0A0C12', fontWeight: 700,
             fontSize: '0.875rem', padding: '0.5rem 1.25rem',
             borderRadius: 999, textDecoration: 'none',
             display: 'flex', alignItems: 'center', gap: '0.35rem',
-            whiteSpace: 'nowrap', transition: 'opacity 0.15s, box-shadow 0.15s',
+            whiteSpace: 'nowrap', transition: 'opacity 0.15s',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.boxShadow = '0 0 20px rgba(43,184,230,0.4)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.boxShadow = 'none' }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88' }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
         >
           Book a Consultation
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#161616" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0C12" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
         </a>
       </nav>
 
@@ -289,7 +283,7 @@ export default function Navbar() {
           position: 'fixed', top: 76, left: 16, right: 16, zIndex: 49,
           backgroundColor: 'rgba(10,12,18,0.98)',
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
-          borderRadius: 20, border: '1px solid rgba(43,184,230,0.15)',
+          borderRadius: 20, border: '1px solid rgba(30,168,212,0.15)',
           padding: '1.25rem 1.5rem 1.5rem',
           boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
         }}>
@@ -297,7 +291,7 @@ export default function Navbar() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginBottom: '1rem' }}>
             {SOLUTIONS.map((s) => (
               <Link key={s.href} href={s.href} onClick={() => setMobileOpen(false)}
-                style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', padding: '0.625rem 0.75rem', borderRadius: 12, textDecoration: 'none', backgroundColor: 'rgba(43,184,230,0.04)', border: '1px solid rgba(43,184,230,0.12)' }}>
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', padding: '0.625rem 0.75rem', borderRadius: 12, textDecoration: 'none', backgroundColor: 'rgba(30,168,212,0.04)', border: '1px solid rgba(30,168,212,0.12)' }}>
                 <span style={{ color: TEXT, fontSize: '0.9rem', fontWeight: 600 }}>{s.label}</span>
                 <span style={{ color: MUTED, fontSize: '0.75rem' }}>{s.desc}</span>
               </Link>
@@ -322,11 +316,11 @@ export default function Navbar() {
           </div>
           <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             <Link href="/#consultation" onClick={() => setMobileOpen(false)}
-              style={{ textAlign: 'center', padding: '0.875rem', borderRadius: 999, backgroundColor: CYAN, color: '#0A0C12', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem', boxShadow: '0 0 24px rgba(43,184,230,0.3)' }}>
+              style={{ textAlign: 'center', padding: '0.875rem', borderRadius: 999, backgroundColor: '#ffffff', color: '#0A0C12', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>
               Book a Consultation
             </Link>
             <Link href="/contact" onClick={() => setMobileOpen(false)}
-              style={{ textAlign: 'center', padding: '0.75rem', borderRadius: 999, border: `1px solid ${CYAN}`, color: CYAN, fontWeight: 600, textDecoration: 'none', fontSize: '0.9rem' }}>
+              style={{ textAlign: 'center', padding: '0.75rem', borderRadius: 999, border: '1px solid rgba(255,255,255,0.35)', color: TEXT, fontWeight: 600, textDecoration: 'none', fontSize: '0.9rem' }}>
               Contact Us
             </Link>
           </div>

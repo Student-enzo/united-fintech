@@ -12,17 +12,17 @@
   --foreground:          #E8EDF2;
   --card:                #141C28;
   --card-foreground:     #E8EDF2;
-  --primary:             #2BB8E6;
+  --primary:             #1EA8D4;
   --primary-foreground:  #0A0C12;
   --secondary:           #1A1F2A;
   --secondary-foreground:#E8EDF2;
   --muted:               #1A1F2A;
   --muted-foreground:    #7E8794;
-  --accent:              rgba(43,184,230,0.12);
-  --accent-foreground:   #2BB8E6;
+  --accent:              rgba(30,168,212,0.12);
+  --accent-foreground:   #1EA8D4;
   --border:              rgba(255,255,255,0.08);
   --input:               rgba(255,255,255,0.08);
-  --ring:                rgba(43,184,230,0.35);
+  --ring:                rgba(30,168,212,0.35);
   --destructive:         #E8504A;
   --destructive-foreground: #E8EDF2;
   --radius:              0.625rem;
@@ -30,10 +30,10 @@
   /* Sidebar (admin) */
   --sidebar-background:  #0D111C;
   --sidebar-foreground:  #E8EDF2;
-  --sidebar-border:      rgba(43,184,230,0.15);
-  --sidebar-accent:      rgba(43,184,230,0.1);
-  --sidebar-accent-foreground: #2BB8E6;
-  --sidebar-ring:        rgba(43,184,230,0.3);
+  --sidebar-border:      rgba(30,168,212,0.15);
+  --sidebar-accent:      rgba(30,168,212,0.1);
+  --sidebar-accent-foreground: #1EA8D4;
+  --sidebar-ring:        rgba(30,168,212,0.3);
 }
 
 /* Light mode override */
@@ -53,8 +53,8 @@ html.light {
   --color-uf-navy:        #0D1B2A;
   --color-uf-card:        #141821;
   --color-uf-card-alt:    #1A1F2A;
-  --color-uf-cyan:        #2BB8E6;
-  --color-uf-cyan-bright: #46D4F2;
+  --color-uf-cyan:        #1EA8D4;
+  --color-uf-cyan-bright: #33BEDE;
   --color-uf-cyan-deep:   #0E8FB8;
   --color-uf-silver-hi:   #FFFFFF;
   --color-uf-silver:      #C9D1D9;
@@ -74,8 +74,8 @@ html.light {
   --radius-pill: 999px;
 
   /* Glow shadows */
-  --shadow-cyan-glow:    0 0 24px rgba(43,184,230,0.30);
-  --shadow-cyan-glow-lg: 0 0 48px rgba(43,184,230,0.20);
+  --shadow-cyan-glow:    0 0 24px rgba(30,168,212,0.30);
+  --shadow-cyan-glow-lg: 0 0 48px rgba(30,168,212,0.20);
 }
 
 /* Scroll-expansion hero height */
@@ -106,35 +106,35 @@ body {
 
 /* Cyan accent text */
 .cyan-text {
-  color: #2BB8E6;
+  color: #1EA8D4;
 }
 
 /* Glowing cyan CTA button */
 .btn-cyan {
-  background-color: #2BB8E6;
+  background-color: #1EA8D4;
   color: #0A0C12;
   font-weight: 600;
   border-radius: 999px;
-  box-shadow: 0 0 24px rgba(43,184,230,0.30);
+  box-shadow: 0 0 24px rgba(30,168,212,0.30);
   transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 .btn-cyan:hover {
-  background-color: #46D4F2;
-  box-shadow: 0 0 40px rgba(43,184,230,0.50);
+  background-color: #33BEDE;
+  box-shadow: 0 0 40px rgba(30,168,212,0.50);
 }
 
 /* Outlined cyan button */
 .btn-cyan-outline {
-  border: 1px solid #2BB8E6;
-  color: #2BB8E6;
+  border: 1px solid #1EA8D4;
+  color: #1EA8D4;
   font-weight: 500;
   border-radius: 999px;
   background: transparent;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .btn-cyan-outline:hover {
-  background-color: rgba(43,184,230,0.10);
-  box-shadow: 0 0 20px rgba(43,184,230,0.20);
+  background-color: rgba(30,168,212,0.10);
+  box-shadow: 0 0 20px rgba(30,168,212,0.20);
 }
 
 /* Card */
@@ -145,10 +145,10 @@ body {
   transition: border-color 0.2s, transform 0.2s;
 }
 .uf-card:hover {
-  border-color: rgba(43,184,230,0.28);
+  border-color: rgba(30,168,212,0.28);
 }
 .uf-card-lift:hover {
-  border-color: rgba(43,184,230,0.28);
+  border-color: rgba(30,168,212,0.28);
   transform: translateY(-4px);
 }
 
@@ -168,7 +168,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: #2BB8E6;
+  background: #1EA8D4;
   border-radius: 1px;
 }
 
@@ -181,7 +181,7 @@ body {
 
 /* Cyan glow border on focus/active */
 .glow-border:focus-within {
-  box-shadow: 0 0 0 2px rgba(43,184,230,0.40);
+  box-shadow: 0 0 0 2px rgba(30,168,212,0.40);
 }
 
 /* ─── HOP-pattern utility classes ───────────────────────────────────────── */
@@ -207,7 +207,7 @@ body {
 }
 
 .btn-primary {
-  background-color: #2BB8E6;
+  background-color: #1EA8D4;
   color: #161616;
   border-radius: 999px;
   font-weight: 700;
@@ -220,7 +220,7 @@ body {
   gap: 0.5rem;
 }
 .btn-primary:hover {
-  box-shadow: 0 0 28px rgba(43,184,230,0.4);
+  box-shadow: 0 0 28px rgba(30,168,212,0.4);
   opacity: 0.92;
 }
 
@@ -241,7 +241,7 @@ body {
   gap: 0.5rem;
 }
 .btn-secondary:hover {
-  border-color: rgba(43,184,230,0.4);
+  border-color: rgba(30,168,212,0.4);
   background-color: rgba(255,255,255,0.12);
 }
 
@@ -253,7 +253,7 @@ body {
   transition: border-color 0.2s, transform 0.2s;
 }
 .uf-feature-card:hover {
-  border-color: rgba(43,184,230,0.2);
+  border-color: rgba(30,168,212,0.2);
   transform: translateY(-2px);
 }
 
@@ -279,7 +279,7 @@ body {
 }
 .service-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(43,184,230,0.4);
+  border-color: rgba(30,168,212,0.4);
   box-shadow: 0 16px 48px rgba(0,0,0,0.5);
 }
 .service-card:hover::before {
@@ -296,11 +296,11 @@ body {
 }
 
 .stat-pill-cyan {
-  background-color: rgba(43,184,230,0.1);
-  border: 1px solid rgba(43,184,230,0.2);
+  background-color: rgba(30,168,212,0.1);
+  border: 1px solid rgba(30,168,212,0.2);
   border-radius: 999px;
   padding: 0.4rem 1rem;
-  color: #2BB8E6;
+  color: #1EA8D4;
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;

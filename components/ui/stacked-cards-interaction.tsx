@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 
-const CYAN  = "#2BB8E6";
+const CYAN  = "#1EA8D4";
 const TEXT  = "#f0ede8";
 const MUTED = "#8a8070";
 const CARD_BG = "#141821";
@@ -99,7 +99,7 @@ export const StackedCardsInteraction = ({
                 className={isFirst ? "z-10 cursor-pointer" : "z-0"}
                 image={card.image}
               >
-                <p style={{ color: "rgba(43,184,230,0.75)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: "0.3rem" }}>
+                <p style={{ color: "rgba(30,168,212,0.75)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: "0.3rem" }}>
                   {card.sub}
                 </p>
                 <p style={{ color: TEXT, fontWeight: 800, fontSize: "1.05rem", letterSpacing: "-0.01em", lineHeight: 1.25, marginBottom: "1rem" }}>

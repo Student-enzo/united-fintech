@@ -207,7 +207,7 @@ export function CardStack<T extends CardStackItem>({
                     height: cardHeight,
                     zIndex,
                     transformStyle: "preserve-3d",
-                    border: isActive ? "1px solid rgba(43,184,230,0.4)" : "1px solid rgba(255,255,255,0.08)",
+                    border: isActive ? "1px solid rgba(30,168,212,0.4)" : "1px solid rgba(255,255,255,0.08)",
                   }}
                   initial={
                     reduceMotion ? false : { opacity: 0, y: y + 40, x, rotateZ, rotateX, scale }
@@ -245,7 +245,7 @@ export function CardStack<T extends CardStackItem>({
                   onClick={() => setActive(idx)}
                   className={cn(
                     "rounded-full transition-all duration-200",
-                    on ? "w-5 h-2 bg-[#2BB8E6]" : "w-2 h-2 bg-white/20 hover:bg-white/40",
+                    on ? "w-5 h-2 bg-[#1EA8D4]" : "w-2 h-2 bg-white/20 hover:bg-white/40",
                   )}
                   aria-label={`Go to ${it.title}`}
                 />
@@ -290,16 +290,16 @@ function DefaultFanCard({ item, active }: { item: CardStackItem; active: boolean
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
       {active && (
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#2BB8E6]/10 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#1EA8D4]/10 to-transparent" />
       )}
 
       {item.tag && (
         <div className="absolute top-4 left-4 z-10">
           <span style={{
             display: 'inline-block', padding: '0.2rem 0.65rem',
-            backgroundColor: 'rgba(43,184,230,0.2)',
-            border: '1px solid rgba(43,184,230,0.4)',
-            borderRadius: 999, color: '#2BB8E6',
+            backgroundColor: 'rgba(30,168,212,0.2)',
+            border: '1px solid rgba(30,168,212,0.4)',
+            borderRadius: 999, color: '#1EA8D4',
             fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
           }}>
             {item.tag}

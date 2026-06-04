@@ -56,7 +56,7 @@ export const CircularTestimonials = ({
   const colorTestimony = colors.testimony ?? "rgba(240,237,232,0.8)";
   const colorArrowBg = colors.arrowBackground ?? "#141821";
   const colorArrowFg = colors.arrowForeground ?? "#f0ede8";
-  const colorArrowHoverBg = colors.arrowHoverBackground ?? "#2BB8E6";
+  const colorArrowHoverBg = colors.arrowHoverBackground ?? "#1EA8D4";
   const fontSizeName = fontSizes.name ?? "1.4rem";
   const fontSizeDesignation = fontSizes.designation ?? "0.85rem";
   const fontSizeQuote = fontSizes.quote ?? "1.05rem";
@@ -258,7 +258,7 @@ export const CircularTestimonials = ({
                     width: i === activeIndex ? 20 : 6,
                     height: 6,
                     borderRadius: 999,
-                    backgroundColor: i === activeIndex ? "#2BB8E6" : "rgba(255,255,255,0.2)",
+                    backgroundColor: i === activeIndex ? "#1EA8D4" : "rgba(255,255,255,0.2)",
                     border: "none", cursor: "pointer", padding: 0,
                     transition: "width 0.3s, background-color 0.3s",
                   }}

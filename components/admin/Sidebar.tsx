@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 
 function SectionHeader({ label }: { label: string }) {
   return (
@@ -55,9 +55,9 @@ function NavItem({
       style={
         isActive
           ? {
-              backgroundColor: 'rgba(43,184,230,0.08)',
+              backgroundColor: 'rgba(30,168,212,0.08)',
               color: CYAN,
-              boxShadow: 'inset 3px 0 0 0 #2BB8E6',
+              boxShadow: 'inset 3px 0 0 0 #1EA8D4',
             }
           : { color: 'rgba(255,255,255,0.55)' }
       }
@@ -110,7 +110,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           style={{
             background: `linear-gradient(135deg, ${CYAN} 0%, #0E8FB8 100%)`,
             color: '#fff',
-            boxShadow: '0 0 14px rgba(43,184,230,0.30)',
+            boxShadow: '0 0 14px rgba(30,168,212,0.30)',
           }}
         >
           UF
@@ -126,7 +126,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             United Fintech
           </p>
-          <p className="text-[9px] uppercase tracking-[0.18em]" style={{ color: 'rgba(43,184,230,0.5)' }}>
+          <p className="text-[9px] uppercase tracking-[0.18em]" style={{ color: 'rgba(30,168,212,0.5)' }}>
             Admin Portal
           </p>
         </div>
@@ -187,7 +187,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Footer */}
       <div
         className="px-4 py-4 flex items-center justify-between"
-        style={{ borderTop: `1px solid rgba(43,184,230,0.1)` }}
+        style={{ borderTop: `1px solid rgba(30,168,212,0.1)` }}
       >
         <p className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
           United Fintech

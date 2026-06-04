@@ -244,7 +244,7 @@ export function PhotoGallery({
       {/* Subtle grid backdrop */}
       <div className="absolute inset-0 max-md:hidden top-[180px] -z-10 h-[340px] w-full bg-[linear-gradient(to_right,#57534e_1px,transparent_1px),linear-gradient(to_bottom,#57534e_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-15 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
 
-      <p style={{ color: "#2BB8E6", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textAlign: "center", marginBottom: "0.6rem" }}>
+      <p style={{ color: "#1EA8D4", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textAlign: "center", marginBottom: "0.6rem" }}>
         {displayEyebrow}
       </p>
       <h2
@@ -252,7 +252,7 @@ export function PhotoGallery({
         style={{ fontSize: "clamp(2rem, 3.5vw, 3rem)", fontWeight: 800, color: "#f0ede8", letterSpacing: "-0.03em", lineHeight: 1.1 }}
       >
         {displayHeading}<br />
-        <span style={{ color: "#2BB8E6" }}>{displayHeadingAccent}</span>
+        <span style={{ color: "#1EA8D4" }}>{displayHeadingAccent}</span>
       </h2>
       <p style={{ color: "#8a8070", fontSize: "1rem", textAlign: "center", marginTop: "0.75rem", maxWidth: 440, marginLeft: "auto", marginRight: "auto", lineHeight: 1.7 }}>
         {displayBody}
@@ -310,9 +310,9 @@ export function PhotoGallery({
             Book your ride
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </a>
-          <a href="/routes" style={{ color: "#2BB8E6", fontWeight: 600, fontSize: "0.9rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+          <a href="/routes" style={{ color: "#1EA8D4", fontWeight: 600, fontSize: "0.9rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
             See all routes
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2BB8E6" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1EA8D4" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </a>
         </div>
       )}

@@ -44,7 +44,7 @@ export default function Footer() {
       {/* Scanner card stream — full bleed */}
       <ScannerCardStream initialSpeed={110} direction={-1} repeat={5} cardGap={40} />
       {/* Divider */}
-      <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(43,184,230,0.18), transparent)' }} />
+      <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(30,168,212,0.18), transparent)' }} />
       <div style={{ padding: '4rem 1.5rem 2rem' }}>
       <div className="max-w-7xl mx-auto">
 
@@ -72,7 +72,7 @@ export default function Footer() {
               {CONTACT.map((c) => (
                 <a key={c.href} href={c.href}
                   style={{ color: '#7E8794', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E8794' }}>
                   {c.label}
                 </a>
@@ -85,7 +85,7 @@ export default function Footer() {
             <p style={{ color: '#E8EDF2', fontWeight: 700, fontSize: '0.875rem', marginBottom: '1rem', letterSpacing: '0.04em' }}>Solutions</p>
             {SOLUTIONS.map((l) => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E8794' }}>
                 {l.label}
               </Link>
@@ -97,7 +97,7 @@ export default function Footer() {
             <p style={{ color: '#E8EDF2', fontWeight: 700, fontSize: '0.875rem', marginBottom: '1rem', letterSpacing: '0.04em' }}>Company</p>
             {COMPANY.map((l) => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E8794' }}>
                 {l.label}
               </Link>
@@ -109,7 +109,7 @@ export default function Footer() {
             <p style={{ color: '#E8EDF2', fontWeight: 700, fontSize: '0.875rem', marginBottom: '1rem', letterSpacing: '0.04em' }}>Resources</p>
             {RESOURCES.map((l) => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E8794' }}>
                 {l.label}
               </Link>
@@ -129,7 +129,7 @@ export default function Footer() {
             ].map((l) => (
               <Link key={l.href} href={l.href}
                 style={{ color: '#7E8794', fontSize: '0.8rem', textDecoration: 'none', transition: 'color 0.15s' }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#7E8794' }}>
                 {l.label}
               </Link>
@@ -137,7 +137,7 @@ export default function Footer() {
             <Link
               href="/admin"
               style={{ color: 'rgba(255,255,255,0.18)', fontSize: '0.75rem', textDecoration: 'none', transition: 'color 0.15s' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#2BB8E6' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#1EA8D4' }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.18)' }}
             >
               Admin

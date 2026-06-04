@@ -42,7 +42,7 @@ const TESTIMONIALS = [
 
 const CARD_STYLE: React.CSSProperties = {
   background: "linear-gradient(160deg, #141c2e 0%, #0d1117 60%, #0a0f1a 100%)",
-  border: "1px solid rgba(43,184,230,0.18)",
+  border: "1px solid rgba(30,168,212,0.18)",
   boxShadow: "0 0 0 1px rgba(255,255,255,0.04) inset, 0 24px 48px rgba(0,0,0,0.5)",
 }
 
@@ -50,12 +50,12 @@ export default function Testimonials() {
   return (
     <section id="insights" style={{ backgroundColor: "#161616" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "5rem 1.5rem 0", textAlign: "center" }}>
-        <p style={{ color: "#2BB8E6", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+        <p style={{ color: "#1EA8D4", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
           CLIENT STORIES
         </p>
         <h2 style={{ fontWeight: 800, fontSize: "clamp(1.75rem, 3vw, 2.5rem)", letterSpacing: "-0.02em", color: "#E8EDF2", marginBottom: "0.75rem" }}>
           Trusted by global{" "}
-          <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
+          <span style={{ color: "#1EA8D4", fontStyle: "italic" }}>merchants.</span>
         </h2>
         <p style={{ color: "rgba(232,237,242,0.5)", fontSize: "1rem", maxWidth: 440, margin: "0 auto" }}>
           What our clients say after working with United Fintech.
@@ -82,14 +82,14 @@ export default function Testimonials() {
                     height={80}
                     style={{
                       objectFit: "contain",
-                      filter: "drop-shadow(0 0 10px rgba(43,184,230,0.5)) brightness(1.05)",
+                      filter: "drop-shadow(0 0 10px rgba(30,168,212,0.5)) brightness(1.05)",
                     }}
                   />
                 </div>
 
                 {/* Quote */}
                 <div style={{ width: "100%", paddingRight: 64, paddingBottom: 16 }}>
-                  <span style={{ fontSize: "2rem", lineHeight: 1, color: "#2BB8E6", opacity: 0.4, fontFamily: "Georgia, serif", display: "block", marginBottom: 8 }}>
+                  <span style={{ fontSize: "2rem", lineHeight: 1, color: "#1EA8D4", opacity: 0.4, fontFamily: "Georgia, serif", display: "block", marginBottom: 8 }}>
                     &ldquo;
                   </span>
                   <p style={{
@@ -107,7 +107,7 @@ export default function Testimonials() {
                 <div style={{
                   width: "100%",
                   height: 1,
-                  background: "linear-gradient(90deg, #2BB8E6 0%, rgba(43,184,230,0.08) 100%)",
+                  background: "linear-gradient(90deg, #1EA8D4 0%, rgba(30,168,212,0.08) 100%)",
                   marginBottom: 14,
                 }} />
 
@@ -119,14 +119,14 @@ export default function Testimonials() {
                     style={{
                       width: 42, height: 42, borderRadius: "50%",
                       objectFit: "cover",
-                      border: "2px solid #2BB8E6",
+                      border: "2px solid #1EA8D4",
                       flexShrink: 0,
                     }}
                   />
                   <div style={{ textAlign: "left" }}>
                     <p style={{ fontWeight: 700, color: "#E8EDF2", fontSize: "0.88rem", lineHeight: 1.25, margin: 0 }}>{t.name}</p>
                     <p style={{ color: "rgba(232,237,242,0.45)", fontSize: "0.7rem", marginTop: 2 }}>{t.role}</p>
-                    <p style={{ color: "#2BB8E6", fontSize: "0.63rem", letterSpacing: "0.08em", marginTop: 2 }}>{t.region}</p>
+                    <p style={{ color: "#1EA8D4", fontSize: "0.63rem", letterSpacing: "0.08em", marginTop: 2 }}>{t.region}</p>
                   </div>
                 </div>
               </CardTransformed>

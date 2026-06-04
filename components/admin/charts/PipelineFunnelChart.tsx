@@ -10,10 +10,10 @@ interface StageCount { stage: string; count: number }
 const STAGE_COLORS: Record<string, string> = {
   'New Lead':      '#93C5FD',
   'Application':   '#FCD34D',
-  'Submitted':     '#2BB8E6',
+  'Submitted':     '#1EA8D4',
   'Underwriting':  '#F0B23E',
   'Approved':      '#3DD68C',
-  'Live':          '#46D4F2',
+  'Live':          '#33BEDE',
   'Closed':        'rgba(255,255,255,0.2)',
 }
 
@@ -35,16 +35,16 @@ export default function PipelineFunnelChart({ data }: { data: StageCount[] }) {
             <Tooltip
               formatter={(v, _, props) => [v, props.payload?.stage ?? 'Merchants']}
               contentStyle={{
-                borderRadius: 10, border: '1px solid rgba(43,184,230,0.2)',
+                borderRadius: 10, border: '1px solid rgba(30,168,212,0.2)',
                 fontSize: 12, backgroundColor: '#141821', color: 'rgba(255,255,255,0.85)',
               }}
-              cursor={{ fill: 'rgba(43,184,230,0.06)' }}
+              cursor={{ fill: 'rgba(30,168,212,0.06)' }}
             />
           )}
           <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={36}>
             {data.map((d, i) => (
               <Cell key={i}
-                fill={isEmpty ? 'rgba(255,255,255,0.05)' : (STAGE_COLORS[d.stage] ?? '#2BB8E6')}
+                fill={isEmpty ? 'rgba(255,255,255,0.05)' : (STAGE_COLORS[d.stage] ?? '#1EA8D4')}
                 fillOpacity={isEmpty ? 1 : 0.85}
               />
             ))}

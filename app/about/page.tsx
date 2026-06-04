@@ -24,12 +24,12 @@ export default function AboutPage() {
         <div aria-hidden style={{
           position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
           width: 700, height: 500, borderRadius: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(43,184,230,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(30,168,212,0.07) 0%, transparent 70%)',
           zIndex: 0,
         }} />
         <div className="max-w-4xl mx-auto relative" style={{ zIndex: 1, textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
               Who We Are
             </p>
             <h1 style={{
@@ -52,11 +52,11 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <div style={{ display: 'grid', gap: '4rem' }} className="grid grid-cols-1 lg:grid-cols-2">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Our Mission</p>
+              <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Our Mission</p>
               <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.01em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Making Global Finance Accessible
               </h2>
-              <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.5rem' }} />
+              <div style={{ width: 32, height: 2, backgroundColor: '#1EA8D4', borderRadius: 1, marginBottom: '1.5rem' }} />
               <p style={{ color: '#7E8794', fontSize: '0.95rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
                 United Fintech was founded on a simple premise: the businesses that need sophisticated financial infrastructure the most are often the ones that get the worst service. High-risk verticals, cross-border merchants, and complex payment use cases are underserved by mainstream brokers who lack the relationships and expertise to help.
               </p>
@@ -65,11 +65,11 @@ export default function AboutPage() {
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
-              <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>What We Do</p>
+              <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>What We Do</p>
               <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.01em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Strategy, Connections, Execution
               </h2>
-              <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.5rem' }} />
+              <div style={{ width: 32, height: 2, backgroundColor: '#1EA8D4', borderRadius: 1, marginBottom: '1.5rem' }} />
               <p style={{ color: '#7E8794', fontSize: '0.95rem', lineHeight: 1.85, marginBottom: '1.25rem' }}>
                 Our work spans three connected disciplines: merchant processing solutions (acquiring bank relationships, card network coverage, and payment processor onboarding), embedded finance (BaaS, card issuing, and account infrastructure), and risk mitigation (redundancy architecture, chargeback management, and compliance frameworks).
               </p>
@@ -85,7 +85,7 @@ export default function AboutPage() {
       <section className="uf-section-navy" style={{ padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>Our Principles</p>
+            <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>Our Principles</p>
             <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.01em', textTransform: 'uppercase' }} className="chrome-text">
               How We Work
             </h2>
@@ -94,7 +94,7 @@ export default function AboutPage() {
             {VALUES.map((v, i) => (
               <motion.div key={v.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}>
                 <div className="uf-card" style={{ padding: '2rem' }}>
-                  <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.25rem' }} />
+                  <div style={{ width: 32, height: 2, backgroundColor: '#1EA8D4', borderRadius: 1, marginBottom: '1.25rem' }} />
                   <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, fontSize: '1.05rem', color: '#E8EDF2', marginBottom: '0.75rem' }}>{v.title}</h3>
                   <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.8 }}>{v.desc}</p>
                 </div>

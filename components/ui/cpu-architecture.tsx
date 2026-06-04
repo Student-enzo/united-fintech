@@ -135,7 +135,7 @@ const CpuArchitecture = ({
       <Card cx={170}  cy={80}  accent="#B8C4CE" />
       <Card cx={135}  cy={65}  accent="#3A8C6A" />
       <Card cx={95}   cy={95}  accent="#C46030" />
-      <Card cx={88}   cy={88}  accent="#2BB8E6" />
+      <Card cx={88}   cy={88}  accent="#1EA8D4" />
       <Card cx={30}   cy={30}  accent="#C45A5A" />
 
       {/* POS Terminal — photorealistic image */}
@@ -153,13 +153,13 @@ const CpuArchitecture = ({
         {/* Screen fill */}
         <rect x="86" y="37.2" width="22" height="7.2" fill="#020c18" opacity="0.82" rx="0.5" />
         {/* Screen top glow bar */}
-        <rect x="86" y="37.2" width="22" height="1.2" fill="rgba(43,184,230,0.18)" rx="0.4" />
+        <rect x="86" y="37.2" width="22" height="1.2" fill="rgba(30,168,212,0.18)" rx="0.4" />
         {/* Amount — animated shimmer */}
         <text
           x="87" y="41.8"
           fontSize="3.2" fontWeight="700" letterSpacing="0.04em"
           fontFamily="monospace"
-          fill={animateText ? 'url(#cpu-text-gradient)' : '#2BB8E6'}
+          fill={animateText ? 'url(#cpu-text-gradient)' : '#1EA8D4'}
           filter="url(#screen-glow)"
         >
           ${formatted}
@@ -169,12 +169,12 @@ const CpuArchitecture = ({
           x="87" y="43.8"
           fontSize="1.6" letterSpacing="0.12em"
           fontFamily="monospace"
-          fill="rgba(43,184,230,0.5)"
+          fill="rgba(30,168,212,0.5)"
         >
           PROCESSING
         </text>
         {/* Scan line flicker */}
-        <rect x="86" y="37.2" width="22" height="0.4" fill="rgba(43,184,230,0.06)" rx="0">
+        <rect x="86" y="37.2" width="22" height="0.4" fill="rgba(30,168,212,0.06)" rx="0">
           <animate attributeName="y" values="37.2;44;37.2" dur="2.4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0;0.5;0" dur="2.4s" repeatCount="indefinite" />
         </rect>
@@ -264,7 +264,7 @@ const CpuArchitecture = ({
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
         <radialGradient id="cpu-cyan-grad" fx="1">
-          <stop offset="0%" stopColor="#2BB8E6" />
+          <stop offset="0%" stopColor="#1EA8D4" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
         <radialGradient id="cpu-rose-grad" fx="1">
@@ -274,7 +274,7 @@ const CpuArchitecture = ({
 
         <filter id="cpu-light-shadow" x="-50%" y="-50%" width="200%" height="200%">
           <feDropShadow dx="0" dy="0" stdDeviation="3"
-            floodColor="#2BB8E6" floodOpacity="0.2" />
+            floodColor="#1EA8D4" floodOpacity="0.2" />
         </filter>
 
         <marker id="cpu-circle-marker" viewBox="0 0 10 10" refX="5" refY="5"
@@ -293,7 +293,7 @@ const CpuArchitecture = ({
         </linearGradient>
 
         <linearGradient id="cpu-text-gradient" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#2BB8E6">
+          <stop offset="0%" stopColor="#1EA8D4">
             <animate attributeName="offset" values="-2; -1; 0" dur="4s"
               repeatCount="indefinite" calcMode="spline"
               keyTimes="0; 0.5; 1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" />
@@ -303,7 +303,7 @@ const CpuArchitecture = ({
               repeatCount="indefinite" calcMode="spline"
               keyTimes="0; 0.5; 1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" />
           </stop>
-          <stop offset="50%" stopColor="#2BB8E6">
+          <stop offset="50%" stopColor="#1EA8D4">
             <animate attributeName="offset" values="0; 1; 2" dur="4s"
               repeatCount="indefinite" calcMode="spline"
               keyTimes="0; 0.5; 1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" />

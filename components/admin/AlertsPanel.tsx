@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AlertTriangle, Info, AlertCircle, Bell } from 'lucide-react'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 
 type AlertItem = {
   id:       string
@@ -18,7 +18,7 @@ type AlertItem = {
 const SEV_META = {
   danger: { icon: AlertCircle,   color: '#E8504A', bg: 'rgba(232,80,74,0.08)',   border: 'rgba(232,80,74,0.18)' },
   warn:   { icon: AlertTriangle, color: '#F0B23E', bg: 'rgba(240,178,62,0.08)',  border: 'rgba(240,178,62,0.18)' },
-  info:   { icon: Info,          color: CYAN,      bg: 'rgba(43,184,230,0.08)',  border: 'rgba(43,184,230,0.18)' },
+  info:   { icon: Info,          color: CYAN,      bg: 'rgba(30,168,212,0.08)',  border: 'rgba(30,168,212,0.18)' },
 }
 
 export default function AlertsPanel() {
@@ -38,14 +38,14 @@ export default function AlertsPanel() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.18em]"
-            style={{ color: 'rgba(43,184,230,0.7)' }}>
+            style={{ color: 'rgba(30,168,212,0.7)' }}>
             Alerts
           </p>
           <p className="text-[15px] font-semibold mt-0.5" style={{ color: 'rgba(255,255,255,0.85)' }}>
             Action Items
           </p>
         </div>
-        <Bell size={16} style={{ color: 'rgba(43,184,230,0.5)' }} />
+        <Bell size={16} style={{ color: 'rgba(30,168,212,0.5)' }} />
       </div>
 
       {loading ? (

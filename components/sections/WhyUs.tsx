@@ -3,7 +3,7 @@
 import { CardStack, CardStackItem } from '@/components/ui/card-stack'
 import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
-const CYAN = '#2BB8E6'
+const CYAN = '#1EA8D4'
 
 const CARDS: CardStackItem[] = [
   {
@@ -60,8 +60,8 @@ export default function WhyUs() {
           <div>
             <span style={{
               display: 'inline-block', padding: '0.3rem 0.875rem',
-              backgroundColor: 'rgba(43,184,230,0.12)',
-              border: '1px solid rgba(43,184,230,0.3)',
+              backgroundColor: 'rgba(30,168,212,0.12)',
+              border: '1px solid rgba(30,168,212,0.3)',
               borderRadius: 999, color: CYAN,
               fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em',
               marginBottom: '2rem', textTransform: 'uppercase',
