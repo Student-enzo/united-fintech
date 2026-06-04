@@ -3,6 +3,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
 
 const SOLUTIONS = [
   { label: 'Merchant Processing', href: '/services/merchant-processing' },
@@ -39,7 +40,12 @@ const linkStyle: React.CSSProperties = {
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '4rem 1.5rem 2rem' }}>
+    <footer style={{ backgroundColor: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      {/* Scanner card stream — full bleed */}
+      <ScannerCardStream initialSpeed={110} direction={-1} repeat={5} cardGap={40} />
+      {/* Divider */}
+      <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(43,184,230,0.18), transparent)' }} />
+      <div style={{ padding: '4rem 1.5rem 2rem' }}>
       <div className="max-w-7xl mx-auto">
 
         <div style={{ display: 'grid', gap: '3rem', marginBottom: '3.5rem' }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
@@ -138,6 +144,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   )
