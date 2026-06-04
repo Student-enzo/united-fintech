@@ -144,45 +144,55 @@ const CpuArchitecture = ({
           href="/pos-terminal.png"
           x="82" y="32" width="36" height="36"
           preserveAspectRatio="xMidYMid meet"
+          clipPath="url(#terminal-clip)"
         />
+      </g>
 
-        {/* Animated counter overlay on the terminal screen */}
-        <foreignObject x="85.5" y="37" width="26" height="8">
-          <div
-            style={{
-              width: '100%', height: '100%',
-              display: 'flex', flexDirection: 'column',
-              alignItems: 'flex-start', justifyContent: 'center',
-              padding: '0 3px',
-              background: 'rgba(0,0,0,0.55)',
-              borderRadius: '2px',
-            }}
-          >
-            <span style={{
-              fontFamily: 'monospace',
-              fontSize: '5px',
-              fontWeight: 700,
-              color: '#2BB8E6',
-              letterSpacing: '0.03em',
-              lineHeight: 1,
-              textShadow: '0 0 6px rgba(43,184,230,0.8)',
-            }}>
-              ${formatted}
-            </span>
-            <span style={{
-              fontFamily: 'monospace',
-              fontSize: '2.8px',
-              color: 'rgba(43,184,230,0.55)',
-              letterSpacing: '0.08em',
-              marginTop: '1px',
-            }}>
-              PROCESSING
-            </span>
-          </div>
-        </foreignObject>
+      {/* Screen overlay — clipped to screen area */}
+      <g clipPath="url(#screen-clip)">
+        {/* Screen fill */}
+        <rect x="86" y="37.2" width="22" height="7.2" fill="#020c18" opacity="0.82" rx="0.5" />
+        {/* Screen top glow bar */}
+        <rect x="86" y="37.2" width="22" height="1.2" fill="rgba(43,184,230,0.18)" rx="0.4" />
+        {/* Amount — animated shimmer */}
+        <text
+          x="87" y="41.8"
+          fontSize="3.2" fontWeight="700" letterSpacing="0.04em"
+          fontFamily="monospace"
+          fill={animateText ? 'url(#cpu-text-gradient)' : '#2BB8E6'}
+          filter="url(#screen-glow)"
+        >
+          ${formatted}
+        </text>
+        {/* Status label */}
+        <text
+          x="87" y="43.8"
+          fontSize="1.6" letterSpacing="0.12em"
+          fontFamily="monospace"
+          fill="rgba(43,184,230,0.5)"
+        >
+          PROCESSING
+        </text>
+        {/* Scan line flicker */}
+        <rect x="86" y="37.2" width="22" height="0.4" fill="rgba(43,184,230,0.06)" rx="0">
+          <animate attributeName="y" values="37.2;44;37.2" dur="2.4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0;0.5;0" dur="2.4s" repeatCount="indefinite" />
+        </rect>
       </g>
 
       <defs>
+        {/* Terminal + screen clip regions */}
+        <clipPath id="terminal-clip">
+          <rect x="82" y="32" width="36" height="36" rx="2" />
+        </clipPath>
+        <clipPath id="screen-clip">
+          <rect x="86" y="37.2" width="22" height="7.2" rx="0.5" />
+        </clipPath>
+        <filter id="screen-glow" x="-20%" y="-40%" width="140%" height="180%">
+          <feGaussianBlur stdDeviation="0.4" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+
         {/* Path masks for light orbs */}
         <mask id="cpu-mask-1">
           <path d="M 10 20 h 79.5 q 5 0 5 5 v 24" strokeWidth="0.5" stroke="white" />
