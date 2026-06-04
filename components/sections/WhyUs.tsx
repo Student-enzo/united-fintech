@@ -48,7 +48,7 @@ export default function WhyUs() {
   return (
     <section
       id="partners"
-      style={{ backgroundColor: '#080A10', padding: '7rem 1.5rem', overflow: 'hidden' }}
+      style={{ backgroundColor: '#161616', padding: '7rem 1.5rem', overflow: 'hidden' }}
     >
       <div
         style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gap: '4rem', alignItems: 'center' }}

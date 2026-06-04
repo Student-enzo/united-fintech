@@ -1,6 +1,6 @@
 'use client'
 
-const BG2 = '#1c1c1c'
+const BG2 = '#161616'
 const TEXT = '#E8EDF2'
 const MUTED = '#7E8794'
 const CYAN = '#2BB8E6'

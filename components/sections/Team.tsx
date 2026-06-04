@@ -36,7 +36,7 @@ const TEAM = [
 
 export default function Team() {
   return (
-    <section id="team" style={{ backgroundColor: '#1a1a1a', padding: '6rem 1.5rem' }}>
+    <section id="team" style={{ backgroundColor: '#161616', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

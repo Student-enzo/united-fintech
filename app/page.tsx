@@ -10,13 +10,16 @@ import Testimonials from '@/components/sections/Testimonials'
 import PartnersGravity from '@/components/sections/PartnersGravity'
 import BookCall from '@/components/sections/BookCall'
 import Footer from '@/components/sections/Footer'
+import SectionDivider from '@/components/ui/section-divider'
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[#161616] text-[#E8EDF2]">
       <Navbar />
       <Hero />
+      <SectionDivider />
       <StatsBar />
+      <SectionDivider />
       <ScrollExpandMedia
         mediaType="image"
         mediaSrc="/scroll-expand-bg.png"
@@ -70,12 +73,19 @@ export default function HomePage() {
           </div>
         </div>
       </ScrollExpandMedia>
+      <SectionDivider />
       <div id="markets"><GlobalNetwork /></div>
-<div id="partners"><WhyUs /></div>
+      <SectionDivider />
+      <div id="partners"><WhyUs /></div>
+      <SectionDivider />
       <PaymentArchitecture />
+      <SectionDivider />
       <IdealClient />
+      <SectionDivider />
       <Testimonials />
+      <SectionDivider />
       <PartnersGravity />
+      <SectionDivider />
       <BookCall />
       <Footer />
     </main>
