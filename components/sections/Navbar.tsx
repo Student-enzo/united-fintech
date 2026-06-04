@@ -132,7 +132,7 @@ export default function Navbar() {
         {scrolled && (
           <Link href="/" style={{ display: 'flex', alignItems: 'center', padding: '0 6px 0 4px', flexShrink: 0 }}>
             <Image
-              src="/uf-logo-icon-transparent.png"
+              src="/logo-uf-transparent.png"
               alt="UF"
               width={32} height={32}
               style={{ height: 32, width: 'auto', objectFit: 'contain' }}
