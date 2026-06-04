@@ -120,7 +120,7 @@ const ScrollExpandMedia = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#0A0C12',
+          backgroundColor: '#161616',
           willChange: 'transform',
         }}
       >
