@@ -2,7 +2,6 @@
 
 import Image from "next/image"
 import {
-  ContainerScroll,
   CardsContainer,
   CardTransformed,
 } from "@/components/blocks/animated-cards-stack"
@@ -48,10 +47,9 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section id="insights" style={{ backgroundColor: "#161616" }}>
-      <ContainerScroll className="h-[200vh]">
-        {/* Heading — scrolls away naturally, no sticky */}
-        <div style={{ padding: "5rem 1.5rem 0", textAlign: "center" }}>
+    <section id="insights" style={{ backgroundColor: "#161616", padding: "5rem 1.5rem" }}>
+        {/* Heading */}
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <p
             style={{
               color: "#2BB8E6",
@@ -77,12 +75,9 @@ export default function Testimonials() {
           </h2>
         </div>
 
-        {/* Sticky card stack */}
+        {/* Card stack */}
         <div
           style={{
-            position: "sticky",
-            top: 0,
-            height: "100vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -161,7 +156,6 @@ export default function Testimonials() {
             ))}
           </CardsContainer>
         </div>
-      </ContainerScroll>
     </section>
   )
 }

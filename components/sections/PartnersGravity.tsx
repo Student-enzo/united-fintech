@@ -105,11 +105,10 @@ export default function PartnersGravity() {
 
   return (
     <section style={{
-      // light grid background
-      backgroundColor: '#f4f5f7',
+      backgroundColor: '#161616',
       backgroundImage: `
-        linear-gradient(rgba(140,150,165,0.18) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(140,150,165,0.18) 1px, transparent 1px)
+        linear-gradient(rgba(43,184,230,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43,184,230,0.05) 1px, transparent 1px)
       `,
       backgroundSize: '44px 44px',
       overflow: 'hidden',
@@ -121,11 +120,11 @@ export default function PartnersGravity() {
         <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
           Technology Partners
         </p>
-        <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', letterSpacing: '-0.03em', color: '#0D1B2A', marginBottom: '0.75rem' }}>
+        <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)', letterSpacing: '-0.03em', color: '#E8EDF2', marginBottom: '0.75rem' }}>
           Connected to the world&apos;s{' '}
           <span style={{ color: '#2BB8E6', fontStyle: 'italic' }}>payment rails.</span>
         </h2>
-        <p style={{ color: '#6B7280', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
+        <p style={{ color: 'rgba(232,237,242,0.55)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
           Touch a logo and watch it drop. We integrate natively with every major processor, gateway, and banking partner.
         </p>
       </div>
