@@ -58,9 +58,9 @@ export default function Navbar() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  // When NOT scrolled: translateX(0) → stays at right:16px
-  // When scrolled: translateX(calc(-50vw + 50% + 16px)) → centers the pill
-  const navTransform = scrolled ? 'translateX(calc(-50vw + 50% + 16px))' : 'translateX(0)'
+  // When NOT scrolled: translateX(0) → stays at right:108px (leaves room for standalone Portal)
+  // When scrolled: translateX(calc(-50vw + 50% + 108px)) → centers the pill
+  const navTransform = scrolled ? 'translateX(calc(-50vw + 50% + 108px))' : 'translateX(0)'
 
   return (
     <>
@@ -85,24 +85,61 @@ export default function Navbar() {
         </Link>
       </motion.div>
 
+      {/* ── Portal — standalone fixed top-right, stays put when nav centers ── */}
+      <Link
+        href="/login"
+        className="hidden md:inline-flex"
+        style={{
+          position: 'fixed', top: 14, right: 16, zIndex: 53,
+          alignItems: 'center', gap: '0.35rem',
+          height: 56, borderRadius: 999,
+          backgroundColor: scrolled ? '#000000' : 'transparent',
+          boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,0.55)' : 'none',
+          padding: '0 20px',
+          fontSize: '0.8rem', fontWeight: 600, color: TEXT,
+          textDecoration: 'none', whiteSpace: 'nowrap',
+          textShadow: scrolled ? 'none' : '0 1px 4px rgba(0,0,0,0.9)',
+          transition: 'background-color 0.35s ease, box-shadow 0.35s ease',
+        }}
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
+        </svg>
+        Portal
+      </Link>
+
       {/* ── Desktop Nav ── */}
       <nav
         className="hidden md:flex"
         style={{
-          position: 'fixed', top: 14, right: 16, zIndex: 50,
+          position: 'fixed', top: 14, right: 108, zIndex: 50,
           alignItems: 'center', gap: '0.25rem',
           height: 56, borderRadius: 999,
-          border: '1px solid rgba(255,255,255,0.10)',
-          backgroundColor: 'rgba(10,12,18,0.97)',
-          backdropFilter: 'blur(28px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.55)',
-          padding: '0 8px 0 16px',
+          backgroundColor: scrolled ? '#000000' : 'transparent',
+          boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,0.55)' : 'none',
+          padding: scrolled ? '0 8px 0 8px' : '0',
           transform: navTransform,
-          transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+          transition: [
+            'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+            'background-color 0.35s ease',
+            'box-shadow 0.35s ease',
+            'padding 0.35s ease',
+          ].join(', '),
           overflow: 'visible', whiteSpace: 'nowrap',
         }}
       >
+        {/* Logo icon — only shown when scrolled (centered pill state) */}
+        {scrolled && (
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', padding: '0 6px 0 4px', flexShrink: 0 }}>
+            <Image
+              src="/uf-logo-icon-transparent.png"
+              alt="UF"
+              width={32} height={32}
+              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
+            />
+          </Link>
+        )}
+
         {/* Solutions dropdown */}
         <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button
@@ -119,7 +156,7 @@ export default function Navbar() {
               transition: 'color 0.15s, background-color 0.15s',
               backgroundColor: solutionsOpen ? 'rgba(30,168,212,0.08)' : 'transparent',
               whiteSpace: 'nowrap',
-              textShadow: 'none',
+              textShadow: scrolled ? 'none' : '0 1px 4px rgba(0,0,0,0.9)',
             }}
           >
             Solutions
@@ -181,7 +218,7 @@ export default function Navbar() {
               transition: 'color 0.15s, background-color 0.15s',
               whiteSpace: 'nowrap',
               backgroundColor: isActive(link.href) ? 'rgba(30,168,212,0.08)' : 'transparent',
-              textShadow: 'none',
+              textShadow: scrolled ? 'none' : '0 1px 4px rgba(0,0,0,0.9)',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = TEXT; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
             onMouseLeave={(e) => { e.currentTarget.style.color = isActive(link.href) ? TEXT : MUTED; e.currentTarget.style.backgroundColor = isActive(link.href) ? 'rgba(30,168,212,0.08)' : 'transparent' }}
@@ -193,34 +230,16 @@ export default function Navbar() {
         {/* Divider */}
         <span style={{ width: 1, height: 20, backgroundColor: 'rgba(255,255,255,0.15)', display: 'inline-block', margin: '0 0.25rem', flexShrink: 0 }} />
 
-        {/* Portal */}
-        <Link href="/login"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
-            fontSize: '0.8rem', fontWeight: 600, color: TEXT,
-            textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: 999,
-            border: '1px solid rgba(255,255,255,0.15)', whiteSpace: 'nowrap',
-            transition: 'background-color 0.15s',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
-          </svg>
-          Portal
-        </Link>
-
         {/* Contact Us */}
         <Link href="/contact"
           style={{
             fontSize: '0.875rem', padding: '0.5rem 1.25rem', textDecoration: 'none',
             display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap',
-            border: '1px solid rgba(255,255,255,0.35)', color: TEXT, borderRadius: 999,
-            transition: 'background-color 0.15s',
+            color: MUTED, borderRadius: 999,
+            transition: 'color 0.15s, background-color 0.15s',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = TEXT }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = MUTED }}
         >
           Contact Us
         </Link>
@@ -228,7 +247,7 @@ export default function Navbar() {
         {/* Book a Consultation */}
         <a ref={consultationRef} href="/#consultation"
           style={{
-            backgroundColor: '#ffffff', color: '#0A0C12', fontWeight: 700,
+            backgroundColor: '#ffffff', color: '#000000', fontWeight: 700,
             fontSize: '0.875rem', padding: '0.5rem 1.25rem',
             borderRadius: 999, textDecoration: 'none',
             display: 'flex', alignItems: 'center', gap: '0.35rem',
@@ -238,7 +257,7 @@ export default function Navbar() {
           onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
         >
           Book a Consultation
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0C12" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
         </a>
       </nav>
 
