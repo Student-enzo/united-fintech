@@ -210,9 +210,11 @@ const ScrollExpandMedia = ({
           <span
             ref={span1Ref}
             style={{
-              fontFamily: "'Caveat', cursive",
+              fontFamily: 'var(--font-heading)',
               fontSize: 'clamp(3rem,8vw,7rem)',
-              fontWeight: 800,
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              textTransform: 'uppercase',
               color: '#fff',
               lineHeight: 1,
               display: 'block',
@@ -227,9 +229,11 @@ const ScrollExpandMedia = ({
           <span
             ref={span2Ref}
             style={{
-              fontFamily: "'Caveat', cursive",
+              fontFamily: 'var(--font-heading)',
               fontSize: 'clamp(3rem,8vw,7rem)',
-              fontWeight: 800,
+              fontWeight: 300,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
               color: '#2BB8E6',
               lineHeight: 1,
               display: 'block',
@@ -248,8 +252,11 @@ const ScrollExpandMedia = ({
                 <span
                   ref={date1Ref}
                   style={{
-                    fontFamily: "'Caveat', cursive",
-                    fontSize: '1.25rem',
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '0.85rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
                     color: 'rgba(43,184,230,0.85)',
                     display: 'block',
                     textShadow: '0 1px 8px rgba(0,0,0,0.8)',
