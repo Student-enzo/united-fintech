@@ -15,7 +15,6 @@ const TESTIMONIALS = [
     region: "EU & APAC · 2025",
     quote:
       "United Fintech opened doors we had been knocking on for years. Within 60 days we had three new acquiring relationships — and a processing stack that actually makes sense for our volume.",
-    initials: "AM",
     color: "#2BB8E6",
     avatar:
       "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=200",
@@ -27,8 +26,7 @@ const TESTIMONIALS = [
     region: "Global · 2025",
     quote:
       "After our previous processor terminated our account without notice, United Fintech stepped in and built us a redundant solution in record time. Their network made the difference.",
-    initials: "JB",
-    color: "#46D4F2",
+    color: "#2BB8E6",
     avatar:
       "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=200",
   },
@@ -39,8 +37,7 @@ const TESTIMONIALS = [
     region: "Americas · 2025",
     quote:
       "What sets them apart is that they stay involved. Most brokers disappear after the deal. United Fintech treats you like a long-term partner — still optimizing our costs 18 months later.",
-    initials: "SR",
-    color: "#0E8FB8",
+    color: "#2BB8E6",
     avatar:
       "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=200",
   },
@@ -48,110 +45,59 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section id="insights" style={{ backgroundColor: "#161616", padding: "5rem 1.5rem" }}>
-      <ContainerScroll>
-        {/* Heading */}
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <p
-            style={{
-              color: "#2BB8E6",
-              fontSize: "0.7rem",
-              fontWeight: 700,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: "1rem",
-            }}
-          >
-            CLIENT STORIES
-          </p>
-          <h2
-            style={{
-              fontWeight: 800,
-              fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
-              letterSpacing: "-0.02em",
-              color: "#E8EDF2",
-            }}
-          >
-            Trusted by global{" "}
-            <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
-          </h2>
-        </div>
+    <section id="insights" style={{ backgroundColor: "#161616" }}>
+      {/* Heading — sits above the scroll container */}
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "5rem 1.5rem 0", textAlign: "center" }}>
+        <p style={{ color: "#2BB8E6", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+          CLIENT STORIES
+        </p>
+        <h2 style={{ fontWeight: 800, fontSize: "clamp(1.75rem, 3vw, 2.5rem)", letterSpacing: "-0.02em", color: "#E8EDF2", marginBottom: "0.75rem" }}>
+          Trusted by global{" "}
+          <span style={{ color: "#2BB8E6", fontStyle: "italic" }}>merchants.</span>
+        </h2>
+        <p style={{ color: "rgba(232,237,242,0.5)", fontSize: "1rem", maxWidth: 440, margin: "0 auto" }}>
+          What our clients say after working with United Fintech.
+        </p>
+      </div>
 
-        {/* Card stack */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CardsContainer style={{ width: 380, height: 420 }}>
+      {/* Scroll-driven card stack — matches HOP pattern */}
+      <ContainerScroll className="h-[300vh]">
+        <div className="sticky left-0 top-0 h-svh w-full flex items-center justify-center py-12">
+          <CardsContainer className="size-full h-[440px] w-[360px] mx-auto">
             {TESTIMONIALS.map((t, i) => (
               <CardTransformed
                 key={t.id}
-                arrayLength={TESTIMONIALS.length + 2}
+                arrayLength={TESTIMONIALS.length}
                 index={i + 2}
-                variant="dark"
+                variant="light"
               >
-                {/* UF badge */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 16,
-                    backgroundColor: "rgba(43,184,230,0.12)",
-                    border: "1px solid rgba(43,184,230,0.3)",
-                    borderRadius: 9999,
-                    padding: "2px 10px",
-                    fontSize: "0.65rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.15em",
-                    color: "#2BB8E6",
-                  }}
-                >
-                  UF
+                {/* Quote */}
+                <div className="flex flex-col items-center gap-4 text-center w-full">
+                  <blockquote style={{ color: "rgba(15,20,30,0.85)", fontSize: "0.93rem", lineHeight: 1.7, fontStyle: "italic" }}>
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
                 </div>
 
-                {/* Quote */}
-                <p
-                  style={{
-                    fontStyle: "italic",
-                    color: "rgba(232,237,242,0.9)",
-                    fontSize: "0.9rem",
-                    lineHeight: 1.65,
-                    textAlign: "center",
-                    flexGrow: 1,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-
-                {/* Avatar row */}
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
-                  <Image
+                {/* Author row */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, width: "100%" }}>
+                  <img
                     src={t.avatar}
                     alt={t.name}
-                    width={44}
-                    height={44}
                     style={{
-                      borderRadius: "9999px",
+                      width: 46, height: 46, borderRadius: "50%",
                       objectFit: "cover",
                       border: `2px solid ${t.color}`,
+                      flexShrink: 0,
                     }}
-                    unoptimized
                   />
-                  <div style={{ textAlign: "left" }}>
-                    <p style={{ fontWeight: 700, color: "#E8EDF2", fontSize: "0.85rem", lineHeight: 1.2 }}>
-                      {t.name}
-                    </p>
-                    <p style={{ color: "#7E8794", fontSize: "0.75rem", lineHeight: 1.3 }}>
-                      {t.role}
-                    </p>
-                    <p style={{ color: "#2BB8E6", fontSize: "0.65rem", letterSpacing: "0.08em", marginTop: 2 }}>
-                      {t.region}
-                    </p>
+                  <div style={{ textAlign: "left", flex: 1 }}>
+                    <p style={{ fontWeight: 700, color: "#0D1B2A", fontSize: "0.9rem", lineHeight: 1.2 }}>{t.name}</p>
+                    <p style={{ color: "#6B7280", fontSize: "0.72rem", marginTop: 2 }}>{t.role}</p>
+                    <p style={{ color: "#2BB8E6", fontSize: "0.65rem", letterSpacing: "0.07em", marginTop: 2 }}>{t.region}</p>
+                  </div>
+                  {/* UF logo */}
+                  <div style={{ marginLeft: "auto", flexShrink: 0 }}>
+                    <Image src="/uf-logo-icon.png" alt="United Fintech" width={44} height={44} style={{ objectFit: "contain", display: "block" }} />
                   </div>
                 </div>
               </CardTransformed>
