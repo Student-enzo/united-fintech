@@ -48,7 +48,7 @@ export default function WhyUs() {
   return (
     <section
       id="partners"
-      style={{ backgroundColor: '#161616', padding: '7rem 0', overflow: 'hidden' }}
+      style={{ backgroundColor: '#161616', padding: '7rem 0 2rem', overflow: 'visible' }}
     >
       {/* Header */}
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem', marginBottom: '5rem' }}>
@@ -124,7 +124,8 @@ export default function WhyUs() {
         </div>
       </div>
 
-      {/* Full-width card fan */}
+      {/* Full-width centered card fan */}
+      <div style={{ width: '100%', maxWidth: 900, margin: '0 auto', paddingBottom: '4rem' }}>
       <CardStack
         items={CARDS}
         cardWidth={320}
@@ -145,6 +146,7 @@ export default function WhyUs() {
         springStiffness={260}
         springDamping={30}
       />
+      </div>
     </section>
   )
 }
