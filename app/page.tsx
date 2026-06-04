@@ -3,7 +3,6 @@ import Hero from '@/components/sections/Hero'
 import StatsBar from '@/components/sections/StatsBar'
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import GlobalNetwork from '@/components/sections/GlobalNetwork'
-import ServicesGrid from '@/components/sections/ServicesGrid'
 import WhyUs from '@/components/sections/WhyUs'
 import PaymentArchitecture from '@/components/sections/PaymentArchitecture'
 import IdealClient from '@/components/sections/IdealClient'
@@ -72,8 +71,7 @@ export default function HomePage() {
         </div>
       </ScrollExpandMedia>
       <div id="markets"><GlobalNetwork /></div>
-      <ServicesGrid />
-      <div id="partners"><WhyUs /></div>
+<div id="partners"><WhyUs /></div>
       <PaymentArchitecture />
       <IdealClient />
       <Testimonials />
