@@ -275,6 +275,28 @@ export async function getAgreement(id: string): Promise<Agreement | null> {
   return data as Agreement | null
 }
 
+export async function createAgreement(data: Omit<Agreement, 'id' | 'created_at'>): Promise<Agreement> {
+  const { data: row, error } = await supabase
+    .from('agreements')
+    .insert({
+      deal_id:            data.deal_id            ?? null,
+      merchant_id:        data.merchant_id,
+      partner_id:         data.partner_id         ?? null,
+      product_type:       data.product_type,
+      signed_date:        data.signed_date        ?? null,
+      go_live_date:       data.go_live_date       ?? null,
+      rate:               data.rate               ?? null,
+      residual_split_pct: data.residual_split_pct ?? null,
+      status:             data.status             ?? 'draft',
+      doc_url:            data.doc_url            ?? null,
+      notes:              data.notes              ?? null,
+    })
+    .select()
+    .single()
+  if (error) throw error
+  return row as Agreement
+}
+
 export async function updateAgreementStatus(id: string, status: AgreementStatus): Promise<void> {
   const { error } = await supabase
     .from('agreements')
