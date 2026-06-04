@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const SERVICES = [
   {
@@ -29,6 +30,7 @@ const SERVICES = [
 
 function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0]) {
   const [hovered, setHovered] = useState(false)
+  const learnMoreRef = useCursorArrow<HTMLAnchorElement>()
 
   return (
     <div
@@ -82,6 +84,7 @@ function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0
           {desc}
         </p>
         <a
+          ref={learnMoreRef}
           href={href}
           style={{
             color: '#2BB8E6',

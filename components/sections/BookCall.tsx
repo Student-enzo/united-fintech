@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { submitConsultation } from '@/app/actions/consultation'
 import type { ConsultationFormData } from '@/app/actions/consultation'
 import { LiquidButton } from '@/components/ui/liquid-glass-button'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const VOLUME_OPTIONS = [
   { value: '', label: 'Select monthly volume' },
@@ -34,6 +35,7 @@ const inputStyle: React.CSSProperties = {
 }
 
 export default function BookCall() {
+  const submitRef = useCursorArrow<HTMLDivElement>()
   const [form, setForm] = useState<ConsultationFormData>({
     name: '', email: '', phone: '', company: '',
     monthly_volume: '', service_interest: 'all', message: '',
@@ -234,6 +236,7 @@ export default function BookCall() {
               )}
 
               {/* Submit */}
+              <div ref={submitRef}>
               <LiquidButton
                 type="submit"
                 disabled={isPending}
@@ -255,6 +258,7 @@ export default function BookCall() {
                   </>
                 )}
               </LiquidButton>
+              </div>
 
               <p style={{ color: '#7E8794', fontSize: '0.78rem', textAlign: 'center', lineHeight: 1.6 }}>
                 No spam. No commitment. We'll review your situation and follow up within 1–2 business days.

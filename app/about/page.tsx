@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import Navbar from '@/components/sections/Navbar'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 import BookCall from '@/components/sections/BookCall'
 import Footer from '@/components/sections/Footer'
 import Link from 'next/link'
@@ -13,6 +14,7 @@ const VALUES = [
 ]
 
 export default function AboutPage() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
@@ -110,7 +112,7 @@ export default function AboutPage() {
               Ready to see if United Fintech is the right partner for your business?
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-              <a href="#consultation" className="btn-cyan"
+              <a ref={consultationRef} href="#consultation" className="btn-cyan"
                 style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                 Book a Consultation
               </a>

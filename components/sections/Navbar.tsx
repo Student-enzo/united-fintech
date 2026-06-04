@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const CYAN = '#2BB8E6'
 const TEXT = '#E8EDF2'
@@ -23,6 +24,7 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [solutionsOpen, setSolutionsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -218,6 +220,7 @@ export default function Navbar() {
               Contact Us
             </Link>
             <a
+              ref={consultationRef}
               href="/#consultation"
               style={{
                 backgroundColor: '#2BB8E6', color: '#161616', fontWeight: 700,

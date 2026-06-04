@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { GlobeCdn } from '@/components/ui/cobe-globe-cdn'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const CYAN = '#2BB8E6'
 const BG = '#161616'
@@ -48,6 +49,7 @@ const STATS = [
 ]
 
 export default function Hero() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <section
       className="photo-hero"
@@ -116,6 +118,7 @@ export default function Hero() {
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <a
+              ref={consultationRef}
               href="#consultation"
               className="btn-primary"
               style={{ padding: '0.875rem 1.75rem', fontSize: '0.95rem', boxShadow: '0 0 24px rgba(43,184,230,0.3)' }}

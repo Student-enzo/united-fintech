@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Rajdhani, Barlow } from 'next/font/google'
 import './globals.css'
+import { Providers } from '@/components/providers'
 
 const rajdhani = Rajdhani({
   subsets: ['latin'],
@@ -35,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${rajdhani.variable} ${barlow.variable}`}>
       <body className={barlow.className}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
