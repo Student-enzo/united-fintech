@@ -71,7 +71,7 @@ export default function BookCall() {
   }
 
   return (
-    <section id="consultation" style={{ backgroundColor: '#0A0C12', padding: '6rem 1.5rem' }}>
+    <section id="consultation" style={{ backgroundColor: '#0D1B2A', padding: '6rem 1.5rem' }}>
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -119,7 +119,7 @@ export default function BookCall() {
           ) : (
             <form onSubmit={handleSubmit}
               className="uf-card"
-              style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
 
               {/* Name + Email */}
               <div style={{ display: 'grid', gap: '1rem' }} className="grid grid-cols-1 sm:grid-cols-2">

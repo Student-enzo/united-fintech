@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 const SERVICES = [
   {
@@ -34,7 +35,7 @@ function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        backgroundColor: '#141821',
+        backgroundColor: '#141C28',
         border: `1px solid ${hovered ? 'rgba(43,184,230,0.28)' : 'rgba(255,255,255,0.08)'}`,
         borderRadius: 16,
         overflow: 'hidden',
@@ -98,9 +99,15 @@ function ServiceCard({ image, category, title, desc, href }: (typeof SERVICES)[0
 
 export default function IdealClient() {
   return (
-    <section style={{ backgroundColor: '#0A0C12', padding: '6rem 0' }}>
+    <section style={{ backgroundColor: '#0E1118', padding: '6rem 0' }}>
       <div className="max-w-7xl mx-auto px-6">
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: '4rem' }}
+        >
           <p style={{
             color: '#2BB8E6',
             fontSize: '0.7rem',
@@ -132,13 +139,19 @@ export default function IdealClient() {
           }}>
             A complete platform for merchant processing, risk management, and financial infrastructure.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
           {SERVICES.map((service) => (
             <ServiceCard key={service.href} {...service} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

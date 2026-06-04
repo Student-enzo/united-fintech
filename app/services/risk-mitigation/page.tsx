@@ -14,7 +14,7 @@ const BENEFITS = [
 
 export default function RiskMitigationPage() {
   return (
-    <main className="min-h-screen bg-[#0A0C12] text-[#E8EDF2]">
+    <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
 
       {/* Hero */}
@@ -53,7 +53,7 @@ export default function RiskMitigationPage() {
       </section>
 
       {/* Benefits */}
-      <section style={{ backgroundColor: '#0A0C12', padding: '6rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#0E1118', padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>What We Deliver</p>

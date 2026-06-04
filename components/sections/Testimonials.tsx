@@ -48,7 +48,7 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section style={{ backgroundColor: "#0A0C12" }}>
+    <section style={{ backgroundColor: "#0E1118" }}>
       {/* Sticky header */}
       <div
         style={{
@@ -57,7 +57,7 @@ export default function Testimonials() {
           position: "sticky",
           top: 0,
           zIndex: 10,
-          backgroundColor: "#0A0C12",
+          backgroundColor: "#0E1118",
           paddingBottom: "2rem",
         }}
       >

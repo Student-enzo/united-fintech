@@ -1,4 +1,5 @@
 'use client'
+import { motion } from 'framer-motion'
 import Navbar from '@/components/sections/Navbar'
 import BookCall from '@/components/sections/BookCall'
 import Footer from '@/components/sections/Footer'
@@ -13,7 +14,7 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#0A0C12] text-[#E8EDF2]">
+    <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
 
       {/* Hero */}
@@ -25,28 +26,30 @@ export default function AboutPage() {
           zIndex: 0,
         }} />
         <div className="max-w-4xl mx-auto relative" style={{ zIndex: 1, textAlign: 'center' }}>
-          <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-            Who We Are
-          </p>
-          <h1 style={{
-            fontFamily: 'var(--font-outfit)', fontWeight: 200,
-            fontSize: 'clamp(2rem, 5vw, 4rem)',
-            letterSpacing: '0.06em', textTransform: 'uppercase',
-            marginBottom: '1.5rem', lineHeight: 1.1,
-          }} className="chrome-text">
-            About United Fintech
-          </h1>
-          <p style={{ color: '#7E8794', fontSize: '1.125rem', lineHeight: 1.85, maxWidth: 620, margin: '0 auto' }}>
-            United Fintech is a strategic financial services partner built for the merchants that global payment infrastructure was not designed for. We specialize in acquiring, embedded finance, and risk strategy for complex, cross-border, and high-risk businesses.
-          </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+              Who We Are
+            </p>
+            <h1 style={{
+              fontFamily: 'var(--font-outfit)', fontWeight: 200,
+              fontSize: 'clamp(2rem, 5vw, 4rem)',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              marginBottom: '1.5rem', lineHeight: 1.1,
+            }} className="chrome-text">
+              About United Fintech
+            </h1>
+            <p style={{ color: '#7E8794', fontSize: '1.125rem', lineHeight: 1.85, maxWidth: 620, margin: '0 auto' }}>
+              United Fintech is a strategic financial services partner built for the merchants that global payment infrastructure was not designed for. We specialize in acquiring, embedded finance, and risk strategy for complex, cross-border, and high-risk businesses.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Positioning copy */}
-      <section style={{ backgroundColor: '#0A0C12', padding: '6rem 1.5rem' }}>
+      <section style={{ backgroundColor: '#0E1118', padding: '6rem 1.5rem' }}>
         <div className="max-w-4xl mx-auto">
           <div style={{ display: 'grid', gap: '4rem' }} className="grid grid-cols-1 lg:grid-cols-2">
-            <div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Our Mission</p>
               <h2 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 200, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Making Global Finance Accessible
@@ -58,8 +61,8 @@ export default function AboutPage() {
               <p style={{ color: '#7E8794', fontSize: '0.95rem', lineHeight: 1.85 }}>
                 We built United Fintech to change that. By combining deep banking relationships with strategic advisory, we give global merchants access to the same quality of financial infrastructure that was previously reserved for large enterprises with in-house teams.
               </p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
               <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>What We Do</p>
               <h2 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 200, fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '1.5rem' }} className="chrome-text">
                 Strategy, Connections, Execution
@@ -71,7 +74,7 @@ export default function AboutPage() {
               <p style={{ color: '#7E8794', fontSize: '0.95rem', lineHeight: 1.85 }}>
                 We work as partners — staying involved in onboarding, optimization, and ongoing strategy rather than closing a deal and moving on.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -79,40 +82,44 @@ export default function AboutPage() {
       {/* Values */}
       <section className="uf-section-navy" style={{ padding: '6rem 1.5rem' }}>
         <div className="max-w-6xl mx-auto">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>Our Principles</p>
             <h2 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 200, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.08em', textTransform: 'uppercase' }} className="chrome-text">
               How We Work
             </h2>
-          </div>
+          </motion.div>
           <div style={{ display: 'grid', gap: '1.5rem' }} className="grid grid-cols-1 md:grid-cols-2">
-            {VALUES.map((v) => (
-              <div key={v.title} className="uf-card" style={{ padding: '2rem' }}>
-                <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.25rem' }} />
-                <h3 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 500, fontSize: '1.05rem', color: '#E8EDF2', marginBottom: '0.75rem' }}>{v.title}</h3>
-                <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.8 }}>{v.desc}</p>
-              </div>
+            {VALUES.map((v, i) => (
+              <motion.div key={v.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}>
+                <div className="uf-card" style={{ padding: '2rem' }}>
+                  <div style={{ width: 32, height: 2, backgroundColor: '#2BB8E6', borderRadius: 1, marginBottom: '1.25rem' }} />
+                  <h3 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 500, fontSize: '1.05rem', color: '#E8EDF2', marginBottom: '0.75rem' }}>{v.title}</h3>
+                  <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.8 }}>{v.desc}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA bridge */}
-      <section style={{ backgroundColor: '#0A0C12', padding: '4rem 1.5rem', textAlign: 'center' }}>
+      <section style={{ backgroundColor: '#0E1118', padding: '4rem 1.5rem', textAlign: 'center' }}>
         <div className="max-w-xl mx-auto">
-          <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, marginBottom: '2rem' }}>
-            Ready to see if United Fintech is the right partner for your business?
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-            <a href="#consultation" className="btn-cyan"
-              style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-              Book a Consultation
-            </a>
-            <Link href="/contact" className="btn-cyan-outline"
-              style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-              Contact Us
-            </Link>
-          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <p style={{ color: '#7E8794', fontSize: '1rem', lineHeight: 1.75, marginBottom: '2rem' }}>
+              Ready to see if United Fintech is the right partner for your business?
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+              <a href="#consultation" className="btn-cyan"
+                style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                Book a Consultation
+              </a>
+              <Link href="/contact" className="btn-cyan-outline"
+                style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                Contact Us
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 

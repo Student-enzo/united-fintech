@@ -61,7 +61,7 @@ export default function Navbar() {
           zIndex: 50,
           width: 'calc(100% - 32px)',
           maxWidth: 1120,
-          backgroundColor: scrolled ? 'rgba(10,12,18,0.97)' : 'rgba(10,12,18,0.65)',
+          backgroundColor: scrolled ? 'rgba(10,14,24,0.97)' : 'rgba(10,12,18,0.65)',
           backdropFilter: 'blur(28px) saturate(180%)',
           WebkitBackdropFilter: 'blur(28px) saturate(180%)',
           borderRadius: 999,
@@ -83,14 +83,14 @@ export default function Navbar() {
               src="/logo.png"
               alt="United Fintech — Global Interchange"
               width={160}
-              height={40}
-              style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+              height={32}
+              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
               priority
             />
           </Link>
 
           {/* Desktop nav — centered */}
-          <div className="hidden md:flex" style={{ alignItems: 'center', gap: '0.1rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <div className="hidden md:flex" style={{ alignItems: 'center', gap: '0.25rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
 
             {/* Solutions dropdown */}
             <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -139,7 +139,7 @@ export default function Navbar() {
                         href={s.href}
                         onClick={() => setSolutionsOpen(false)}
                         style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem', padding: '0.625rem 0.5rem', borderRadius: 12, textDecoration: 'none', transition: 'background-color 0.15s' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.06)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.05)')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                       >
                         <span style={{ color: TEXT, fontSize: '0.875rem', fontWeight: 600 }}>{s.label}</span>
@@ -174,7 +174,7 @@ export default function Navbar() {
                   whiteSpace: 'nowrap',
                   backgroundColor: isActive(link.href) ? 'rgba(43,184,230,0.08)' : 'transparent',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = TEXT; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#E8EDF2'; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = isActive(link.href) ? TEXT : MUTED; e.currentTarget.style.backgroundColor = isActive(link.href) ? 'rgba(43,184,230,0.08)' : 'transparent' }}
               >
                 {link.label}
@@ -184,10 +184,37 @@ export default function Navbar() {
 
           {/* Right CTA */}
           <div className="hidden md:flex" style={{ alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+            {/* Divider */}
+            <span style={{ width: 1, height: 20, backgroundColor: 'rgba(255,255,255,0.15)', display: 'inline-block', marginRight: '0.25rem' }} />
+            <Link
+              href="/login"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+                fontSize: '0.8rem', fontWeight: 600,
+                color: '#E8EDF2', textDecoration: 'none',
+                padding: '0.5rem 1rem', borderRadius: 999,
+                border: '1px solid rgba(255,255,255,0.15)',
+                whiteSpace: 'nowrap', transition: 'background-color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+              </svg>
+              Portal
+            </Link>
             <Link
               href="/contact"
               className="btn-cyan-outline"
-              style={{ fontSize: '0.875rem', padding: '0.5rem 1.25rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap' }}
+              style={{
+                fontSize: '0.875rem', padding: '0.5rem 1.25rem', textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap',
+                border: '1px solid #2BB8E6', color: '#2BB8E6', borderRadius: 999,
+                transition: 'background-color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(43,184,230,0.10)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
             >
               Contact Us
             </Link>
@@ -206,9 +233,9 @@ export default function Navbar() {
             aria-label="Toggle menu"
           >
             <div style={{ width: 22, display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <span style={{ display: 'block', height: 2, background: TEXT, borderRadius: 2, transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
-              <span style={{ display: 'block', height: 2, background: TEXT, borderRadius: 2, opacity: mobileOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
-              <span style={{ display: 'block', height: 2, background: TEXT, borderRadius: 2, transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+              <span style={{ display: 'block', height: 2, background: '#E8EDF2', borderRadius: 2, transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+              <span style={{ display: 'block', height: 2, background: '#E8EDF2', borderRadius: 2, opacity: mobileOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+              <span style={{ display: 'block', height: 2, background: '#E8EDF2', borderRadius: 2, transition: 'transform 0.2s', transform: mobileOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
             </div>
           </button>
         </div>
@@ -223,26 +250,33 @@ export default function Navbar() {
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
           borderRadius: 20, border: '1px solid rgba(43,184,230,0.15)',
           padding: '1.25rem 1.5rem 1.5rem',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+          boxShadow: '0 16px 48px rgba(0,0,0,0.1)',
         }}>
           <p style={{ color: MUTED, fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.14em', marginBottom: '0.75rem', textTransform: 'uppercase' }}>Solutions</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginBottom: '1rem' }}>
             {SOLUTIONS.map((s) => (
               <Link key={s.href} href={s.href} onClick={() => setMobileOpen(false)}
-                style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', padding: '0.625rem 0.75rem', borderRadius: 12, textDecoration: 'none', backgroundColor: 'rgba(43,184,230,0.05)', border: '1px solid rgba(43,184,230,0.1)' }}>
+                style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', padding: '0.625rem 0.75rem', borderRadius: 12, textDecoration: 'none', backgroundColor: 'rgba(43,184,230,0.04)', border: '1px solid rgba(43,184,230,0.12)' }}>
                 <span style={{ color: TEXT, fontSize: '0.9rem', fontWeight: 600 }}>{s.label}</span>
                 <span style={{ color: MUTED, fontSize: '0.75rem' }}>{s.desc}</span>
               </Link>
             ))}
           </div>
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }}>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.75rem' }}>
             {[{ label: 'About', href: '/about' }, { label: 'Markets', href: '/#markets' }, { label: 'Partners', href: '/#partners' }, { label: 'Insights', href: '/blog' }].map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', color: TEXT, fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.95rem' }}>
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', color: TEXT, fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.95rem' }}>
                 {link.label}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
               </Link>
             ))}
+            <Link href="/login" onClick={() => setMobileOpen(false)}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', color: '#E8EDF2', fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '0.95rem' }}>
+              Portal
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={MUTED} strokeWidth="2">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+              </svg>
+            </Link>
           </div>
           <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             <Link href="/#consultation" onClick={() => setMobileOpen(false)}
@@ -250,7 +284,8 @@ export default function Navbar() {
               Book a Consultation
             </Link>
             <Link href="/contact" onClick={() => setMobileOpen(false)}
-              style={{ textAlign: 'center', padding: '0.75rem', borderRadius: 999, border: `1px solid ${CYAN}`, color: CYAN, fontWeight: 600, textDecoration: 'none', fontSize: '0.9rem' }}>
+              className="btn-cyan-outline"
+              style={{ textAlign: 'center', padding: '0.75rem', borderRadius: 999, border: '1px solid #2BB8E6', color: '#2BB8E6', fontWeight: 600, textDecoration: 'none', fontSize: '0.9rem' }}>
               Contact Us
             </Link>
           </div>

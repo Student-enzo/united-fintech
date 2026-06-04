@@ -23,7 +23,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/uf-hero-bg.jpg)',
+          backgroundImage: 'url(/images/01_hero_global_network.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -37,7 +37,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(to bottom, rgba(10,12,18,0.55) 0%, rgba(10,12,18,0.55) 60%, rgba(10,12,18,1) 100%)',
+          background: 'linear-gradient(to bottom, rgba(10,12,18,0.45) 0%, rgba(10,12,18,0.45) 60%, rgba(10,12,18,0.92) 100%)',
           zIndex: 1,
         }}
       />

@@ -1,3 +1,7 @@
+'use client'
+
+import { motion } from 'framer-motion'
+
 // TODO: Confirm real numbers before publish — current values are placeholders from brief.
 
 const STATS = [
@@ -9,12 +13,19 @@ const STATS = [
 
 export default function StatsBar() {
   return (
-    <section style={{ backgroundColor: '#0A0C12', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <section style={{ backgroundColor: '#0E1118', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
       <div className="max-w-7xl mx-auto px-6" style={{ padding: '2.5rem 1.5rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}
           className="grid grid-cols-4">
           {STATS.map((stat, i) => (
-            <div key={i} style={{ textAlign: 'center' }}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              style={{ textAlign: 'center' }}
+            >
               <div style={{
                 fontFamily: 'var(--font-outfit)', fontWeight: 300,
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -31,7 +42,7 @@ export default function StatsBar() {
               }}>
                 {stat.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

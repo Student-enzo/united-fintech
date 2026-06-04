@@ -1,12 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { StackedCardsInteraction } from '@/components/ui/stacked-cards-interaction'
 import type { CardData } from '@/components/ui/stacked-cards-interaction'
 
 const SERVICE_CARDS: CardData[] = [
   {
-    image:  '/brand-merchant.png',
+    image:  '/images/09_modular_fintech_blocks.jpg',
     name:   'Global acquiring for high-risk & complex eCommerce',
     sub:    'Merchant Processing',
     from:   '30+ Countries',
@@ -14,7 +15,7 @@ const SERVICE_CARDS: CardData[] = [
     href:   '/services/merchant-processing',
   },
   {
-    image:  '/brand-embedded.png',
+    image:  '/images/07_digital_payment_network.jpg',
     name:   'Banking infrastructure built into your platform',
     sub:    'Embedded Finance',
     from:   'BaaS Ready',
@@ -22,7 +23,7 @@ const SERVICE_CARDS: CardData[] = [
     href:   '/services/embedded-finance',
   },
   {
-    image:  '/brand-risk.png',
+    image:  '/images/10_market_chart_abstract.jpg',
     name:   'Multi-processor redundancy & chargeback protection',
     sub:    'Risk Mitigation',
     from:   'Zero Downtime',
@@ -54,11 +55,17 @@ const SERVICES = [
 
 export default function ServicesGrid() {
   return (
-    <section id="services" style={{ backgroundColor: '#0A0C12', padding: '6rem 1.5rem' }}>
+    <section id="services" style={{ backgroundColor: '#0E1118', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
 
         {/* Heading */}
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: '5rem' }}
+        >
           <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>
             What We Do
           </p>
@@ -69,7 +76,7 @@ export default function ServicesGrid() {
           }} className="chrome-text">
             Solutions That Drive Global Finance
           </h2>
-        </div>
+        </motion.div>
 
         {/* Two-column: text list left, stacked cards right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

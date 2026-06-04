@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 const ADVANTAGES = [
   {
@@ -27,12 +28,17 @@ const ADVANTAGES = [
 
 export default function WhyUs() {
   return (
-    <section style={{ backgroundColor: '#0D1B2A', padding: '6rem 1.5rem' }}>
+    <section style={{ backgroundColor: '#0B0F1A', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
           {/* Left column */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
             <p style={{
               color: '#2BB8E6',
               fontSize: '0.7rem',
@@ -81,10 +87,14 @@ export default function WhyUs() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right column — brand image */}
-          <div
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
             className="rounded-2xl"
             style={{
               position: 'relative',
@@ -97,12 +107,12 @@ export default function WhyUs() {
             }}
           >
             <Image
-              src="/uf-boardroom.jpg"
+              src="/images/04_premium_architecture_stair.jpg"
               alt="Global Network"
               fill
               style={{ objectFit: 'cover', borderRadius: '1rem' }}
             />
-          </div>
+          </motion.div>
 
         </div>
       </div>

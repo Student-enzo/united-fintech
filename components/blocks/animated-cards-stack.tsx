@@ -110,7 +110,7 @@ export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>
     const baseClass =
       variant === "dark"
         ? "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#141821]/90 p-6 backdrop-blur-md"
-        : "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#1A1F2A]/90 p-6 backdrop-blur-md"
+        : "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-black/[0.08] bg-white p-6 shadow-sm"
 
     return (
       <motion.div

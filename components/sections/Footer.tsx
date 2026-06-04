@@ -2,6 +2,7 @@
 // TODO: Replace placeholder contact info (email, phone) with real details before launch.
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 const SOLUTIONS = [
   { label: 'Merchant Processing', href: '/services/merchant-processing' },
@@ -46,20 +47,14 @@ export default function Footer() {
           {/* Brand — spans 2 columns */}
           <div style={{ gridColumn: 'span 2' }}>
             {/* Logo */}
-            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none', marginBottom: '1.25rem' }}>
-              <div style={{
-                width: 38, height: 38, borderRadius: 9,
-                background: 'linear-gradient(135deg, #2BB8E6 0%, #0E8FB8 100%)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 0 16px rgba(43,184,230,0.25)',
-                flexShrink: 0,
-              }}>
-                <span style={{ color: '#0A0C12', fontFamily: 'var(--font-outfit)', fontWeight: 600, fontSize: '0.95rem' }}>UF</span>
-              </div>
-              <div>
-                <div style={{ fontFamily: 'var(--font-outfit)', fontWeight: 300, fontSize: '0.75rem', letterSpacing: '0.14em', color: '#E8EDF2', textTransform: 'uppercase', lineHeight: 1.2 }}>United Fintech</div>
-                <div style={{ fontFamily: 'var(--font-outfit)', fontWeight: 300, fontSize: '0.58rem', letterSpacing: '0.18em', color: '#2BB8E6', textTransform: 'uppercase', lineHeight: 1 }}>Global Interchange</div>
-              </div>
+            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', marginBottom: '1.25rem' }}>
+              <Image
+                src="/logo.png"
+                alt="United Fintech — Global Interchange"
+                width={160}
+                height={40}
+                style={{ height: 32, width: 'auto', objectFit: 'contain' }}
+              />
             </Link>
 
             <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.75, maxWidth: 280, marginBottom: '1.5rem' }}>

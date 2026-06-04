@@ -5,6 +5,7 @@ import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import GlobalNetwork from '@/components/sections/GlobalNetwork'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import WhyUs from '@/components/sections/WhyUs'
+import Team from '@/components/sections/Team'
 import IdealClient from '@/components/sections/IdealClient'
 import Testimonials from '@/components/sections/Testimonials'
 import BookCall from '@/components/sections/BookCall'
@@ -12,14 +13,14 @@ import Footer from '@/components/sections/Footer'
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#0A0C12] text-[#E8EDF2]">
+    <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
       <Hero />
       <StatsBar />
       <ScrollExpandMedia
         mediaType="image"
-        mediaSrc="/uf-globe.jpg"
-        bgImageSrc="/uf-data-wave.jpg"
+        mediaSrc="/images/08_data_particle_landscape.jpg"
+        bgImageSrc="/images/06_abstract_metal_waves.jpg"
         title="Scale Without Limits Globally"
         scrollToExpand="Scroll to expand"
       >
@@ -80,6 +81,7 @@ export default function HomePage() {
       <div id="markets"><GlobalNetwork /></div>
       <ServicesGrid />
       <div id="partners"><WhyUs /></div>
+      <Team />
       <IdealClient />
       <div id="insights"><Testimonials /></div>
       <BookCall />

@@ -1,116 +1,212 @@
+'use client'
+
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
 import Navbar from '@/components/sections/Navbar'
 import Footer from '@/components/sections/Footer'
-import BookCall from '@/components/sections/BookCall'
-import { FocusRail, FocusRailItem } from '@/components/ui/focus-rail'
 
-const POSTS: FocusRailItem[] = [
+const POSTS = [
   {
-    id: 'merchant-high-risk',
-    title: 'High-Risk Merchant Accounts: What Banks Won\'t Tell You',
-    description: 'The hidden criteria banks use to evaluate high-risk applications, and how to position your business for approval across 30+ countries.',
-    imageSrc: '/uf-chart.jpg',
-    meta: 'Merchant Processing',
-    href: '/blog/merchant-high-risk',
+    id: 'high-risk-merchant-processing-guide',
+    title: 'What Is High-Risk Merchant Processing? A Complete Guide',
+    excerpt:
+      'High-risk merchant accounts unlock acquiring relationships that mainstream banks refuse — giving global eCommerce businesses stable payment rails across difficult verticals. Learn how underwriting criteria, reserve structures, and processor selection actually work when your business is labelled high-risk.',
+    category: 'Merchant Processing',
+    image: '/images/09_modular_fintech_blocks.jpg',
+    href: '/blog/high-risk-merchant-processing-guide',
   },
   {
-    id: 'embedded-finance-guide',
-    title: 'Embedded Finance in 2025: The Complete Infrastructure Guide',
-    description: 'From BaaS relationships to card issuing — a practitioner\'s guide to embedding financial services into your platform without regulatory headaches.',
-    imageSrc: '/uf-data-wave.jpg',
-    meta: 'Embedded Finance',
-    href: '/blog/embedded-finance-guide',
+    id: 'embedded-finance-ecommerce',
+    title: 'How Embedded Finance Is Transforming eCommerce Platforms',
+    excerpt:
+      'Platforms that embed financial services — lending, card issuing, and treasury — directly into their checkout flows are capturing a larger share of transaction economics while delivering a frictionless buyer experience. Discover the infrastructure stack making it possible in 2025.',
+    category: 'Embedded Finance',
+    image: '/images/07_digital_payment_network.jpg',
+    href: '/blog/embedded-finance-ecommerce',
   },
   {
-    id: 'chargeback-reduction',
-    title: 'Reducing Chargebacks: The Multi-Processor Strategy',
-    description: 'How redundant acquiring relationships and smart routing rules can reduce chargeback rates by up to 40% for high-volume eCommerce.',
-    imageSrc: '/uf-corridor.jpg',
-    meta: 'Risk Mitigation',
-    href: '/blog/chargeback-reduction',
+    id: 'chargeback-prevention-strategies',
+    title: 'Chargeback Prevention Strategies That Actually Work in 2025',
+    excerpt:
+      'Rising dispute rates threaten merchant accounts and erode margins — but the right combination of multi-processor routing, real-time alerts, and compelling evidence packages can drive chargeback ratios below 0.5%. Here is what high-volume merchants are doing differently.',
+    category: 'Risk Mitigation',
+    image: '/images/10_market_chart_abstract.jpg',
+    href: '/blog/chargeback-prevention-strategies',
   },
   {
-    id: 'global-acquiring',
-    title: 'The Global Acquiring Landscape: 2025 Market Map',
-    description: 'Which regions offer the best acquiring conditions for cross-border merchants, and where mainstream processors leave you exposed.',
-    imageSrc: '/uf-hero-bg.jpg',
-    meta: 'Global Markets',
-    href: '/blog/global-acquiring',
+    id: 'acquiring-bank-relationships',
+    title: 'Acquiring Bank Relationships: Why They Matter for Global Scale',
+    excerpt:
+      'Having a single acquiring partner is a single point of failure. The merchants scaling past $50M annually maintain relationships with three or more acquirers across different jurisdictions, ensuring redundancy, competitive interchange, and geographic coverage when it matters most.',
+    category: 'Payments',
+    image: '/images/03_financial_city_skyline.jpg',
+    href: '/blog/acquiring-bank-relationships',
   },
   {
-    id: 'payment-stack',
-    title: 'Building a Resilient Payment Stack for Scale',
-    description: 'The architecture decisions that separate payment operations that survive growth from those that collapse under it.',
-    imageSrc: '/uf-towers.jpg',
-    meta: 'Infrastructure',
-    href: '/blog/payment-stack',
+    id: 'baas-vs-full-banking-license',
+    title: 'BaaS vs. Full Banking License: What eCommerce Businesses Need to Know',
+    excerpt:
+      'Banking-as-a-Service lets platforms offer financial products in weeks rather than years, but full licensing unlocks capabilities — and margins — that BaaS providers cannot match. Understanding the trade-offs determines your embedded finance roadmap for the next five years.',
+    category: 'Embedded Finance',
+    image: '/images/08_data_particle_landscape.jpg',
+    href: '/blog/baas-vs-full-banking-license',
   },
   {
-    id: 'reserve-negotiation',
-    title: 'Rolling Reserves: How to Negotiate Better Terms',
-    description: 'Reserve percentages, release schedules, and the negotiating leverage most merchants don\'t know they have.',
-    imageSrc: '/uf-handshake.jpg',
-    meta: 'Strategy',
-    href: '/blog/reserve-negotiation',
+    id: 'payment-processing-high-risk-verticals',
+    title: 'Payment Processing for High-Risk Verticals: Getting Approved and Staying Stable',
+    excerpt:
+      'Approval is only the beginning — maintaining a merchant account in high-risk verticals like nutraceuticals, travel, and subscription billing requires ongoing compliance, proactive reserve management, and a broker relationship that advocates for you when disputes arise.',
+    category: 'Merchant Processing',
+    image: '/images/05_speed_light_trails.jpg',
+    href: '/blog/payment-processing-high-risk-verticals',
   },
 ]
 
 export default function BlogPage() {
   return (
-    <main className="min-h-screen bg-[#0A0C12] text-[#E8EDF2]">
+    <main className="min-h-screen bg-[#0E1118]" style={{ backgroundColor: '#0E1118', color: '#E8EDF2' }}>
       <Navbar />
 
       {/* Hero */}
-      <section style={{ backgroundColor: '#0D1B2A', padding: '9rem 1.5rem 5rem' }}>
+      <section style={{ backgroundColor: '#0B0F1A', padding: '9rem 1.5rem 5rem' }}>
         <div className="max-w-4xl mx-auto text-center">
-          <p style={{
-            color: '#2BB8E6',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            marginBottom: '1.25rem',
-          }}>
-            INSIGHTS
-          </p>
-          <h1
-            className="chrome-text"
-            style={{
-              fontFamily: 'var(--font-outfit)',
-              fontWeight: 200,
-              fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              lineHeight: 1.1,
-              marginBottom: '1.5rem',
-            }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            The United Fintech Blog
-          </h1>
-          <p style={{
-            color: '#7E8794',
-            fontSize: '1.0625rem',
-            lineHeight: 1.75,
-            maxWidth: '42rem',
-            margin: '0 auto',
-          }}>
-            Perspectives on global payments, merchant acquiring, and financial infrastructure.
-          </p>
+            <p style={{
+              color: '#2BB8E6',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              marginBottom: '1.25rem',
+            }}>
+              Blog
+            </p>
+            <h1
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 200,
+                fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                lineHeight: 1.1,
+                marginBottom: '1.5rem',
+                color: '#E8EDF2',
+              }}
+            >
+              Insights &amp; Resources
+            </h1>
+            <p style={{
+              color: '#7E8794',
+              fontSize: '1.0625rem',
+              lineHeight: 1.75,
+              maxWidth: '42rem',
+              margin: '0 auto',
+            }}>
+              Perspectives on global payments, high-risk merchant acquiring, embedded finance, and the infrastructure powering cross-border commerce.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* FocusRail */}
-      <section style={{ backgroundColor: '#0A0C12', padding: '4rem 1.5rem 6rem' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          <FocusRail
-            items={POSTS}
-            autoPlay={true}
-            interval={6000}
-            className="rounded-2xl overflow-hidden"
-          />
+      {/* Blog Grid */}
+      <section style={{ backgroundColor: '#0E1118', padding: '5rem 1.5rem 7rem' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {POSTS.map((post, i) => (
+              <motion.article
+                key={post.id}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                style={{
+                  backgroundColor: '#141C28',
+                  borderRadius: 16,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  overflow: 'hidden',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+                whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(0,0,0,0.10)' }}
+              >
+                {/* Cover image */}
+                <div style={{ position: 'relative', width: '100%', height: 200 }}>
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+
+                {/* Card body */}
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  {/* Category tag */}
+                  <span style={{
+                    display: 'inline-block',
+                    color: '#2BB8E6',
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    marginBottom: '0.75rem',
+                  }}>
+                    {post.category}
+                  </span>
+
+                  {/* Title */}
+                  <h2 style={{
+                    color: '#E8EDF2',
+                    fontFamily: 'var(--font-heading)',
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    lineHeight: 1.45,
+                    marginBottom: '0.75rem',
+                  }}>
+                    {post.title}
+                  </h2>
+
+                  {/* Excerpt */}
+                  <p style={{
+                    color: '#7E8794',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.7,
+                    flex: 1,
+                    marginBottom: '1.25rem',
+                  }}>
+                    {post.excerpt}
+                  </p>
+
+                  {/* Read More */}
+                  <Link
+                    href={post.href}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.3rem',
+                      color: '#2BB8E6',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.06em',
+                      textDecoration: 'none',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Read More →
+                  </Link>
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <BookCall />
       <Footer />
     </main>
   )
