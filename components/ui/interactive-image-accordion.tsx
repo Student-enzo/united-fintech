@@ -24,7 +24,8 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
         flexGrow: isActive ? 1 : 0,
         flexBasis: isActive ? 0 : '60px',
         width: isActive ? undefined : '60px',
-        height: 420,
+        maxWidth: isActive ? '460px' : '60px',
+        height: 560,
       }}
       onMouseEnter={onMouseEnter}
     >

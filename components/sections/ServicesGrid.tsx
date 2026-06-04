@@ -25,6 +25,24 @@ const SERVICES: AccordionServiceItem[] = [
     subtitle: 'Risk Mitigation',
     imageUrl: '/brand-risk.png',
   },
+  {
+    id: 4,
+    title: 'Strategic Advisory from Setup Through Scale',
+    subtitle: 'Advisory & Strategy',
+    imageUrl: '/brand-office.png',
+  },
+  {
+    id: 5,
+    title: 'Global Markets & Cross-Border Payment Corridors',
+    subtitle: 'Market Coverage',
+    imageUrl: '/brand-globe-network.png',
+  },
+  {
+    id: 6,
+    title: 'Tailored FX, Treasury & Capital Flow Solutions',
+    subtitle: 'FX & Treasury',
+    imageUrl: '/brand-platform.png',
+  },
 ]
 
 export default function ServicesGrid() {
