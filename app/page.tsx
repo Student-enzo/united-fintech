@@ -78,9 +78,9 @@ export default function HomePage() {
       <SectionDivider />
       <div id="partners"><WhyUs /></div>
       <SectionDivider />
-      <PaymentArchitecture />
-      <SectionDivider />
       <IdealClient />
+      <SectionDivider />
+      <PaymentArchitecture />
       <SectionDivider />
       <Testimonials />
       <SectionDivider />
