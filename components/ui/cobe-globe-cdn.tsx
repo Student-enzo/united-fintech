@@ -44,8 +44,8 @@ const defaultArcs: CdnArc[] = [
   { id: "cdn-arc-6", from: [49.01, 2.55],    to: [19.09, 72.87],   label: "$214M" },
 ]
 
-// #2BB8E6 → rgb normalised
-const CYAN_RGB: [number, number, number] = [0.169, 0.722, 0.902]
+// dark gray for markers/arcs on the white globe
+const DARK_RGB: [number, number, number] = [0.18, 0.18, 0.22]
 
 /** Project a lat/lng point on the globe to CSS-pixel coordinates.
  *  Matches cobe's Y-then-X rotation convention.
@@ -197,20 +197,20 @@ export function GlobeCdn({
         height: width,
         phi: 0,
         theta: 0.2,
-        dark: 1,
-        diffuse: 1.2,
+        dark: 0,
+        diffuse: 2.8,
         mapSamples: 16000,
-        mapBrightness: 6,
-        baseColor: [0.08, 0.08, 0.1],
-        markerColor: CYAN_RGB,
-        glowColor: [0.1, 0.4, 0.55],
+        mapBrightness: 8,
+        baseColor: [0.92, 0.94, 0.97],
+        markerColor: DARK_RGB,
+        glowColor: [0.55, 0.58, 0.62],
         markerElevation: 0.02,
         markers: markers.map((m) => ({ location: m.location, size: 0.035 })),
         arcs: arcs.map((a) => ({ from: a.from, to: a.to })),
-        arcColor: CYAN_RGB,
-        arcWidth: 1.5,
-        arcHeight: 0.35,
-        opacity: 0.85,
+        arcColor: DARK_RGB,
+        arcWidth: 1.2,
+        arcHeight: 0.3,
+        opacity: 0.9,
       })
 
       function animate() {
@@ -260,13 +260,13 @@ export function GlobeCdn({
         }}
       />
 
-      {/* Cyan glow ring */}
+      {/* Subtle outer ring */}
       <div
         style={{
           position: "absolute",
-          inset: "-4%",
+          inset: "-3%",
           borderRadius: "50%",
-          background: "radial-gradient(circle, transparent 45%, rgba(43,184,230,0.06) 70%, transparent 100%)",
+          background: "radial-gradient(circle, transparent 44%, rgba(180,190,205,0.18) 68%, transparent 100%)",
           pointerEvents: "none",
         }}
       />
@@ -290,12 +290,11 @@ export function GlobeCdn({
           {/* Dot + label */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <div style={{
-              backgroundColor: "rgba(0,0,0,0.82)",
+              backgroundColor: "rgba(15,15,20,0.88)",
               backdropFilter: "blur(6px)",
-              border: "1px solid rgba(43,184,230,0.35)",
               borderRadius: 5,
               padding: "2px 7px",
-              color: "#E8EDF2",
+              color: "#ffffff",
               fontSize: "0.65rem",
               fontFamily: "var(--font-heading, monospace)",
               fontWeight: 600,
@@ -305,9 +304,9 @@ export function GlobeCdn({
               {m.region}
             </div>
             {/* Stem line */}
-            <div style={{ width: 1, height: 8, backgroundColor: "rgba(43,184,230,0.5)" }} />
+            <div style={{ width: 1, height: 8, backgroundColor: "rgba(30,30,40,0.6)" }} />
             {/* Node dot */}
-            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#2BB8E6", boxShadow: "0 0 6px rgba(43,184,230,0.8)" }} />
+            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "rgba(30,30,40,0.85)" }} />
           </div>
         </div>
       ))}
@@ -329,12 +328,11 @@ export function GlobeCdn({
           }}
         >
           <div style={{
-            backgroundColor: "rgba(0,0,0,0.88)",
+            backgroundColor: "rgba(15,15,20,0.88)",
             backdropFilter: "blur(6px)",
-            border: "1px solid rgba(43,184,230,0.25)",
             borderRadius: 5,
             padding: "2px 8px",
-            color: "#2BB8E6",
+            color: "#ffffff",
             fontSize: "0.6rem",
             fontFamily: "var(--font-heading, monospace)",
             fontWeight: 700,
