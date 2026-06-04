@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import {
+  ContainerScroll,
   CardsContainer,
   CardTransformed,
 } from "@/components/blocks/animated-cards-stack"
@@ -48,6 +49,7 @@ const TESTIMONIALS = [
 export default function Testimonials() {
   return (
     <section id="insights" style={{ backgroundColor: "#161616", padding: "5rem 1.5rem" }}>
+      <ContainerScroll>
         {/* Heading */}
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <p
@@ -156,6 +158,7 @@ export default function Testimonials() {
             ))}
           </CardsContainer>
         </div>
+      </ContainerScroll>
     </section>
   )
 }
