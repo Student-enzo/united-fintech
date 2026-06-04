@@ -328,14 +328,14 @@ body {
   animation-iteration-count: infinite;
   animation-timing-function: cubic-bezier(0.75, -0.01, 0, 0.99);
 }
-.cpu-line-1 { offset-path: path("M 10 20 h 79.5 q 5 0 5 5 v 30"); animation-duration: 5s; animation-delay: 1s; }
-.cpu-line-2 { offset-path: path("M 180 10 h -69.7 q -5 0 -5 5 v 40"); animation-delay: 6s; animation-duration: 2s; }
-.cpu-line-3 { offset-path: path("M 130 20 v 21.8 q 0 5 -5 5 h -25"); animation-delay: 4s; animation-duration: 6s; }
-.cpu-line-4 { offset-path: path("M 170 80 v -21.8 q 0 -5 -5 -5 h -65"); animation-delay: 3s; animation-duration: 3s; }
-.cpu-line-5 { offset-path: path("M 135 65 h 15 q 5 0 5 5 v 10 q 0 5 -5 5 h -39.8 q -5 0 -5 -5 v -35"); animation-delay: 9s; animation-duration: 4s; }
-.cpu-line-6 { offset-path: path("M 94.8 95 v -46"); animation-delay: 3s; animation-duration: 7s; }
-.cpu-line-7 { offset-path: path("M 88 88 v -15 q 0 -5 -5 -5 h -10 q -5 0 -5 -5 v -5 q 0 -5 5 -5 h 28"); animation-delay: 4s; animation-duration: 4s; }
-.cpu-line-8 { offset-path: path("M 30 30 h 25 q 5 0 5 5 v 6.5 q 0 5 5 5 h 35"); animation-delay: 3s; animation-duration: 3s; }
+.cpu-line-1 { offset-path: path("M 15 20 H 92 Q 102 20 102 30 V 80 H 119");                                   animation-duration: 5s;  animation-delay: 1s; }
+.cpu-line-2 { offset-path: path("M 265 15 H 168 Q 155 15 150 28 V 57");                                       animation-duration: 3s;  animation-delay: 6s; }
+.cpu-line-3 { offset-path: path("M 215 25 V 50 Q 215 62 203 62 H 161");                                       animation-duration: 6s;  animation-delay: 4s; }
+.cpu-line-4 { offset-path: path("M 262 128 H 200 Q 188 128 188 116 V 96 Q 188 84 176 84 H 161");              animation-duration: 4s;  animation-delay: 3s; }
+.cpu-line-5 { offset-path: path("M 228 98 H 192 Q 180 98 180 86 V 80 H 161");                                 animation-duration: 4s;  animation-delay: 9s; }
+.cpu-line-6 { offset-path: path("M 140 152 V 103");                                                           animation-duration: 7s;  animation-delay: 3s; }
+.cpu-line-7 { offset-path: path("M 80 145 H 115 Q 127 145 127 133 V 103");                                    animation-duration: 4s;  animation-delay: 4s; }
+.cpu-line-8 { offset-path: path("M 18 105 H 94 Q 106 105 106 93 V 88 H 119");                                 animation-duration: 3s;  animation-delay: 3s; }
 
 @keyframes animation-path {
   0%   { offset-distance: 0%; }
