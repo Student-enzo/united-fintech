@@ -54,14 +54,14 @@ export default function Hero() {
     <section
       className="photo-hero"
       style={{
-        backgroundImage: "url('https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+        backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80')",
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
       }}
     >
       {/* Gradient overlay — heavy left, fades right */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(12,10,6,0.88) 0%, rgba(12,10,6,0.7) 45%, rgba(12,10,6,0.25) 75%, rgba(12,10,6,0.05) 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(105deg, rgba(8,8,14,0.94) 0%, rgba(8,8,14,0.78) 45%, rgba(8,8,14,0.35) 72%, rgba(8,8,14,0.10) 100%)' }} />
       {/* Bottom fade to site bg */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '18%', background: `linear-gradient(to bottom, transparent, ${BG})` }} />
 
@@ -76,7 +76,7 @@ export default function Hero() {
           gap: '3rem',
           alignItems: 'center',
         }}
-        className="grid grid-cols-1 lg:grid-cols-2 mob-pad-hero"
+        className="grid grid-cols-1 lg:grid-cols-[44%_56%] mob-pad-hero"
       >
         {/* Left — headline + CTAs */}
         <div>
@@ -138,7 +138,7 @@ export default function Hero() {
         </div>
 
         {/* Right — interactive globe */}
-        <div className="hidden lg:flex" style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+        <div className="hidden lg:flex" style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', transform: 'translateX(8%)' }}>
           {/* Ambient glow behind globe */}
           <div style={{
             position: 'absolute',
@@ -183,7 +183,6 @@ export default function Hero() {
         </div>
       </div>
 
-      <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" className="pexels-credit">Photo via Pexels</a>
     </section>
   )
 }
