@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { VariantProps, cva } from "class-variance-authority"
 import {
   HTMLMotionProps,
   MotionValue,
@@ -11,13 +12,24 @@ import {
 } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-interface CardStickyProps extends HTMLMotionProps<"div"> {
+const cardVariants = cva("absolute will-change-transform", {
+  variants: {
+    variant: {
+      dark: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#141821]/90 p-6 backdrop-blur-md",
+      light: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-black/[0.08] bg-white/80 p-6 backdrop-blur-md",
+    },
+  },
+  defaultVariants: { variant: "dark" },
+})
+
+interface CardStickyProps
+  extends HTMLMotionProps<"div">,
+    VariantProps<typeof cardVariants> {
   arrayLength: number
   index: number
   incrementY?: number
   incrementZ?: number
   incrementRotation?: number
-  variant?: "dark" | "light"
 }
 
 interface ContainerScrollContextValue {
@@ -45,6 +57,7 @@ export const ContainerScroll: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
     target: scrollRef,
     offset: ["start center", "end end"],
   })
+
   return (
     <ContainerScrollContext.Provider value={{ scrollYProgress }}>
       <div
@@ -58,6 +71,7 @@ export const ContainerScroll: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
     </ContainerScrollContext.Provider>
   )
 }
+ContainerScroll.displayName = "ContainerScroll"
 
 export const CardsContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   children,
@@ -72,6 +86,7 @@ export const CardsContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
     {children}
   </div>
 )
+CardsContainer.displayName = "CardsContainer"
 
 export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>(
   (
@@ -81,8 +96,8 @@ export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>
       incrementY = 10,
       incrementZ = 10,
       incrementRotation,
-      variant = "dark",
       className,
+      variant,
       style,
       ...props
     },
@@ -107,11 +122,6 @@ export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>
     const shadowFilter = useMotionTemplate`drop-shadow(${dx}px ${dy}px ${blur}px rgba(0,0,0,${alpha}))`
     const filter = variant === "light" ? shadowFilter : "none"
 
-    const baseClass =
-      variant === "dark"
-        ? "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#141821]/90 p-6 backdrop-blur-md"
-        : "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-black/[0.08] bg-white p-6 shadow-sm"
-
     return (
       <motion.div
         layout="position"
@@ -124,7 +134,7 @@ export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>
           filter,
           ...style,
         }}
-        className={cn(baseClass, className)}
+        className={cn(cardVariants({ variant, className }))}
         {...props}
       />
     )

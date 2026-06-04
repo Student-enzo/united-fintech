@@ -100,15 +100,15 @@ export default function Testimonials() {
         >
           <CardsContainer
             style={{
-              width: 440,
-              height: 360,
+              width: 380,
+              height: 420,
             }}
           >
             {TESTIMONIALS.map((t, i) => (
               <CardTransformed
                 key={t.id}
                 arrayLength={TESTIMONIALS.length + 2}
-                index={i}
+                index={i + 2}
                 variant="dark"
               >
                 {/* UF badge */}
