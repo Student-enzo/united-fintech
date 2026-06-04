@@ -5,8 +5,6 @@ import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
-import { useCursorArrow } from '@/components/ui/cursor-arrow'
-
 const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 const MUTED = '#9BA5B0'
@@ -25,7 +23,6 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar() {
-  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [solutionsOpen, setSolutionsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -245,7 +242,7 @@ export default function Navbar() {
         </Link>
 
         {/* Book a Consultation */}
-        <a ref={consultationRef} href="/#consultation"
+        <a href="/#consultation"
           style={{
             backgroundColor: '#ffffff', color: '#000000', fontWeight: 700,
             fontSize: '0.875rem', padding: '0.5rem 1.25rem',
