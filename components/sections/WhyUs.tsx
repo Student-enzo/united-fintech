@@ -1,6 +1,7 @@
 'use client'
 
 import { CardStack, CardStackItem } from '@/components/ui/card-stack'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const CYAN = '#2BB8E6'
 
@@ -43,6 +44,7 @@ const CARDS: CardStackItem[] = [
 ]
 
 export default function WhyUs() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <section
       id="partners"
@@ -125,6 +127,7 @@ export default function WhyUs() {
           </div>
 
           <a
+            ref={consultationRef}
             href="#consultation"
             className="btn-cyan"
             style={{

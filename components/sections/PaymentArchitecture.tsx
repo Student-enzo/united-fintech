@@ -2,8 +2,10 @@
 
 import { motion } from 'framer-motion'
 import { CpuArchitecture } from '@/components/ui/cpu-architecture'
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 export default function PaymentArchitecture() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <section style={{
       background: '#161616',
@@ -71,6 +73,7 @@ export default function PaymentArchitecture() {
           style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '3rem' }}
         >
           <a
+            ref={consultationRef}
             href="#consultation"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',

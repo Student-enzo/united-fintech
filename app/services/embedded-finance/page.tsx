@@ -3,7 +3,7 @@ import Navbar from '@/components/sections/Navbar'
 import BookCall from '@/components/sections/BookCall'
 import Footer from '@/components/sections/Footer'
 import { Building2, CreditCard, Layers, Network, ArrowRight } from 'lucide-react'
-
+import { useCursorArrow } from '@/components/ui/cursor-arrow'
 
 const BENEFITS = [
   { icon: Building2, title: 'Banking-as-a-Service (BaaS)', desc: 'We connect you with regulated banking partners that can power accounts, ledgers, and payments inside your product — without requiring a banking license.' },
@@ -13,6 +13,7 @@ const BENEFITS = [
 ]
 
 export default function EmbeddedFinancePage() {
+  const consultationRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <main className="min-h-screen bg-[#0E1118] text-[#E8EDF2]">
       <Navbar />
@@ -45,7 +46,7 @@ export default function EmbeddedFinancePage() {
           <p style={{ color: '#7E8794', fontSize: '1.125rem', lineHeight: 1.8, maxWidth: 580, margin: '0 auto 2.5rem' }}>
             Integrate banking infrastructure directly into your platform. From embedded accounts and card issuing to BaaS relationships, we structure the financial layer your product needs to scale without friction.
           </p>
-          <a href="#consultation" className="btn-cyan"
+          <a ref={consultationRef} href="#consultation" className="btn-cyan"
             style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
             Get a Strategy Session <ArrowRight size={14} />
           </a>
