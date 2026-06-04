@@ -44,7 +44,7 @@ const FINANCE_PHOTOS: PhotoItem[] = [
 
 export default function GlobalNetwork() {
   return (
-    <section style={{ backgroundColor: '#161616', padding: '6rem 1.5rem', overflow: 'hidden' }}>
+    <section style={{ backgroundColor: '#161616', padding: '6rem 1.5rem', overflow: 'visible' }}>
       <div className="max-w-7xl mx-auto">
         <PhotoGallery
           animationDelay={0.3}

@@ -58,6 +58,28 @@ const NASSAU_PHOTOS = [
   },
 ];
 
+// World flags scattered around the photo spread
+const WORLD_FLAGS = [
+  // Left outer area (outside leftmost photo edge)
+  { emoji: '🇬🇧', left: -362, top: 10,  delay: 0.20, size: 22 },
+  { emoji: '🇩🇪', left: -378, top: 118, delay: 0.55, size: 20 },
+  { emoji: '🇫🇷', left: -358, top: 232, delay: 0.85, size: 22 },
+  { emoji: '🇿🇦', left: -420, top: 170, delay: 1.10, size: 18 },
+  // Right outer area (outside rightmost photo edge)
+  { emoji: '🇯🇵', left: 590,  top: 8,   delay: 0.30, size: 22 },
+  { emoji: '🇦🇪', left: 608,  top: 122, delay: 0.65, size: 20 },
+  { emoji: '🇧🇷', left: 592,  top: 242, delay: 0.90, size: 22 },
+  { emoji: '🇰🇷', left: 645,  top: 172, delay: 0.40, size: 18 },
+  // Top area (above photo cluster)
+  { emoji: '🇺🇸', left: 8,    top: -44, delay: 0.40, size: 22 },
+  { emoji: '🇸🇬', left: 142,  top: -40, delay: 1.00, size: 20 },
+  { emoji: '🇦🇺', left: 262,  top: -46, delay: 0.70, size: 20 },
+  // Bottom area (below photo cluster)
+  { emoji: '🇲🇽', left: 68,   top: 298, delay: 0.60, size: 20 },
+  { emoji: '🇨🇦', left: 188,  top: 304, delay: 0.95, size: 20 },
+  { emoji: '🇮🇳', left: 310,  top: 292, delay: 1.20, size: 18 },
+]
+
 // Animation variants — exact structure from original 21st.dev component
 const containerVariants = {
   hidden: { opacity: 1 },
@@ -259,7 +281,7 @@ export function PhotoGallery({
       </p>
 
       {/* Animated photo spread — exact structure from 21st.dev original */}
-      <div className="relative mb-8 h-[380px] w-full items-center justify-center lg:flex" style={{ marginTop: "3rem" }}>
+      <div className="relative mb-8 h-[380px] w-full items-center justify-center lg:flex" style={{ marginTop: "3rem", overflow: "visible" }}>
         <motion.div
           className="relative mx-auto flex w-full max-w-7xl justify-center"
           initial={{ opacity: 0 }}
@@ -273,6 +295,36 @@ export function PhotoGallery({
             animate={isLoaded ? "visible" : "hidden"}
           >
             <div className="relative h-[260px] w-[260px]">
+              {/* Floating world flags */}
+              {WORLD_FLAGS.map((flag, i) => (
+                <motion.div
+                  key={`flag-${i}`}
+                  style={{
+                    position: 'absolute',
+                    left: flag.left,
+                    top: flag.top,
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                  initial={{ opacity: 0, scale: 0.4 }}
+                  animate={isLoaded ? { opacity: 0.82, scale: 1 } : { opacity: 0, scale: 0.4 }}
+                  transition={{ duration: 0.55, delay: 0.7 + flag.delay, ease: [0.34, 1.56, 0.64, 1] }}
+                >
+                  <motion.span
+                    style={{ display: 'block', fontSize: flag.size, lineHeight: 1, userSelect: 'none' }}
+                    animate={{ y: [-5, 5] }}
+                    transition={{
+                      duration: 2.2 + (i * 0.37) % 1.6,
+                      repeat: Infinity,
+                      repeatType: 'mirror',
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    {flag.emoji}
+                  </motion.span>
+                </motion.div>
+              ))}
+
               {[...displayPhotos].reverse().map((photo) => (
                 <motion.div
                   key={photo.id}
