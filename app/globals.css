@@ -66,8 +66,8 @@ html.light {
   --color-uf-danger:      #E8504A;
 
   /* Typography */
-  --font-heading: "Outfit", "Exo 2", "Montserrat", system-ui, sans-serif;
-  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-heading: "Rajdhani", system-ui, sans-serif;
+  --font-sans:    "Barlow", system-ui, sans-serif;
 
   /* Spacing */
   --radius-card: 16px;
@@ -87,7 +87,7 @@ html { scroll-behavior: smooth; }
 body {
   background-color: #161616;
   color: #E8EDF2;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Barlow", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

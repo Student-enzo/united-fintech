@@ -89,7 +89,7 @@ export default function BlogPage() {
             <h1
               style={{
                 fontFamily: 'var(--font-heading)',
-                fontWeight: 200,
+                fontWeight: 300,
                 fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',

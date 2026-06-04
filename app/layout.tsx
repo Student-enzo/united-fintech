@@ -1,17 +1,18 @@
 import type { Metadata } from 'next'
-import { Inter, Outfit } from 'next/font/google'
+import { Rajdhani, Barlow } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const rajdhani = Rajdhani({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-heading',
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
 })
 
-const outfit = Outfit({
+const barlow = Barlow({
   subsets: ['latin'],
-  variable: '--font-outfit',
-  weight: ['200', '300', '400', '600'],
+  variable: '--font-sans',
+  weight: ['300', '400', '500', '600'],
   display: 'swap',
 })
 
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-      <body className={inter.className}>
+    <html lang="en" className={`${rajdhani.variable} ${barlow.variable}`}>
+      <body className={barlow.className}>
         {children}
       </body>
     </html>

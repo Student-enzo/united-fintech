@@ -120,7 +120,7 @@ export default function BookCall() {
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
               </div>
-              <h3 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 400, fontSize: '1.25rem', color: '#E8EDF2', marginBottom: '0.75rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 400, fontSize: '1.25rem', color: '#E8EDF2', marginBottom: '0.75rem' }}>
                 Request Received
               </h3>
               <p style={{ color: '#7E8794', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 360, margin: '0 auto' }}>

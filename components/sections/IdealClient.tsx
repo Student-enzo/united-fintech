@@ -122,7 +122,7 @@ export default function IdealClient() {
             className="chrome-text"
             style={{
               fontFamily: 'var(--font-heading)',
-              fontWeight: 200,
+              fontWeight: 300,
               fontSize: 'clamp(1.875rem, 4vw, 3rem)',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
