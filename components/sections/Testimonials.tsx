@@ -49,7 +49,7 @@ const TESTIMONIALS = [
 export default function Testimonials() {
   return (
     <section id="insights" style={{ backgroundColor: "#161616" }}>
-      <ContainerScroll className="h-[300vh]">
+      <ContainerScroll className="h-[200vh]">
         {/* Heading — scrolls away naturally, no sticky */}
         <div style={{ padding: "5rem 1.5rem 0", textAlign: "center" }}>
           <p
