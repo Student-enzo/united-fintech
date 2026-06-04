@@ -1,0 +1,133 @@
+"use client"
+
+import * as React from "react"
+import {
+  HTMLMotionProps,
+  MotionValue,
+  motion,
+  useMotionTemplate,
+  useScroll,
+  useTransform,
+} from "framer-motion"
+import { cn } from "@/lib/utils"
+
+interface CardStickyProps extends HTMLMotionProps<"div"> {
+  arrayLength: number
+  index: number
+  incrementY?: number
+  incrementZ?: number
+  incrementRotation?: number
+  variant?: "dark" | "light"
+}
+
+interface ContainerScrollContextValue {
+  scrollYProgress: MotionValue<number>
+}
+
+const ContainerScrollContext = React.createContext<
+  ContainerScrollContextValue | undefined
+>(undefined)
+
+function useContainerScrollContext() {
+  const context = React.useContext(ContainerScrollContext)
+  if (!context) throw new Error("Must be inside ContainerScroll")
+  return context
+}
+
+export const ContainerScroll: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  children,
+  style,
+  className,
+  ...props
+}) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start center", "end end"],
+  })
+  return (
+    <ContainerScrollContext.Provider value={{ scrollYProgress }}>
+      <div
+        ref={scrollRef}
+        className={cn("relative min-h-svh w-full", className)}
+        style={{ perspective: "1000px", ...style }}
+        {...props}
+      >
+        {children}
+      </div>
+    </ContainerScrollContext.Provider>
+  )
+}
+
+export const CardsContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <div
+    className={cn("relative", className)}
+    style={{ perspective: "1000px", ...props.style }}
+    {...props}
+  >
+    {children}
+  </div>
+)
+
+export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>(
+  (
+    {
+      arrayLength,
+      index,
+      incrementY = 10,
+      incrementZ = 10,
+      incrementRotation,
+      variant = "dark",
+      className,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    const rotation = incrementRotation ?? (-index + 90)
+    const { scrollYProgress } = useContainerScrollContext()
+
+    const start = index / (arrayLength + 1)
+    const end = (index + 1) / (arrayLength + 1)
+    const range = React.useMemo(() => [start, end], [start, end])
+    const rotateRange = [range[0] - 1.5, range[1] / 1.5]
+
+    const y = useTransform(scrollYProgress, range, ["0%", "-180%"])
+    const rotate = useTransform(scrollYProgress, rotateRange, [rotation, 0])
+    const transform = useMotionTemplate`translateZ(${index * incrementZ}px) translateY(${y}) rotate(${rotate}deg)`
+
+    const dx = useTransform(scrollYProgress, rotateRange, [4, 0])
+    const dy = useTransform(scrollYProgress, rotateRange, [4, 12])
+    const blur = useTransform(scrollYProgress, rotateRange, [2, 24])
+    const alpha = useTransform(scrollYProgress, rotateRange, [0.15, 0.2])
+    const shadowFilter = useMotionTemplate`drop-shadow(${dx}px ${dy}px ${blur}px rgba(0,0,0,${alpha}))`
+    const filter = variant === "light" ? shadowFilter : "none"
+
+    const baseClass =
+      variant === "dark"
+        ? "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#141821]/90 p-6 backdrop-blur-md"
+        : "absolute will-change-transform flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-white/10 bg-[#1A1F2A]/90 p-6 backdrop-blur-md"
+
+    return (
+      <motion.div
+        layout="position"
+        ref={ref}
+        style={{
+          top: index * incrementY,
+          transform,
+          backfaceVisibility: "hidden",
+          zIndex: (arrayLength - index) * incrementZ,
+          filter,
+          ...style,
+        }}
+        className={cn(baseClass, className)}
+        {...props}
+      />
+    )
+  }
+)
+CardTransformed.displayName = "CardTransformed"

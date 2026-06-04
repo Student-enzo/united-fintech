@@ -20,7 +20,7 @@ const NAV_LINKS = [
   { label: 'About', href: '/about' },
   { label: 'Markets', href: '/#markets' },
   { label: 'Partners', href: '/#partners' },
-  { label: 'Insights', href: '/#insights' },
+  { label: 'Insights', href: '/blog' },
 ]
 
 export default function Navbar() {
@@ -236,7 +236,7 @@ export default function Navbar() {
             ))}
           </div>
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem' }}>
-            {[{ label: 'About', href: '/about' }, { label: 'Markets', href: '/#markets' }, { label: 'Partners', href: '/#partners' }, { label: 'Insights', href: '/#insights' }].map((link) => (
+            {[{ label: 'About', href: '/about' }, { label: 'Markets', href: '/#markets' }, { label: 'Partners', href: '/#partners' }, { label: 'Insights', href: '/blog' }].map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 0', color: TEXT, fontWeight: 500, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.95rem' }}>
                 {link.label}
