@@ -95,15 +95,15 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '58rem' }}>
+    <div style={{ width: '100%' }}>
       <div
-        style={{ display: 'grid', gap: '4rem', alignItems: 'center' }}
+        style={{ display: 'grid', gap: '5rem', alignItems: 'center' }}
         className="grid-cols-1 md:grid-cols-2"
       >
         {/* Stacked image fan */}
         <div
           ref={imageContainerRef}
-          style={{ position: 'relative', width: '100%', height: '22rem', perspective: 1000 }}
+          style={{ position: 'relative', width: '100%', height: '26rem', perspective: 1000 }}
         >
           {items.map((item, index) => (
             // eslint-disable-next-line @next/next/no-img-element
