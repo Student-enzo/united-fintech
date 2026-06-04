@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const CYAN   = '#1EA8D4'
 const BG     = '#0A0C12'
@@ -46,14 +47,19 @@ function LoginContent() {
       className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
       style={{ backgroundColor: BG }}
     >
-      {/* Subtle radial glow */}
+      {/* Dot-grid backdrop */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `linear-gradient(rgba(30,168,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(30,168,212,0.04) 1px, transparent 1px)`,
+        backgroundSize: '60px 60px',
+      }} />
+      {/* Radial glow */}
       <div
         aria-hidden
         className="absolute pointer-events-none"
         style={{
           top: '-160px', left: '50%', transform: 'translateX(-50%)',
           width: '700px', height: '500px',
-          background: `radial-gradient(ellipse at center, rgba(30,168,212,0.07) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse at center, rgba(30,168,212,0.09) 0%, transparent 70%)`,
         }}
       />
 
@@ -67,30 +73,17 @@ function LoginContent() {
             boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(30,168,212,0.06)',
           }}
         >
-          {/* Logo / Wordmark */}
+          {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            {/* UF monogram */}
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 font-black text-lg tracking-tighter"
-              style={{
-                background: `linear-gradient(135deg, ${CYAN} 0%, #0E8FB8 100%)`,
-                color: '#fff',
-                boxShadow: `0 0 24px rgba(30,168,212,0.35)`,
-              }}
-            >
-              UF
-            </div>
-            <p
-              className="text-sm font-bold tracking-[0.22em] uppercase"
-              style={{
-                background: 'linear-gradient(90deg, #C9D1D9 0%, #FFFFFF 50%, #8A929C 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              United Fintech
-            </p>
-            <div className="mt-3 w-10 h-px" style={{ backgroundColor: `rgba(30,168,212,0.25)` }} />
+            <Image
+              src="/uf-logo-vertical.png"
+              alt="United Fintech"
+              width={160}
+              height={160}
+              priority
+              style={{ objectFit: 'contain', marginBottom: '0.75rem' }}
+            />
+            <div className="mt-1 w-10 h-px" style={{ backgroundColor: `rgba(30,168,212,0.25)` }} />
             <p
               className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em]"
               style={{ color: 'rgba(30,168,212,0.55)' }}
