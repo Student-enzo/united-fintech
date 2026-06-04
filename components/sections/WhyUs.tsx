@@ -156,7 +156,7 @@ export default function WhyUs() {
           </div>
 
           {/* Right — metrics panel */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', paddingTop: '10rem' }}>
             {METRICS.map((m, i) => (
               <div
                 key={m.label}
