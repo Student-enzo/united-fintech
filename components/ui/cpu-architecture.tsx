@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export interface CpuArchitectureSvgProps {
   className?: string
@@ -40,6 +40,25 @@ function Card({ cx, cy, accent }: { cx: number; cy: number; accent: string }) {
   )
 }
 
+function useCountUp(target: number, duration = 3200) {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    let start: number | null = null
+    const from = target * 0.12
+    const step = (ts: number) => {
+      if (!start) start = ts
+      const progress = Math.min((ts - start) / duration, 1)
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(from + (target - from) * eased)
+      if (progress < 1) requestAnimationFrame(step)
+    }
+    const raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [target, duration])
+  return value
+}
+
 const CpuArchitecture = ({
   className,
   width = '100%',
@@ -50,6 +69,9 @@ const CpuArchitecture = ({
   animateLines = true,
   animateMarkers = true,
 }: CpuArchitectureSvgProps) => {
+  const amount = useCountUp(142739.85)
+  const formatted = amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
   return (
     <svg
       className={cn('text-muted', className)}
@@ -116,69 +138,48 @@ const CpuArchitecture = ({
       <Card cx={88}   cy={88}  accent="#2BB8E6" />
       <Card cx={30}   cy={30}  accent="#C45A5A" />
 
-      {/* POS Terminal (replaces CPU box) */}
-      <g>
-        {/* Connection pins — same layout as original */}
-        {showCpuConnections && (
-          <g fill="url(#cpu-connection-gradient)">
-            <rect x="93"   y="37"   width="2.5" height="5" rx="0.7" />
-            <rect x="104"  y="37"   width="2.5" height="5" rx="0.7" />
-            <rect x="116.3" y="44"  width="2.5" height="5" rx="0.7" transform="rotate(90 116.25 45.5)" />
-            <rect x="122.8" y="44"  width="2.5" height="5" rx="0.7" transform="rotate(90 116.25 45.5)" />
-            <rect x="104"  y="16"   width="2.5" height="5" rx="0.7" transform="rotate(180 105.25 39.5)" />
-            <rect x="114.5" y="16"  width="2.5" height="5" rx="0.7" transform="rotate(180 105.25 39.5)" />
-            <rect x="80"   y="-13.6" width="2.5" height="5" rx="0.7" transform="rotate(270 115.25 19.5)" />
-            <rect x="87"   y="-13.6" width="2.5" height="5" rx="0.7" transform="rotate(270 115.25 19.5)" />
-          </g>
-        )}
+      {/* POS Terminal — photorealistic image */}
+      <g filter="url(#cpu-light-shadow)">
+        <image
+          href="/pos-terminal.png"
+          x="82" y="32" width="36" height="36"
+          preserveAspectRatio="xMidYMid meet"
+        />
 
-        {/* Terminal body */}
-        <rect x="84" y="35" width="32" height="30" rx="2.5"
-          fill="#0c1220" stroke="rgba(43,184,230,0.5)" strokeWidth="0.5"
-          filter="url(#cpu-light-shadow)" />
-
-        {/* Screen */}
-        <rect x="87" y="38" width="26" height="10" rx="1.5"
-          fill="#060e1a" stroke="rgba(43,184,230,0.25)" strokeWidth="0.3" />
-        {/* Screen glow top bar */}
-        <rect x="87" y="38" width="26" height="2.5" rx="1.5"
-          fill="rgba(43,184,230,0.12)" />
-        {/* Amount text — animated shimmer */}
-        <text x="88.5" y="45.5" fontSize="4" fontWeight="700" letterSpacing="0.04em"
-          fill={animateText ? 'url(#cpu-text-gradient)' : '#2BB8E6'}>
-          $24,891.50
-        </text>
-        <text x="88.5" y="47.2" fontSize="2.2" fill="rgba(43,184,230,0.4)" letterSpacing="0.06em">
-          APPROVED
-        </text>
-
-        {/* Card slot */}
-        <rect x="87" y="49.5" width="26" height="1.8" rx="0.4"
-          fill="#030810" stroke="rgba(43,184,230,0.4)" strokeWidth="0.3" />
-        {/* Slot arrow hint */}
-        <text x="96" y="51" fontSize="2" fill="rgba(43,184,230,0.35)" letterSpacing="0.04em">
-          ▶ INSERT
-        </text>
-
-        {/* Keypad area */}
-        <rect x="87" y="53" width="26" height="10" rx="1.2" fill="#08101c" />
-        {/* Keys: 3 cols × 2 rows */}
-        {[91, 100, 109].map((cx) =>
-          [56.5, 60].map((cy) => (
-            <rect key={`${cx}-${cy}`}
-              x={cx - 2.5} y={cy - 1.5} width="5" height="3" rx="0.6"
-              fill="#111827" stroke="rgba(255,255,255,0.08)" strokeWidth="0.2" />
-          ))
-        )}
-        {/* Confirm key (cyan) */}
-        <rect x="106.5" y="58.5" width="5" height="3" rx="0.6"
-          fill="rgba(43,184,230,0.25)" stroke="rgba(43,184,230,0.6)" strokeWidth="0.3" />
-
-        {/* NFC symbol in top-right of terminal */}
-        <g stroke="rgba(43,184,230,0.5)" fill="none" strokeWidth="0.4" transform="translate(111,41)">
-          <path d="M0 2 a2.5 2.5 0 0 1 0 -4" />
-          <path d="M1.2 2.8 a4 4 0 0 1 0 -5.6" />
-        </g>
+        {/* Animated counter overlay on the terminal screen */}
+        <foreignObject x="85.5" y="37" width="26" height="8">
+          <div
+            style={{
+              width: '100%', height: '100%',
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'flex-start', justifyContent: 'center',
+              padding: '0 3px',
+              background: 'rgba(0,0,0,0.55)',
+              borderRadius: '2px',
+            }}
+          >
+            <span style={{
+              fontFamily: 'monospace',
+              fontSize: '5px',
+              fontWeight: 700,
+              color: '#2BB8E6',
+              letterSpacing: '0.03em',
+              lineHeight: 1,
+              textShadow: '0 0 6px rgba(43,184,230,0.8)',
+            }}>
+              ${formatted}
+            </span>
+            <span style={{
+              fontFamily: 'monospace',
+              fontSize: '2.8px',
+              color: 'rgba(43,184,230,0.55)',
+              letterSpacing: '0.08em',
+              marginTop: '1px',
+            }}>
+              PROCESSING
+            </span>
+          </div>
+        </foreignObject>
       </g>
 
       <defs>
