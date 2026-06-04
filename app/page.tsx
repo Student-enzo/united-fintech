@@ -5,6 +5,7 @@ import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import GlobalNetwork from '@/components/sections/GlobalNetwork'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import WhyUs from '@/components/sections/WhyUs'
+import PaymentArchitecture from '@/components/sections/PaymentArchitecture'
 import IdealClient from '@/components/sections/IdealClient'
 import Testimonials from '@/components/sections/Testimonials'
 import PartnersGravity from '@/components/sections/PartnersGravity'
@@ -73,6 +74,7 @@ export default function HomePage() {
       <div id="markets"><GlobalNetwork /></div>
       <ServicesGrid />
       <div id="partners"><WhyUs /></div>
+      <PaymentArchitecture />
       <IdealClient />
       <Testimonials />
       <PartnersGravity />
