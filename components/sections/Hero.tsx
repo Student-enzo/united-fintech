@@ -108,8 +108,9 @@ export default function Hero() {
             marginBottom: '1rem',
             textShadow: '0 2px 20px rgba(0,0,0,0.4)',
           }}>
-            The financial partner<br />
-            <span style={{ color: CYAN, fontStyle: 'italic' }}>complex merchants trust.</span>
+            The financial<br />
+            partner <span style={{ color: CYAN, fontStyle: 'italic' }}>complex<br />
+            merchants trust.</span>
           </h1>
 
           <p style={{
