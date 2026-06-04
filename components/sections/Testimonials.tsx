@@ -71,17 +71,27 @@ export default function Testimonials() {
                 arrayLength={TESTIMONIALS.length}
                 index={i + 2}
                 variant="dark"
-                style={CARD_STYLE}
+                style={{ ...CARD_STYLE, position: "absolute", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}
               >
-                {/* Opening mark */}
-                <div style={{ width: "100%", marginBottom: -8 }}>
-                  <span style={{ fontSize: "3.5rem", lineHeight: 1, color: "#2BB8E6", opacity: 0.35, fontFamily: "Georgia, serif", display: "block", marginTop: -8 }}>
-                    &ldquo;
-                  </span>
+                {/* Logo — large, top-right corner */}
+                <div style={{ position: "absolute", top: 16, right: 16 }}>
+                  <Image
+                    src="/uf-logo-new.png"
+                    alt="United Fintech"
+                    width={80}
+                    height={80}
+                    style={{
+                      objectFit: "contain",
+                      filter: "drop-shadow(0 0 10px rgba(43,184,230,0.5)) brightness(1.05)",
+                    }}
+                  />
                 </div>
 
                 {/* Quote */}
-                <div style={{ width: "100%", flex: 1, display: "flex", alignItems: "center" }}>
+                <div style={{ width: "100%", paddingRight: 64, paddingBottom: 16 }}>
+                  <span style={{ fontSize: "2rem", lineHeight: 1, color: "#2BB8E6", opacity: 0.4, fontFamily: "Georgia, serif", display: "block", marginBottom: 8 }}>
+                    &ldquo;
+                  </span>
                   <p style={{
                     color: "rgba(232,237,242,0.88)",
                     fontSize: "0.9rem",
@@ -97,12 +107,12 @@ export default function Testimonials() {
                 <div style={{
                   width: "100%",
                   height: 1,
-                  background: "linear-gradient(90deg, #2BB8E6 0%, rgba(43,184,230,0.15) 100%)",
-                  margin: "4px 0",
+                  background: "linear-gradient(90deg, #2BB8E6 0%, rgba(43,184,230,0.08) 100%)",
+                  marginBottom: 14,
                 }} />
 
                 {/* Author row */}
-                <div style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", paddingTop: 4 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, width: "100%" }}>
                   <img
                     src={t.avatar}
                     alt={t.name}
@@ -113,23 +123,11 @@ export default function Testimonials() {
                       flexShrink: 0,
                     }}
                   />
-                  <div style={{ textAlign: "left", flex: 1, minWidth: 0 }}>
+                  <div style={{ textAlign: "left" }}>
                     <p style={{ fontWeight: 700, color: "#E8EDF2", fontSize: "0.88rem", lineHeight: 1.25, margin: 0 }}>{t.name}</p>
                     <p style={{ color: "rgba(232,237,242,0.45)", fontSize: "0.7rem", marginTop: 2 }}>{t.role}</p>
                     <p style={{ color: "#2BB8E6", fontSize: "0.63rem", letterSpacing: "0.08em", marginTop: 2 }}>{t.region}</p>
                   </div>
-                  <Image
-                    src="/uf-logo-icon-transparent.png"
-                    alt="United Fintech"
-                    width={38}
-                    height={38}
-                    style={{
-                      objectFit: "contain",
-                      flexShrink: 0,
-                      opacity: 0.9,
-                      filter: "brightness(1.1) drop-shadow(0 0 8px rgba(43,184,230,0.4))",
-                    }}
-                  />
                 </div>
               </CardTransformed>
             ))}
