@@ -1,23 +1,26 @@
 'use client'
 
-import { useRef, useState, useCallback, RefObject } from 'react'
-import { motion, useAnimation } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+import { motion, useAnimation, useInView } from 'framer-motion'
 
 const PARTNERS = [
-  { name: 'Stripe',      x: '3%',  y: '10%', d: 0.0, a: -3, fi: 0, style: { background: '#635BFF', color: '#fff' } },
-  { name: 'Square',      x: '44%', y: '4%',  d: 0.8, a: -1, fi: 1, style: { background: '#1a1a1a', color: '#fff' } },
-  { name: 'Tipalti',     x: '74%', y: '8%',  d: 1.4, a:  4, fi: 2, style: { background: '#0073CF', color: '#fff' } },
-  { name: 'Worldpay',    x: '22%', y: '28%', d: 0.4, a: -3, fi: 3, style: { background: '#004B87', color: '#fff' } },
-  { name: 'Fiserv',      x: '64%', y: '22%', d: 2.0, a:  5, fi: 4, style: { background: '#FF6600', color: '#fff' } },
-  { name: 'Mastercard',  x: '12%', y: '52%', d: 1.0, a: -1, fi: 5, style: { background: '#EB001B', color: '#fff' } },
-  { name: 'FIS',         x: '50%', y: '44%', d: 0.6, a:  3, fi: 0, style: { background: '#2D4E91', color: '#fff' } },
-  { name: 'Braintree',   x: '83%', y: '36%', d: 1.8, a: -5, fi: 1, style: { background: '#009CDE', color: '#fff' } },
-  { name: 'Visa',        x: '6%',  y: '72%', d: 2.2, a:  2, fi: 2, style: { background: '#1A1F71', color: '#FAA61A' } },
-  { name: 'Adyen',       x: '36%', y: '66%', d: 1.2, a: -4, fi: 3, style: { background: '#0ABF53', color: '#fff' } },
-  { name: 'Airwallex',   x: '66%', y: '70%', d: 0.2, a:  6, fi: 4, style: { background: '#1B2B4B', color: '#1EA8D4' } },
-  { name: 'PayPal',      x: '86%', y: '60%', d: 1.6, a: -2, fi: 5, style: { background: '#003087', color: '#F7C94B' } },
+  { name: 'Stripe',     style: { background: '#635BFF', color: '#fff' },  href: 'https://stripe.com' },
+  { name: 'Square',     style: { background: '#1a1a1a', color: '#fff' },  href: 'https://squareup.com' },
+  { name: 'Tipalti',    style: { background: '#0073CF', color: '#fff' },  href: 'https://tipalti.com' },
+  { name: 'Worldpay',   style: { background: '#004B87', color: '#fff' },  href: 'https://worldpay.com' },
+  { name: 'Fiserv',     style: { background: '#FF6600', color: '#fff' },  href: 'https://fiserv.com' },
+  { name: 'Mastercard', style: { background: '#EB001B', color: '#fff' },  href: 'https://mastercard.com' },
+  { name: 'FIS',        style: { background: '#2D4E91', color: '#fff' },  href: 'https://fisglobal.com' },
+  { name: 'Braintree',  style: { background: '#009CDE', color: '#fff' },  href: 'https://braintreepayments.com' },
+  { name: 'Visa',       style: { background: '#1A1F71', color: '#FAA61A' }, href: 'https://visa.com' },
+  { name: 'Adyen',      style: { background: '#0ABF53', color: '#fff' },  href: 'https://adyen.com' },
+  { name: 'Airwallex',  style: { background: '#1B2B4B', color: '#1EA8D4' }, href: 'https://airwallex.com' },
+  { name: 'PayPal',     style: { background: '#003087', color: '#F7C94B' }, href: 'https://paypal.com' },
 ]
 
+const CONTAINER_H = 400
+
+// Subtle float animations on the inner wrapper (separate from framer-motion outer y)
 const FLOAT_CSS = `
 @keyframes uf-f0{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(18px,-14px)rotate(3deg)}66%{transform:translate(-10px,12px)rotate(-2deg)}}
 @keyframes uf-f1{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-16px,18px)rotate(-4deg)}66%{transform:translate(12px,-10px)rotate(2deg)}}
@@ -27,72 +30,109 @@ const FLOAT_CSS = `
 @keyframes uf-f5{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-20px,-8px)rotate(-4deg)}66%{transform:translate(8px,18px)rotate(3deg)}}
 `
 
-const DURATIONS = [6, 7, 5.5, 8, 6.5, 7.5, 6.2, 8.2, 5.8, 7.2, 6.8, 8.5]
+const FLOAT_DURATIONS = [6, 7, 5.5, 8, 6.5, 7.5, 6.2, 8.2, 5.8, 7.2, 6.8, 8.5]
+
+type PosData = {
+  left: number   // % across container width
+  finalY: number // px from top of container (settled position)
+  fi: number     // which float keyframe (0–5)
+  d: number      // float animation delay (s)
+}
 
 type Partner = typeof PARTNERS[number]
 
 function PartnerPill({
   p,
   idx,
-  containerRef,
+  pos,
+  triggered,
 }: {
   p: Partner
   idx: number
-  containerRef: RefObject<HTMLDivElement | null>
+  pos: PosData
+  triggered: boolean
 }) {
-  const pillRef = useRef<HTMLDivElement>(null)
   const controls = useAnimation()
-  const [fallen, setFallen] = useState(false)
+  const [settled, setSettled] = useState(false)
+  const animated = useRef(false)
 
-  const fall = useCallback(() => {
-    if (fallen) return
-    setFallen(true)
+  useEffect(() => {
+    if (!triggered || animated.current) return
+    animated.current = true
 
-    const container = containerRef.current
-    const el = pillRef.current
-    if (!container || !el) return
+    async function run() {
+      // Snap above container (invisible, ready to fall)
+      controls.set({ y: -520, opacity: 1 })
 
-    const cRect = container.getBoundingClientRect()
-    const eRect = el.getBoundingClientRect()
-    const drop = cRect.bottom - eRect.bottom - 6   // pixels to the floor
-    const tilt = (Math.random() - 0.5) * 40         // random final tilt
+      // Stagger: each pill falls like a raindrop with slight delay
+      await new Promise<void>(r => setTimeout(r, idx * 65))
 
-    controls.start({
-      y: drop,
-      rotate: tilt,
-      transition: {
-        y: { type: 'spring', damping: 8, stiffness: 90, mass: 1.8, velocity: 2 },
-        rotate: { type: 'spring', damping: 10, stiffness: 80 },
-      },
-    })
-  }, [fallen, containerRef, controls])
+      // Fall to floor with natural gravity + overshoot
+      await controls.start({
+        y: CONTAINER_H + 15,
+        transition: {
+          type: 'spring',
+          damping: 5,
+          stiffness: 55,
+          mass: 2,
+          velocity: 18,
+        },
+      })
+
+      // Bounce up and settle at random grid position
+      await controls.start({
+        y: pos.finalY,
+        transition: {
+          type: 'spring',
+          damping: 9,
+          stiffness: 110,
+          mass: 1,
+        },
+      })
+
+      setSettled(true)
+    }
+
+    run()
+  }, [triggered, controls, idx, pos])
 
   return (
     <motion.div
-      ref={pillRef}
-      drag
-      dragConstraints={containerRef}
-      dragElastic={0.08}
-      dragMomentum={false}
       animate={controls}
-      style={{ position: 'absolute', left: p.x, top: p.y, cursor: 'grab', touchAction: 'none', zIndex: 1 }}
-      whileDrag={{ scale: 1.12, zIndex: 50, cursor: 'grabbing' }}
-      onHoverStart={fall}
-      onTap={fall}
+      initial={{ y: -520, opacity: 0 }}
+      style={{
+        position: 'absolute',
+        left: `${pos.left}%`,
+        top: 0,
+        cursor: 'pointer',
+        zIndex: 1,
+        touchAction: 'none',
+        userSelect: 'none',
+      }}
+      whileHover={{ scale: 1.1, zIndex: 10 }}
+      onClick={() => window.open(p.href, '_blank', 'noopener,noreferrer')}
     >
-      <div style={{ animation: fallen ? 'none' : `uf-f${p.fi} ${DURATIONS[idx]}s ease-in-out ${p.d}s infinite` }}>
-        <div style={{
-          ...p.style,
-          borderRadius: 9999,
-          padding: '0.55rem 1.35rem',
-          fontSize: '0.875rem',
-          fontWeight: 700,
-          letterSpacing: '0.04em',
-          whiteSpace: 'nowrap',
-          boxShadow: '0 2px 14px rgba(0,0,0,0.13)',
-          userSelect: 'none',
-          transform: fallen ? 'none' : `rotate(${p.a}deg)`,
-        }}>
+      {/* Inner wrapper carries the float animation after settling */}
+      <div
+        style={{
+          animation: settled
+            ? `uf-f${pos.fi} ${FLOAT_DURATIONS[idx]}s ease-in-out ${pos.d}s infinite`
+            : 'none',
+        }}
+      >
+        <div
+          style={{
+            ...p.style,
+            borderRadius: 9999,
+            padding: '0.55rem 1.35rem',
+            fontSize: '0.875rem',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 2px 14px rgba(0,0,0,0.18)',
+            pointerEvents: 'none',
+          }}
+        >
           {p.name}
         </div>
       </div>
@@ -101,21 +141,37 @@ function PartnerPill({
 }
 
 export default function PartnersGravity() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(sectionRef, { once: true, amount: 0.25 })
+  const [positions, setPositions] = useState<PosData[] | null>(null)
+
+  // Generate random grid positions client-side only (avoids SSR hydration mismatch)
+  useEffect(() => {
+    setPositions(
+      PARTNERS.map(() => ({
+        left: Math.random() * 78 + 2,        // 2–80%
+        finalY: Math.random() * 310 + 15,    // 15–325px inside 400px container
+        fi: Math.floor(Math.random() * 6),
+        d: Math.random() * 2.5,
+      }))
+    )
+  }, [])
 
   return (
-    <section style={{
-      backgroundColor: '#161616',
-      backgroundImage: `
-        linear-gradient(rgba(30,168,212,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(30,168,212,0.05) 1px, transparent 1px)
-      `,
-      backgroundSize: '44px 44px',
-      overflow: 'hidden',
-    }}>
+    <section
+      ref={sectionRef}
+      style={{
+        backgroundColor: '#161616',
+        backgroundImage: `
+          linear-gradient(rgba(30,168,212,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(30,168,212,0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: '44px 44px',
+        overflow: 'hidden',
+      }}
+    >
       <style>{FLOAT_CSS}</style>
 
-      {/* Header */}
       <div style={{ textAlign: 'center', padding: '4rem 1.5rem 2rem' }}>
         <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
           Technology Partners
@@ -125,17 +181,21 @@ export default function PartnersGravity() {
           <span style={{ color: '#1EA8D4', fontStyle: 'italic' }}>payment rails.</span>
         </h2>
         <p style={{ color: 'rgba(232,237,242,0.55)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
-          Touch a logo and watch it drop. We integrate natively with every major processor, gateway, and banking partner.
+          We integrate natively with every major processor, gateway, and banking partner. Click any logo to learn more.
         </p>
       </div>
 
-      {/* Floating canvas */}
       <div
-        ref={containerRef}
-        style={{ position: 'relative', height: 380, width: '100%', overflow: 'hidden' }}
+        style={{ position: 'relative', height: CONTAINER_H, width: '100%', overflow: 'hidden' }}
       >
-        {PARTNERS.map((p, i) => (
-          <PartnerPill key={p.name} p={p} idx={i} containerRef={containerRef} />
+        {positions && PARTNERS.map((p, i) => (
+          <PartnerPill
+            key={p.name}
+            p={p}
+            idx={i}
+            pos={positions[i]}
+            triggered={inView}
+          />
         ))}
       </div>
 
