@@ -1,0 +1,89 @@
+'use client'
+import Navbar from '@/components/sections/Navbar'
+import BookCall from '@/components/sections/BookCall'
+import Footer from '@/components/sections/Footer'
+import { Shield, AlertTriangle, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react'
+
+
+const BENEFITS = [
+  { icon: Shield, title: 'Multi-Processor Redundancy', desc: 'We design processing infrastructure with built-in failover — so when a single processor has an issue, your revenue doesn\'t stop. Multiple acquiring relationships operating in parallel.' },
+  { icon: AlertTriangle, title: 'Chargeback Management', desc: 'Proactive chargeback monitoring, prevention strategies, and dispute frameworks. We help you stay well below threshold ratios that trigger account reviews.' },
+  { icon: TrendingUp, title: 'Reserve Strategy & Negotiation', desc: 'Rolling reserves, capped reserves, and release timelines are all negotiable. We work with banks on your behalf to structure reserve arrangements that minimize cash flow impact.' },
+  { icon: CheckCircle, title: 'Compliance Architecture', desc: 'PCI DSS compliance frameworks, AML/KYC structuring, and regulatory positioning across jurisdictions — built to keep your processing relationships intact long-term.' },
+]
+
+export default function RiskMitigationPage() {
+  return (
+    <main className="min-h-screen bg-[#0A0C12] text-[#E8EDF2]">
+      <Navbar />
+
+      {/* Hero */}
+      <section className="uf-section-navy" style={{ padding: '9rem 1.5rem 6rem', position: 'relative', overflow: 'hidden' }}>
+        <div aria-hidden style={{
+          position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
+          width: 700, height: 500, borderRadius: '50%',
+          background: 'radial-gradient(ellipse at center, rgba(43,184,230,0.07) 0%, transparent 70%)',
+          zIndex: 0,
+        }} />
+        <div className="max-w-4xl mx-auto relative" style={{ zIndex: 1, textAlign: 'center' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            backgroundColor: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.25)',
+            borderRadius: 999, padding: '0.35rem 1rem', marginBottom: '1.5rem',
+          }}>
+            <Shield size={14} color="#2BB8E6" strokeWidth={2} />
+            <span style={{ color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Risk Mitigation</span>
+          </div>
+          <h1 style={{
+            fontFamily: 'var(--font-outfit)', fontWeight: 200,
+            fontSize: 'clamp(2rem, 5vw, 4rem)',
+            letterSpacing: '0.06em', textTransform: 'uppercase',
+            marginBottom: '1.5rem', lineHeight: 1.1,
+          }} className="chrome-text">
+            Risk Mitigation Strategy
+          </h1>
+          <p style={{ color: '#7E8794', fontSize: '1.125rem', lineHeight: 1.8, maxWidth: 580, margin: '0 auto 2.5rem' }}>
+            Protect your business from account terminations, chargebacks, and processing instability. We design resilient infrastructure and compliance frameworks that keep your revenue flowing under pressure.
+          </p>
+          <a href="#consultation" className="btn-cyan"
+            style={{ padding: '0.875rem 2rem', fontSize: '0.95rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+            Get a Strategy Session <ArrowRight size={14} />
+          </a>
+        </div>
+      </section>
+
+      {/* Benefits */}
+      <section style={{ backgroundColor: '#0A0C12', padding: '6rem 1.5rem' }}>
+        <div className="max-w-6xl mx-auto">
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <p style={{ color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>What We Deliver</p>
+            <h2 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 200, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '0.08em', textTransform: 'uppercase' }} className="chrome-text">
+              Protection Built Into Your Stack
+            </h2>
+          </div>
+          <div style={{ display: 'grid', gap: '1.5rem' }} className="grid grid-cols-1 md:grid-cols-2">
+            {BENEFITS.map((b) => {
+              const Icon = b.icon
+              return (
+                <div key={b.title} className="uf-card" style={{ padding: '2rem', display: 'flex', gap: '1.25rem', transition: 'border-color 0.2s' }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(43,184,230,0.25)' }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)' }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 12, backgroundColor: 'rgba(43,184,230,0.10)', border: '1px solid rgba(43,184,230,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Icon size={22} color="#2BB8E6" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontFamily: 'var(--font-outfit)', fontWeight: 500, fontSize: '1rem', color: '#E8EDF2', marginBottom: '0.5rem' }}>{b.title}</h3>
+                    <p style={{ color: '#7E8794', fontSize: '0.875rem', lineHeight: 1.75 }}>{b.desc}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <BookCall />
+      <Footer />
+    </main>
+  )
+}

@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ─── United Fintech Design Tokens ─────────────────────────────────────────
+   KEEP IN SYNC with lib/brand.ts (same hex values — CSS can't import TS).
+   Edit BOTH when the palette changes.
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* shadcn/ui CSS variable mapping */
+:root {
+  --background:          #0A0C12;
+  --foreground:          #E8EDF2;
+  --card:                #141821;
+  --card-foreground:     #E8EDF2;
+  --primary:             #2BB8E6;
+  --primary-foreground:  #0A0C12;
+  --secondary:           #1A1F2A;
+  --secondary-foreground:#E8EDF2;
+  --muted:               #1A1F2A;
+  --muted-foreground:    #7E8794;
+  --accent:              rgba(43,184,230,0.12);
+  --accent-foreground:   #2BB8E6;
+  --border:              rgba(255,255,255,0.08);
+  --input:               rgba(255,255,255,0.08);
+  --ring:                rgba(43,184,230,0.40);
+  --destructive:         #E8504A;
+  --destructive-foreground: #E8EDF2;
+  --radius:              0.625rem;
+
+  /* Sidebar (admin) */
+  --sidebar-background:  #0D111C;
+  --sidebar-foreground:  #E8EDF2;
+  --sidebar-border:      rgba(43,184,230,0.15);
+  --sidebar-accent:      rgba(43,184,230,0.1);
+  --sidebar-accent-foreground: #2BB8E6;
+  --sidebar-ring:        rgba(43,184,230,0.3);
+}
+
+/* Light mode override */
+html.light {
+  --background:        #F0F4F8;
+  --foreground:        rgba(15,23,42,0.88);
+  --card:              #FFFFFF;
+  --card-foreground:   rgba(15,23,42,0.88);
+  --border:            rgba(0,0,0,0.08);
+  --input:             rgba(0,0,0,0.06);
+}
+
+/* Tailwind 4 theme tokens — KEEP IN SYNC with lib/brand.ts */
+@theme inline {
+  /* UF Brand */
+  --color-uf-bg:          #0A0C12;
+  --color-uf-navy:        #0D1B2A;
+  --color-uf-card:        #141821;
+  --color-uf-card-alt:    #1A1F2A;
+  --color-uf-cyan:        #2BB8E6;
+  --color-uf-cyan-bright: #46D4F2;
+  --color-uf-cyan-deep:   #0E8FB8;
+  --color-uf-silver-hi:   #FFFFFF;
+  --color-uf-silver:      #C9D1D9;
+  --color-uf-silver-lo:   #8A929C;
+  --color-uf-text:        #E8EDF2;
+  --color-uf-muted:       #7E8794;
+  --color-uf-success:     #3DD68C;
+  --color-uf-warn:        #F0B23E;
+  --color-uf-danger:      #E8504A;
+
+  /* Typography */
+  --font-heading: "Outfit", "Exo 2", "Montserrat", system-ui, sans-serif;
+  --font-sans:    "Inter", system-ui, sans-serif;
+
+  /* Spacing */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  /* Glow shadows */
+  --shadow-cyan-glow:    0 0 24px rgba(43,184,230,0.30);
+  --shadow-cyan-glow-lg: 0 0 48px rgba(43,184,230,0.20);
+}
+
+/* ─── Base Styles ─────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #0A0C12;
+  color: #E8EDF2;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth theme transitions */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ─── Utility Classes ─────────────────────────────────────────────────── */
+
+/* Chrome metallic text (used for hero headlines + logo wordmark) */
+.chrome-text {
+  background: linear-gradient(180deg, #FFFFFF 0%, #C9D1D9 50%, #8A929C 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Cyan accent text */
+.cyan-text {
+  color: #2BB8E6;
+}
+
+/* Glowing cyan CTA button */
+.btn-cyan {
+  background-color: #2BB8E6;
+  color: #0A0C12;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 0 24px rgba(43,184,230,0.30);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.btn-cyan:hover {
+  background-color: #46D4F2;
+  box-shadow: 0 0 40px rgba(43,184,230,0.50);
+}
+
+/* Outlined cyan button */
+.btn-cyan-outline {
+  border: 1px solid #2BB8E6;
+  color: #2BB8E6;
+  font-weight: 500;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-cyan-outline:hover {
+  background-color: rgba(43,184,230,0.10);
+  box-shadow: 0 0 20px rgba(43,184,230,0.20);
+}
+
+/* Card */
+.uf-card {
+  background-color: #141821;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.uf-card:hover {
+  border-color: rgba(43,184,230,0.28);
+}
+.uf-card-lift:hover {
+  border-color: rgba(43,184,230,0.28);
+  transform: translateY(-4px);
+}
+
+/* Navy section band */
+.uf-section-navy {
+  background-color: #0D1B2A;
+}
+
+/* Cyan underline accent (services, nav active) */
+.cyan-underline {
+  position: relative;
+}
+.cyan-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2BB8E6;
+  border-radius: 1px;
+}
+
+/* Thin uppercase letter-spaced heading (matches the wordmark) */
+.heading-tracked {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+/* Cyan glow border on focus/active */
+.glow-border:focus-within {
+  box-shadow: 0 0 0 2px rgba(43,184,230,0.40);
+}
