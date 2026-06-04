@@ -242,16 +242,16 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
       <div style={{ marginTop: '2.5rem', position: 'relative' }}>
         {/* Base line */}
         <div style={{
-          position: 'absolute', top: '10px', left: 0, right: 0, height: '1px',
-          backgroundColor: 'rgba(255,255,255,0.08)',
+          position: 'absolute', top: '10px', left: 0, right: 0, height: '2px',
+          backgroundColor: 'rgba(255,255,255,0.1)',
         }} />
         {/* Progress fill */}
         <div style={{
-          position: 'absolute', top: '10px', left: 0, height: '1px',
+          position: 'absolute', top: '10px', left: 0, height: '2px',
           backgroundColor: CYAN,
           width: `${(activeIndex / (items.length - 1)) * 100}%`,
           transition: 'width 0.5s cubic-bezier(0.4,0,0.2,1)',
-          boxShadow: `0 0 8px ${CYAN}`,
+          boxShadow: `0 0 10px ${CYAN}`,
         }} />
 
         {/* Nodes + labels */}
@@ -271,18 +271,18 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
               >
                 {/* Node dot */}
                 <div style={{
-                  width: isActive ? 14 : 8,
-                  height: isActive ? 14 : 8,
+                  width: isActive ? 16 : 10,
+                  height: isActive ? 16 : 10,
                   borderRadius: '50%',
-                  backgroundColor: isActive ? CYAN : isPast ? CYAN : 'rgba(255,255,255,0.15)',
-                  border: isActive ? `2px solid ${CYAN}` : '1px solid rgba(255,255,255,0.15)',
-                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(43,184,230,0.4)` : 'none',
+                  backgroundColor: isActive ? CYAN : isPast ? CYAN : 'rgba(255,255,255,0.2)',
+                  border: isActive ? `2px solid ${CYAN}` : `1px solid rgba(255,255,255,0.25)`,
+                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(43,184,230,0.4)` : isPast ? `0 0 6px rgba(43,184,230,0.3)` : 'none',
                   transition: 'all 0.3s ease',
                   flexShrink: 0,
                 }} />
                 {/* Label */}
                 <span style={{
-                  fontSize: '0.65rem',
+                  fontSize: '0.72rem',
                   fontWeight: isActive ? 700 : 500,
                   color: isActive ? CYAN : isPast ? 'rgba(43,184,230,0.5)' : MUTED,
                   letterSpacing: '0.04em',
@@ -290,9 +290,6 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
                   textAlign: 'center',
                   whiteSpace: 'nowrap',
                   transition: 'color 0.3s',
-                  maxWidth: '5rem',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
                 }}>
                   {item.subtitle}
                 </span>
