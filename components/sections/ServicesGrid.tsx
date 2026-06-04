@@ -46,21 +46,25 @@ export default function ServicesGrid() {
 
       {/* Header — constrained */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', marginBottom: '3rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
-          <div>
-            <p style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-              CONNECTED ACROSS COUNTRIES
-            </p>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', fontWeight: 800, color: TEXT, letterSpacing: '-0.02em' }}>
-              Solutions that drive global finance.
-            </h2>
-            <p style={{ color: MUTED, fontSize: '0.9rem', marginTop: '0.6rem', maxWidth: 480, lineHeight: 1.6 }}>
-              From acquiring banks to embedded finance layers — connecting ambitious businesses with global infrastructure.
-            </p>
-          </div>
+        <p style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.14em', marginBottom: '0.75rem' }}>
+          CONNECTED ACROSS COUNTRIES
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+            fontWeight: 700,
+            color: TEXT,
+            fontFamily: 'var(--font-heading)',
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            lineHeight: 1.0,
+            margin: 0,
+          }}>
+            Solutions that drive global finance.
+          </h2>
           <Link
             href="/about"
-            style={{ color: CYAN, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0, transition: 'gap 0.15s' }}
+            style={{ color: CYAN, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0, fontSize: '0.9rem', transition: 'gap 0.15s' }}
             onMouseEnter={(e) => { e.currentTarget.style.gap = '0.65rem' }}
             onMouseLeave={(e) => { e.currentTarget.style.gap = '0.4rem' }}
           >

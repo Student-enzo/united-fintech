@@ -47,13 +47,23 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
 
       {/* Active: bottom content */}
       <div
-        className="absolute bottom-0 left-0 right-0 p-5 transition-opacity duration-500"
+        className="absolute bottom-0 left-0 right-0 p-6 transition-opacity duration-500"
         style={{ opacity: isActive ? 1 : 0 }}
       >
-        <p style={{ color: '#2BB8E6', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.4rem' }}>
+        <p style={{
+          color: '#2BB8E6', fontSize: '0.75rem', fontWeight: 700,
+          letterSpacing: '0.14em', marginBottom: '0.6rem',
+          textShadow: '0 1px 6px rgba(0,0,0,1)',
+          fontFamily: 'var(--font-heading)',
+        }}>
           {item.subtitle.toUpperCase()}
         </p>
-        <p style={{ color: '#E8EDF2', fontSize: '1rem', fontWeight: 700, lineHeight: 1.3 }}>
+        <p style={{
+          color: '#ffffff', fontSize: 'clamp(1.25rem, 2vw, 1.75rem)',
+          fontWeight: 800, lineHeight: 1.2,
+          fontFamily: 'var(--font-heading)', letterSpacing: '0.02em',
+          textShadow: '0 1px 3px rgba(0,0,0,1), 0 3px 14px rgba(0,0,0,0.95)',
+        }}>
           {item.title}
         </p>
       </div>
