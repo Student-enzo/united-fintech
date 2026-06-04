@@ -29,7 +29,7 @@ const CARDS: CardStackItem[] = [
   },
   {
     id: 4,
-    title: 'Chargeback Defense',
+    title: 'Chargeback Defense.',
     description: 'Reserves, disputes, compliance — handled from day one, not day ninety.',
     imageSrc: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
     tag: 'Risk Control',
@@ -48,119 +48,129 @@ export default function WhyUs() {
   return (
     <section
       id="partners"
-      style={{ backgroundColor: '#161616', padding: '7rem 1.5rem', overflow: 'hidden' }}
+      style={{ backgroundColor: '#161616', padding: '7rem 0', overflow: 'hidden' }}
     >
-      <div
-        style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gap: '4rem', alignItems: 'center' }}
-        className="grid grid-cols-1 lg:grid-cols-2"
-      >
-        {/* Left — copy */}
-        <div>
-          <span style={{
-            display: 'inline-block', padding: '0.3rem 0.875rem',
-            backgroundColor: 'rgba(43,184,230,0.12)',
-            border: '1px solid rgba(43,184,230,0.3)',
-            borderRadius: 999, color: CYAN,
-            fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em',
-            marginBottom: '2rem', textTransform: 'uppercase',
-          }}>
-            Why United Fintech
-          </span>
+      {/* Text header — constrained width */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem', marginBottom: '4.5rem' }}>
+        <div
+          style={{ display: 'grid', gap: '3rem', alignItems: 'start' }}
+          className="grid grid-cols-1 lg:grid-cols-2"
+        >
+          {/* Left — headline */}
+          <div>
+            <span style={{
+              display: 'inline-block', padding: '0.3rem 0.875rem',
+              backgroundColor: 'rgba(43,184,230,0.12)',
+              border: '1px solid rgba(43,184,230,0.3)',
+              borderRadius: 999, color: CYAN,
+              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em',
+              marginBottom: '2rem', textTransform: 'uppercase',
+            }}>
+              Why United Fintech
+            </span>
 
-          <h2
-            className="chrome-text heading-tracked"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
-              fontWeight: 600,
-              lineHeight: 1.0,
-              marginBottom: '0.5rem',
-            }}
-          >
-            The banks that say yes.
-          </h2>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
-              fontWeight: 600,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              lineHeight: 1.0,
-              color: CYAN,
-              marginBottom: '2rem',
-            }}
-          >
-            We know them.
-          </h2>
-
-          <p style={{
-            color: 'rgba(232,237,242,0.65)',
-            fontSize: '1.1rem', lineHeight: 1.75,
-            maxWidth: 400, marginBottom: '2.5rem',
-          }}>
-            High-risk, cross-border, complex — these are the merchants we built our entire network for. Not scraped leads. Not cold outreach. Actual phone calls to people we know.
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '3rem' }}>
-            {[
-              { num: '150+', label: 'Acquiring banks & processors' },
-              { num: '30+',  label: 'Countries with live relationships' },
-              { num: '99.9%', label: 'Client retention rate' },
-            ].map((s) => (
-              <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <span style={{
-                  color: CYAN,
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: 700,
-                  fontSize: '1.75rem',
-                  minWidth: 72,
-                  lineHeight: 1,
-                }}>
-                  {s.num}
-                </span>
-                <span style={{ color: 'rgba(232,237,242,0.5)', fontSize: '0.9rem', letterSpacing: '0.02em' }}>
-                  {s.label}
-                </span>
-              </div>
-            ))}
+            <h2
+              className="chrome-text heading-tracked"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
+                fontWeight: 600,
+                lineHeight: 1.0,
+                marginBottom: '0.5rem',
+              }}
+            >
+              The banks that say yes.
+            </h2>
+            <h2
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: 'clamp(2.25rem, 4.5vw, 3.75rem)',
+                fontWeight: 600,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                lineHeight: 1.0,
+                color: CYAN,
+              }}
+            >
+              We know them.
+            </h2>
           </div>
 
-          <a
-            ref={consultationRef}
-            href="#consultation"
-            className="btn-cyan"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              padding: '0.875rem 1.875rem',
-              fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none',
-              borderRadius: 999,
-            }}
-          >
-            Start a conversation
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
+          {/* Right — description + stats + CTA */}
+          <div style={{ paddingTop: '0.5rem' }}>
+            <p style={{
+              color: 'rgba(232,237,242,0.65)',
+              fontSize: '1.1rem', lineHeight: 1.75,
+              maxWidth: 420, marginBottom: '2rem',
+            }}>
+              High-risk, cross-border, complex — these are the merchants we built our entire network for. Not scraped leads. Not cold outreach. Actual phone calls to people we know.
+            </p>
 
-        {/* Right — card stack */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <CardStack
-            items={CARDS}
-            cardWidth={400}
-            cardHeight={270}
-            autoAdvance
-            intervalMs={3200}
-            pauseOnHover
-            showDots
-            overlap={0.5}
-            spreadDeg={40}
-            depthPx={100}
-            activeLiftPx={18}
-          />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2.5rem' }}>
+              {[
+                { num: '150+', label: 'Acquiring banks & processors' },
+                { num: '30+',  label: 'Countries with live relationships' },
+                { num: '99.9%', label: 'Client retention rate' },
+              ].map((s) => (
+                <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                  <span style={{
+                    color: CYAN,
+                    fontFamily: 'var(--font-heading)',
+                    fontWeight: 700,
+                    fontSize: '1.75rem',
+                    minWidth: 72,
+                    lineHeight: 1,
+                  }}>
+                    {s.num}
+                  </span>
+                  <span style={{ color: 'rgba(232,237,242,0.5)', fontSize: '0.9rem', letterSpacing: '0.02em' }}>
+                    {s.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <a
+              ref={consultationRef}
+              href="#consultation"
+              className="btn-cyan"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.875rem 1.875rem',
+                fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none',
+                borderRadius: 999,
+              }}
+            >
+              Start a conversation
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
+
+      {/* Full-width flat card fan */}
+      <CardStack
+        items={CARDS}
+        cardWidth={320}
+        cardHeight={430}
+        autoAdvance
+        intervalMs={3200}
+        pauseOnHover
+        showDots
+        overlap={0.38}
+        spreadDeg={22}
+        perspectivePx={2400}
+        depthPx={0}
+        tiltXDeg={0}
+        activeLiftPx={14}
+        activeScale={1.06}
+        inactiveScale={0.90}
+        maxVisible={5}
+        springStiffness={260}
+        springDamping={30}
+      />
     </section>
   )
 }
