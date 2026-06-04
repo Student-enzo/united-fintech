@@ -24,7 +24,7 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
         flexGrow: isActive ? 1 : 0,
         flexBasis: isActive ? 0 : '60px',
         width: isActive ? undefined : '60px',
-        height: 520,
+        height: 420,
       }}
       onMouseEnter={onMouseEnter}
     >
@@ -42,27 +42,27 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
           t.src = 'https://placehold.co/400x480/1e1e1e/2BB8E6?text=UF'
         }}
       />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)' }} />
+      {/* Gradient overlay — darker for readability */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.75) 100%)' }} />
 
-      {/* Active: bottom content */}
+      {/* Active: centered content */}
       <div
-        className="absolute bottom-0 left-0 right-0 p-6 transition-opacity duration-500"
-        style={{ opacity: isActive ? 1 : 0 }}
+        className="absolute inset-0 flex flex-col items-center justify-center px-8 transition-opacity duration-500"
+        style={{ opacity: isActive ? 1 : 0, textAlign: 'center' }}
       >
         <p style={{
-          color: '#2BB8E6', fontSize: '0.75rem', fontWeight: 700,
-          letterSpacing: '0.14em', marginBottom: '0.6rem',
-          textShadow: '0 1px 6px rgba(0,0,0,1)',
+          color: '#2BB8E6', fontSize: '0.72rem', fontWeight: 800,
+          letterSpacing: '0.2em', marginBottom: '0.75rem',
+          textShadow: '0 0 12px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1)',
           fontFamily: 'var(--font-heading)',
         }}>
           {item.subtitle.toUpperCase()}
         </p>
         <p style={{
-          color: '#ffffff', fontSize: 'clamp(1.25rem, 2vw, 1.75rem)',
-          fontWeight: 800, lineHeight: 1.2,
-          fontFamily: 'var(--font-heading)', letterSpacing: '0.02em',
-          textShadow: '0 1px 3px rgba(0,0,0,1), 0 3px 14px rgba(0,0,0,0.95)',
+          color: '#ffffff', fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+          fontWeight: 900, lineHeight: 1.15,
+          fontFamily: 'var(--font-heading)', letterSpacing: '0.01em',
+          textShadow: '0 2px 8px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.8)',
         }}>
           {item.title}
         </p>
@@ -79,6 +79,7 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => 
           transformOrigin: 'center center',
           color: '#E8EDF2',
           letterSpacing: '0.04em',
+          textShadow: '0 1px 4px rgba(0,0,0,0.9)',
         }}
       >
         {item.subtitle}
