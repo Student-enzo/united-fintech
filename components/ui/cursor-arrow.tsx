@@ -20,6 +20,7 @@ export function CursorArrowProvider({ children }: { children: React.ReactNode })
   const mouseRef = useRef<{ x: number; y: number } | null>(null)
   const rafRef = useRef<number>(0)
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const pendingRef = useRef<HTMLElement[]>([])
 
   const updateActive = useCallback(() => {
     let best: HTMLElement | null = null
@@ -32,7 +33,11 @@ export function CursorArrowProvider({ children }: { children: React.ReactNode })
 
   const register = useCallback((el: HTMLElement) => {
     ratiosRef.current.set(el, 0)
-    observerRef.current?.observe(el)
+    if (observerRef.current) {
+      observerRef.current.observe(el)
+    } else {
+      pendingRef.current.push(el)
+    }
     return () => {
       ratiosRef.current.delete(el)
       observerRef.current?.unobserve(el)
@@ -48,6 +53,10 @@ export function CursorArrowProvider({ children }: { children: React.ReactNode })
       },
       { threshold: Array.from({ length: 11 }, (_, i) => i / 10) }
     )
+    pendingRef.current.forEach(el => {
+      if (ratiosRef.current.has(el)) observerRef.current!.observe(el)
+    })
+    pendingRef.current = []
     return () => observerRef.current?.disconnect()
   }, [updateActive])
 
