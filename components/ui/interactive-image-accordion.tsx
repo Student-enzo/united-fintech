@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 export interface AccordionServiceItem {
   id: number
@@ -18,18 +18,24 @@ interface AccordionItemProps {
 const AccordionItem = ({ item, isActive, onMouseEnter }: AccordionItemProps) => {
   return (
     <div
-      className={`
-        relative rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-700 ease-in-out flex-shrink-0
-        ${isActive ? 'w-[380px]' : 'w-[60px]'}
-      `}
-      style={{ height: 480 }}
+      className="relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ease-in-out"
+      style={{
+        flexShrink: isActive ? 1 : 0,
+        flexGrow: isActive ? 1 : 0,
+        flexBasis: isActive ? 0 : '60px',
+        width: isActive ? undefined : '60px',
+        height: 520,
+      }}
       onMouseEnter={onMouseEnter}
     >
       <img
         src={item.imageUrl}
         alt={item.title}
         className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          animation: isActive ? 'accordion-ken-burns 12s ease-in-out infinite alternate' : 'none',
+          transformOrigin: 'center center',
+        }}
         onError={(e) => {
           const t = e.target as HTMLImageElement
           t.onerror = null
@@ -78,17 +84,41 @@ interface InteractiveImageAccordionProps {
 
 export function InteractiveImageAccordion({ items, defaultActiveIndex = 0 }: InteractiveImageAccordionProps) {
   const [activeIndex, setActiveIndex] = useState(defaultActiveIndex)
+  const pausedRef = useRef(false)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!pausedRef.current) {
+        setActiveIndex((prev) => (prev + 1) % items.length)
+      }
+    }, 3500)
+    return () => clearInterval(id)
+  }, [items.length])
 
   return (
-    <div className="flex flex-row items-stretch justify-center gap-3 overflow-x-auto pb-2">
-      {items.map((item, index) => (
-        <AccordionItem
-          key={item.id}
-          item={item}
-          isActive={index === activeIndex}
-          onMouseEnter={() => setActiveIndex(index)}
-        />
-      ))}
-    </div>
+    <>
+      <style>{`
+        @keyframes accordion-ken-burns {
+          0%   { transform: scale(1.0) translate(0%, 0%); }
+          33%  { transform: scale(1.08) translate(-1.5%, -1%); }
+          66%  { transform: scale(1.05) translate(1.5%, 1%); }
+          100% { transform: scale(1.1) translate(-1%, 1.5%); }
+        }
+      `}</style>
+      <div
+        className="flex flex-row items-stretch gap-3 w-full overflow-x-auto pb-2"
+        onMouseEnter={() => { pausedRef.current = true }}
+        onMouseLeave={() => { pausedRef.current = false }}
+      >
+        {items.map((item, index) => (
+          <AccordionItem
+            key={item.id}
+            item={item}
+            isActive={index === activeIndex}
+            onMouseEnter={() => setActiveIndex(index)}
+          />
+        ))}
+      </div>
+    </>
   )
 }

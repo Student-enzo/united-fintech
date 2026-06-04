@@ -8,6 +8,7 @@ import WhyUs from '@/components/sections/WhyUs'
 import Team from '@/components/sections/Team'
 import IdealClient from '@/components/sections/IdealClient'
 import Testimonials from '@/components/sections/Testimonials'
+import PartnersGravity from '@/components/sections/PartnersGravity'
 import BookCall from '@/components/sections/BookCall'
 import Footer from '@/components/sections/Footer'
 
@@ -76,6 +77,7 @@ export default function HomePage() {
       <Team />
       <IdealClient />
       <div id="insights"><Testimonials /></div>
+      <PartnersGravity />
       <BookCall />
       <Footer />
     </main>

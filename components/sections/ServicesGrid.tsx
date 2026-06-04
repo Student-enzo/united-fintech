@@ -42,11 +42,11 @@ const SERVICES: AccordionServiceItem[] = [
 
 export default function ServicesGrid() {
   return (
-    <section id="services" style={{ backgroundColor: '#161616', padding: '5rem 1.5rem' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+    <section id="services" style={{ backgroundColor: '#161616', padding: '5rem 0' }}>
 
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '3rem' }}>
+      {/* Header — constrained */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem', marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <p style={{ color: CYAN, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
               CONNECTED ACROSS COUNTRIES
@@ -68,11 +68,13 @@ export default function ServicesGrid() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </Link>
         </div>
-
-        {/* Accordion */}
-        <InteractiveImageAccordion items={SERVICES} defaultActiveIndex={2} />
-
       </div>
+
+      {/* Accordion — full bleed */}
+      <div style={{ padding: '0 1.5rem' }}>
+        <InteractiveImageAccordion items={SERVICES} defaultActiveIndex={2} />
+      </div>
+
     </section>
   )
 }
