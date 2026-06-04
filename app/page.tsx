@@ -19,7 +19,7 @@ export default function HomePage() {
       <StatsBar />
       <ScrollExpandMedia
         mediaType="image"
-        mediaSrc="https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        mediaSrc="/scroll-expand-bg.png"
         bgImageSrc="https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1600"
         title="Scale Without Limits Globally"
         scrollToExpand="Scroll to expand"
