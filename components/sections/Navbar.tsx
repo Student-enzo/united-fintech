@@ -73,8 +73,8 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="United Fintech — Global Interchange"
-            width={200} height={40}
-            style={{ height: 40, width: 'auto', objectFit: 'contain' }}
+            width={320} height={64}
+            style={{ height: 64, width: 'auto', objectFit: 'contain' }}
             priority
           />
         </Link>
