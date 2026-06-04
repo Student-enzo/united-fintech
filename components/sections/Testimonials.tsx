@@ -70,10 +70,14 @@ export default function Testimonials() {
                 arrayLength={TESTIMONIALS.length}
                 index={i + 2}
                 variant="light"
+                style={{
+                  background: "linear-gradient(135deg, #ffffff 0%, #eaedf2 35%, #6b7280 58%, #1a1d27 100%)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
               >
                 {/* Quote */}
                 <div className="flex flex-col items-center gap-4 text-center w-full">
-                  <blockquote style={{ color: "rgba(15,20,30,0.85)", fontSize: "0.93rem", lineHeight: 1.7, fontStyle: "italic" }}>
+                  <blockquote style={{ color: "rgba(15,20,30,0.82)", fontSize: "0.93rem", lineHeight: 1.7, fontStyle: "italic" }}>
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                 </div>
@@ -92,12 +96,22 @@ export default function Testimonials() {
                   />
                   <div style={{ textAlign: "left", flex: 1 }}>
                     <p style={{ fontWeight: 700, color: "#0D1B2A", fontSize: "0.9rem", lineHeight: 1.2 }}>{t.name}</p>
-                    <p style={{ color: "#6B7280", fontSize: "0.72rem", marginTop: 2 }}>{t.role}</p>
+                    <p style={{ color: "#4B5563", fontSize: "0.72rem", marginTop: 2 }}>{t.role}</p>
                     <p style={{ color: "#2BB8E6", fontSize: "0.65rem", letterSpacing: "0.07em", marginTop: 2 }}>{t.region}</p>
                   </div>
-                  {/* UF logo */}
+                  {/* UF logo — transparent, sits on the dark part of the gradient */}
                   <div style={{ marginLeft: "auto", flexShrink: 0 }}>
-                    <Image src="/uf-logo-icon.png" alt="United Fintech" width={44} height={44} style={{ objectFit: "contain", display: "block" }} />
+                    <Image
+                      src="/uf-logo-icon-transparent.png"
+                      alt="United Fintech"
+                      width={44}
+                      height={44}
+                      style={{
+                        objectFit: "contain",
+                        display: "block",
+                        filter: "drop-shadow(0 0 6px rgba(43,184,230,0.35))",
+                      }}
+                    />
                   </div>
                 </div>
               </CardTransformed>

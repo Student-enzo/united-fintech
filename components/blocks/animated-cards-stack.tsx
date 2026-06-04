@@ -9,6 +9,7 @@ import {
   useMotionTemplate,
   useScroll,
   useTransform,
+  cubicBezier,
 } from "framer-motion"
 import { cn } from "@/lib/utils"
 
@@ -111,8 +112,9 @@ export const CardTransformed = React.forwardRef<HTMLDivElement, CardStickyProps>
     const range = React.useMemo(() => [start, end], [start, end])
     const rotateRange = [range[0] - 1.5, range[1] / 1.5]
 
-    const y = useTransform(scrollYProgress, range, ["0%", "-180%"])
-    const rotate = useTransform(scrollYProgress, rotateRange, [rotation, 0])
+    const ease = cubicBezier(0.25, 0.46, 0.45, 0.94)
+    const y = useTransform(scrollYProgress, range, ["0%", "-180%"], { ease })
+    const rotate = useTransform(scrollYProgress, rotateRange, [rotation, 0], { ease })
     const transform = useMotionTemplate`translateZ(${index * incrementZ}px) translateY(${y}) rotate(${rotate}deg)`
 
     const dx = useTransform(scrollYProgress, rotateRange, [4, 0])
