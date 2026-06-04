@@ -3,15 +3,14 @@
 import { motion } from 'framer-motion'
 import { CpuArchitecture } from '@/components/ui/cpu-architecture'
 
-
 export default function PaymentArchitecture() {
   return (
     <section style={{
-      background: 'linear-gradient(to bottom, #0A0C12 0%, #0D1118 100%)',
+      background: '#161616',
       borderTop: '1px solid rgba(255,255,255,0.05)',
       borderBottom: '1px solid rgba(255,255,255,0.05)',
       overflow: 'hidden',
-      padding: '4rem 1.5rem',
+      padding: '5rem 1.5rem 4rem',
     }}>
       <div className="max-w-5xl mx-auto">
         <motion.div
@@ -19,7 +18,7 @@ export default function PaymentArchitecture() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
-          style={{ textAlign: 'center', marginBottom: '2.5rem' }}
+          style={{ textAlign: 'center', marginBottom: '3rem' }}
         >
           <p style={{
             color: '#2BB8E6', fontSize: '0.7rem', fontWeight: 700,
@@ -50,7 +49,7 @@ export default function PaymentArchitecture() {
           </p>
         </motion.div>
 
-        {/* SVG fills the container; paths scale naturally */}
+        {/* SVG diagram */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -58,9 +57,43 @@ export default function PaymentArchitecture() {
           transition={{ duration: 1, delay: 0.2 }}
           style={{ color: 'rgba(43,184,230,0.18)' }}
         >
-          <div style={{ minHeight: 260, maxHeight: 380 }}>
+          <div style={{ minHeight: 340 }}>
             <CpuArchitecture width="100%" height="100%" className="w-full" />
           </div>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.4 }}
+          style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '3rem' }}
+        >
+          <a
+            href="#consultation"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.875rem 2rem', borderRadius: 999,
+              backgroundColor: '#2BB8E6', color: '#161616',
+              fontWeight: 700, fontSize: '0.95rem', textDecoration: 'none',
+              boxShadow: '0 0 28px rgba(43,184,230,0.3)',
+            }}
+          >
+            Book a Consultation →
+          </a>
+          <a
+            href="#services"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.875rem 2rem', borderRadius: 999,
+              border: '1px solid rgba(255,255,255,0.15)', color: '#E8EDF2',
+              fontWeight: 600, fontSize: '0.95rem', textDecoration: 'none',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            Our Solutions
+          </a>
         </motion.div>
       </div>
     </section>

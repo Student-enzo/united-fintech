@@ -14,21 +14,28 @@ export interface CpuArchitectureSvgProps {
   animateMarkers?: boolean
 }
 
-// Mini credit card at a given (cx,cy) with an accent color
+// Premium dark credit card
 function Card({ cx, cy, accent }: { cx: number; cy: number; accent: string }) {
   return (
-    <g transform={`translate(${cx},${cy})`}>
-      <rect x="-8" y="-5" width="16" height="10" rx="1.5"
-        fill="#0c1220" stroke={accent} strokeWidth="0.5" opacity="0.95" />
-      {/* EMV chip */}
-      <rect x="-6" y="-1.8" width="4" height="3.2" rx="0.5"
-        fill="#8a7040" stroke="#b89050" strokeWidth="0.25" />
-      <line x1="-6" y1="-0.2" x2="-2" y2="-0.2" stroke="#6a5030" strokeWidth="0.25" />
-      {/* Magnetic stripe */}
-      <rect x="-8" y="-0.8" width="16" height="2" fill="rgba(0,0,0,0.35)" />
-      {/* Brand mark dot */}
-      <circle cx="4.5" cy="-2.5" r="1.2" fill={accent} opacity="0.6" />
-      <circle cx="6.2" cy="-2.5" r="1.2" fill={accent} opacity="0.35" />
+    <g transform={`translate(${cx},${cy})`} opacity="0.92">
+      {/* Card body — dark gradient with silver border */}
+      <rect x="-9" y="-6" width="18" height="12" rx="1.8"
+        fill="url(#card-body-grad)" stroke="rgba(255,255,255,0.22)" strokeWidth="0.35" />
+      {/* Subtle accent top-edge shimmer */}
+      <rect x="-9" y="-6" width="18" height="1.6" rx="1.8"
+        fill={accent} opacity="0.22" />
+      {/* EMV chip — gold gradient */}
+      <rect x="-6.5" y="-2.8" width="5" height="4" rx="0.7"
+        fill="url(#chip-grad)" stroke="rgba(200,155,50,0.5)" strokeWidth="0.2" />
+      <line x1="-6.5" y1="-0.8" x2="-1.5" y2="-0.8" stroke="rgba(180,130,40,0.35)" strokeWidth="0.15" />
+      <line x1="-4" y1="-2.8" x2="-4" y2="1.2" stroke="rgba(180,130,40,0.35)" strokeWidth="0.15" />
+      {/* Card number dots */}
+      {[-2.2, -0.4, 1.4, 3.2].map((dx, i) => (
+        <circle key={i} cx={dx} cy="2.8" r="0.45" fill="rgba(255,255,255,0.32)" />
+      ))}
+      {/* Brand mark — overlapping circles */}
+      <circle cx="4.6" cy="-3.6" r="1.5" fill={accent} opacity="0.75" />
+      <circle cx="6.5" cy="-3.6" r="1.5" fill={accent} opacity="0.38" />
     </g>
   )
 }
@@ -99,15 +106,15 @@ const CpuArchitecture = ({
         <circle className="cpu-architecture cpu-line-8" cx="0" cy="0" r="8" fill="url(#cpu-rose-grad)" />
       </g>
 
-      {/* Credit cards at path origins */}
-      <Card cx={10}   cy={20}  accent="#0088FF" />
-      <Card cx={180}  cy={10}  accent="#FFD800" />
-      <Card cx={130}  cy={20}  accent="#FF008B" />
-      <Card cx={170}  cy={80}  accent="#ffffff" />
-      <Card cx={135}  cy={65}  accent="#22c55e" />
-      <Card cx={95}   cy={95}  accent="#f97316" />
-      <Card cx={88}   cy={88}  accent="#06b6d4" />
-      <Card cx={30}   cy={30}  accent="#f43f5e" />
+      {/* Credit cards at path origins — premium palette */}
+      <Card cx={10}   cy={20}  accent="#5B9BD5" />
+      <Card cx={180}  cy={10}  accent="#C4A436" />
+      <Card cx={130}  cy={20}  accent="#9B4A8E" />
+      <Card cx={170}  cy={80}  accent="#B8C4CE" />
+      <Card cx={135}  cy={65}  accent="#3A8C6A" />
+      <Card cx={95}   cy={95}  accent="#C46030" />
+      <Card cx={88}   cy={88}  accent="#2BB8E6" />
+      <Card cx={30}   cy={30}  accent="#C45A5A" />
 
       {/* POS Terminal (replaces CPU box) */}
       <g>
@@ -203,6 +210,19 @@ const CpuArchitecture = ({
           <path d="M 30 30 h 25 q 5 0 5 5 v 6.5 q 0 5 5 5 h 35"
             strokeWidth="0.5" stroke="white" />
         </mask>
+
+        {/* Card body gradient — dark premium */}
+        <linearGradient id="card-body-grad" x1="0" y1="0" x2="0.4" y2="1">
+          <stop offset="0%" stopColor="#1e2638" />
+          <stop offset="100%" stopColor="#080d16" />
+        </linearGradient>
+
+        {/* EMV chip gradient — gold */}
+        <linearGradient id="chip-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#d4a843" />
+          <stop offset="45%" stopColor="#8a6a28" />
+          <stop offset="100%" stopColor="#c4983a" />
+        </linearGradient>
 
         {/* Radial gradients for orbs */}
         <radialGradient id="cpu-blue-grad" fx="1">
