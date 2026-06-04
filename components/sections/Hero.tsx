@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { GlobeCdn } from '@/components/ui/cobe-globe-cdn'
 
 const CYAN = '#2BB8E6'
 const BG = '#161616'
@@ -133,39 +134,49 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right — stats cards */}
-        <div className="hidden lg:flex" style={{ flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}>
-          {STATS.map((s) => (
-            <div
-              key={s.label}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                padding: '1rem 1.5rem',
-                backgroundColor: 'rgba(22,22,22,0.8)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(43,184,230,0.15)',
-                borderRadius: 16,
-                minWidth: 260,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-              }}
-            >
-              <div style={{
-                width: 38, height: 38, borderRadius: 10,
-                backgroundColor: 'rgba(43,184,230,0.1)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                {s.icon}
+        {/* Right — interactive globe */}
+        <div className="hidden lg:flex" style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          {/* Ambient glow behind globe */}
+          <div style={{
+            position: 'absolute',
+            width: '60%', height: '60%',
+            background: 'radial-gradient(circle, rgba(43,184,230,0.18) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(40px)',
+            pointerEvents: 'none',
+          }} />
+          <GlobeCdn className="w-full max-w-[520px]" speed={0.003} />
+          {/* Stats row below globe */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '0.5rem',
+            marginTop: '1.5rem',
+            width: '100%',
+            maxWidth: 520,
+          }}>
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.75rem 0.5rem',
+                  backgroundColor: 'rgba(22,22,22,0.75)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(43,184,230,0.15)',
+                  borderRadius: 12,
+                  textAlign: 'center',
+                }}
+              >
+                <p style={{ color: CYAN, fontWeight: 900, fontSize: '1.1rem', lineHeight: 1 }}>{s.value}</p>
+                <p style={{ color: MUTED, fontSize: '0.65rem', lineHeight: 1.3 }}>{s.label}</p>
               </div>
-              <div>
-                <p style={{ color: CYAN, fontWeight: 900, fontSize: '1.5rem', lineHeight: 1, marginBottom: '0.1rem' }}>{s.value}</p>
-                <p style={{ color: MUTED, fontSize: '0.78rem' }}>{s.label}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
