@@ -11,8 +11,8 @@ export default function StatsBar() {
   return (
     <section style={{ backgroundColor: '#0A0C12', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
       <div className="max-w-7xl mx-auto px-6" style={{ padding: '2.5rem 1.5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}
-          className="grid grid-cols-2 md:grid-cols-4">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}
+          className="grid grid-cols-4">
           {STATS.map((stat, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
               <div style={{
