@@ -13,7 +13,207 @@ import {
   ChevronRight,
   ChevronLeft,
   Upload,
+  Link2,
+  Copy,
+  Check,
+  Clock,
+  ExternalLink,
+  UserPlus,
+  ClipboardEdit,
 } from 'lucide-react'
+
+// ─── Mock pending client applications ─────────────────────────────────────────
+
+const MOCK_PENDING = [
+  {
+    id: 'app_001',
+    businessName: 'Sunset Spirits LLC',
+    submittedAt: '2026-06-04T14:32:00',
+    step: 'Documents uploaded',
+    status: 'complete',
+  },
+  {
+    id: 'app_002',
+    businessName: 'Harbour Beauty Bar',
+    submittedAt: '2026-06-03T10:15:00',
+    step: 'Awaiting documents',
+    status: 'partial',
+  },
+  {
+    id: 'app_003',
+    businessName: 'Atlantic Logistics Co.',
+    submittedAt: '2026-06-02T09:00:00',
+    step: 'Link not yet opened',
+    status: 'pending',
+  },
+]
+
+// ─── Link Generator ───────────────────────────────────────────────────────────
+
+function ClientLinkGenerator() {
+  const [businessName, setBusinessName] = useState('')
+  const [token, setToken] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+
+  function generate() {
+    const rand = Math.random().toString(36).slice(2, 10)
+    setToken(rand)
+    setCopied(false)
+  }
+
+  const url = token
+    ? `${typeof window !== 'undefined' ? window.location.origin : 'https://unitedfintech.io'}/apply/${token}`
+    : null
+
+  function copyLink() {
+    if (!url) return
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2200)
+    })
+  }
+
+  const statusColor: Record<string, string> = {
+    complete: '#6EE7B7',
+    partial:  '#FCD34D',
+    pending:  'rgba(255,255,255,0.35)',
+  }
+  const statusBg: Record<string, string> = {
+    complete: 'rgba(110,231,183,0.1)',
+    partial:  'rgba(251,191,36,0.1)',
+    pending:  'rgba(255,255,255,0.05)',
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Generator card */}
+      <div
+        className="rounded-2xl p-6"
+        style={{ backgroundColor: '#1c1c1c', border: '1px solid rgba(144,196,207,0.15)' }}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ backgroundColor: 'rgba(144,196,207,0.12)' }}>
+            <Link2 size={15} style={{ color: '#90c4cf' }} />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-white">Send Client Link</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              Client fills out their own info — you just review & add rates
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            value={businessName}
+            onChange={e => setBusinessName(e.target.value)}
+            placeholder="Client business name (optional)"
+            className="flex-1 rounded-xl px-4 py-2.5 text-sm focus:outline-none"
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(144,196,207,0.2)',
+              color: 'rgba(255,255,255,0.85)',
+            }}
+          />
+          <button
+            onClick={generate}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-opacity hover:opacity-85"
+            style={{ backgroundColor: '#90c4cf', color: '#111' }}
+          >
+            <Link2 size={14} /> Generate Link
+          </button>
+        </div>
+
+        {url && (
+          <div className="mt-4 flex flex-col gap-3">
+            <div
+              className="flex items-center gap-3 px-4 py-3 rounded-xl"
+              style={{ backgroundColor: 'rgba(144,196,207,0.07)', border: '1px solid rgba(144,196,207,0.2)' }}
+            >
+              <span className="text-xs flex-1 font-mono truncate" style={{ color: '#90c4cf' }}>{url}</span>
+              <button
+                onClick={copyLink}
+                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                style={copied
+                  ? { backgroundColor: 'rgba(110,231,183,0.15)', color: '#6EE7B7', border: '1px solid rgba(110,231,183,0.3)' }
+                  : { backgroundColor: 'rgba(144,196,207,0.12)', color: '#90c4cf', border: '1px solid rgba(144,196,207,0.25)' }
+                }
+              >
+                {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy</>}
+              </button>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                style={{ backgroundColor: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                <ExternalLink size={12} /> Preview
+              </a>
+            </div>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Share this link with your client. They'll fill out business info, owner details, processing history, and upload documents.
+              You'll review and set rates once they submit.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Pending applications */}
+      <div>
+        <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          Pending Client Applications
+        </p>
+        <div className="flex flex-col gap-2">
+          {MOCK_PENDING.map(app => (
+            <div
+              key={app.id}
+              className="flex items-center gap-4 px-5 py-4 rounded-xl"
+              style={{ backgroundColor: '#1c1c1c', border: '1px solid rgba(255,255,255,0.07)' }}
+            >
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: statusBg[app.status] }}>
+                {app.status === 'complete'
+                  ? <CheckCircle size={14} style={{ color: statusColor[app.status] }} />
+                  : <Clock size={14} style={{ color: statusColor[app.status] }} />
+                }
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold truncate" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                  {app.businessName}
+                </p>
+                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  {app.step} · {new Date(app.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </p>
+              </div>
+              {app.status === 'complete' && (
+                <button
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
+                  style={{ backgroundColor: 'rgba(110,231,183,0.12)', color: '#6EE7B7', border: '1px solid rgba(110,231,183,0.25)' }}
+                >
+                  Review & Set Rates →
+                </button>
+              )}
+              {app.status === 'partial' && (
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-lg"
+                  style={{ backgroundColor: 'rgba(251,191,36,0.1)', color: '#FCD34D', border: '1px solid rgba(251,191,36,0.2)' }}>
+                  In Progress
+                </span>
+              )}
+              {app.status === 'pending' && (
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-lg"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  Not Opened
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -674,8 +874,11 @@ function Step6({ data }: { data: FormData }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
+type OnboardMode = 'client_link' | 'admin_fill'
+
 export default function OnboardingPage() {
   const router = useRouter()
+  const [mode, setMode] = useState<OnboardMode>('client_link')
   const [step, setStep] = useState(0)
   const [data, setData] = useState<FormData>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
@@ -702,7 +905,6 @@ export default function OnboardingPage() {
 
   async function handleSubmit() {
     setSubmitting(true)
-    // Simulate API call
     await new Promise(r => setTimeout(r, 1400))
     setSubmitting(false)
     setSubmitted(true)
@@ -748,17 +950,48 @@ export default function OnboardingPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Link href="/admin" className="text-sm transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>←</Link>
-            <h1 className="text-3xl font-bold text-white">Merchant Onboarding</h1>
+            <h1 className="text-3xl font-bold text-white">Onboarding</h1>
           </div>
           <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            New merchant application — Step {step + 1} of {STEPS.length}
+            Add a new merchant to the pipeline
           </p>
         </div>
       </div>
+
+      {/* Mode toggle */}
+      <div className="flex gap-2 mb-8">
+        <button
+          onClick={() => setMode('client_link')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+          style={mode === 'client_link'
+            ? { backgroundColor: 'rgba(144,196,207,0.12)', color: '#90c4cf', border: '1px solid rgba(144,196,207,0.35)' }
+            : { backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.08)' }
+          }
+        >
+          <UserPlus size={14} /> Send Client Link
+        </button>
+        <button
+          onClick={() => setMode('admin_fill')}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+          style={mode === 'admin_fill'
+            ? { backgroundColor: 'rgba(144,196,207,0.12)', color: '#90c4cf', border: '1px solid rgba(144,196,207,0.35)' }
+            : { backgroundColor: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.08)' }
+          }
+        >
+          <ClipboardEdit size={14} /> Admin Fill
+        </button>
+      </div>
+
+      {/* Client Link mode */}
+      {mode === 'client_link' && <ClientLinkGenerator />}
+
+      {/* Admin Fill mode — existing 6-step form */}
+      {mode === 'admin_fill' && (
+        <div>
 
       {/* Progress bar */}
       <div className="mb-8">
@@ -865,6 +1098,8 @@ export default function OnboardingPage() {
           </button>
         )}
       </div>
+      </div>
+      )}
     </div>
   )
 }

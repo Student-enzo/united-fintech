@@ -28,8 +28,7 @@ import {
   CreditCard,
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
-
-const CYAN = '#90c4cf'
+import { BRAND } from '@/lib/brand'
 
 function SectionHeader({ label }: { label: string }) {
   return (
@@ -48,15 +47,21 @@ function NavItem({
   icon: Icon,
   pathname,
   onClick,
+  badge,
+  matchPaths,
 }: {
   href: string
   label: string
   icon: React.ElementType
   pathname: string
   onClick?: () => void
+  badge?: number
+  matchPaths?: string[]
 }) {
   const isActive =
-    pathname === href || (href !== '/admin' && pathname.startsWith(href + '/'))
+    pathname === href ||
+    (href !== '/admin' && pathname.startsWith(href + '/')) ||
+    (matchPaths?.some(p => pathname.startsWith(p)) ?? false)
 
   return (
     <Link
@@ -67,7 +72,7 @@ function NavItem({
         isActive
           ? {
               backgroundColor: 'rgba(144,196,207,0.08)',
-              color: CYAN,
+              color: BRAND.cyan,
               boxShadow: 'inset 3px 0 0 0 #90c4cf',
             }
           : { color: 'rgba(255,255,255,0.55)' }
@@ -81,6 +86,12 @@ function NavItem({
     >
       <Icon size={15} />
       <span className="tracking-wide">{label}</span>
+      {badge !== undefined && badge > 0 && (
+        <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
+          style={{ backgroundColor: 'rgba(240,178,62,0.2)', color: '#FCD34D', border: '1px solid rgba(240,178,62,0.3)' }}>
+          {badge}
+        </span>
+      )}
     </Link>
   )
 }
@@ -147,26 +158,29 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <SectionHeader label="Pipeline" />
         <div className="flex flex-col gap-0.5">
           <NavItem href="/admin/merchants"   label="Merchants"        icon={Users}        pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/deals"       label="Deals & Proposals" icon={FileText}     pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/deals"       label="Deals & Proposals" icon={FileText}     pathname={pathname} onClick={onClose} badge={4} />
           <NavItem href="/admin/onboarding"  label="Onboarding"       icon={UserPlus}     pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/underwriting" label="Underwriting"    icon={ClipboardList} pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/agreements"  label="Agreements"       icon={ScrollText}   pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/underwriting" label="Underwriting"    icon={ClipboardList} pathname={pathname} onClick={onClose} badge={3} />
+          <NavItem href="/admin/agreements"  label="Agreements"       icon={ScrollText}   pathname={pathname} onClick={onClose} badge={2} />
         </div>
 
         <SectionHeader label="Risk" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/chargebacks" label="Chargebacks"      icon={AlertTriangle} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/chargebacks" label="Chargebacks"      icon={AlertTriangle} pathname={pathname} onClick={onClose} badge={1} />
           <NavItem href="/admin/attrition"   label="Attrition"        icon={TrendingDown}  pathname={pathname} onClick={onClose} />
           <NavItem href="/admin/compliance"  label="KYC / Compliance" icon={Shield}        pathname={pathname} onClick={onClose} />
         </div>
 
         <SectionHeader label="Finance" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/residuals"   label="Residuals"   icon={TrendingUp}  pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/commissions" label="Commissions" icon={DollarSign}  pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/cashflow"    label="Cash Flow"   icon={BarChart2}   pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/expenses"    label="Expenses"    icon={Receipt}     pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/payables"    label="Payables"    icon={CreditCard}  pathname={pathname} onClick={onClose} />
+          <NavItem
+            href="/admin/finance"
+            label="Finance"
+            icon={BarChart2}
+            pathname={pathname}
+            onClick={onClose}
+            matchPaths={['/admin/cashflow', '/admin/residuals', '/admin/commissions', '/admin/expenses', '/admin/payables']}
+          />
         </div>
 
         <SectionHeader label="Partners" />
