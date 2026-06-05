@@ -13,7 +13,7 @@ type ProviderData = {
 
 const PROVIDERS: Record<string, ProviderData> = {
   stripe: {
-    name: 'Stripe', logo: 'https://logo.clearbit.com/stripe.com', brandColor: '#635BFF',
+    name: 'Stripe', logo: '/logos/stripe.svg', brandColor: '#635BFF',
     tagline: 'The developer-first payments platform — and its hidden trade-offs.',
     subtitle: 'What high-volume merchants need to know before staying on standard rates.',
     pros: ['Best-in-class developer experience and documentation','Instant setup — live in minutes, no lengthy approval process','Excellent for SaaS, subscriptions, and marketplace models','Stripe Radar reduces fraud with machine learning included at base tier'],
@@ -29,7 +29,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "On Stripe's standard 2.9% rate? You're likely overpaying $1,500–$5,000/month. We negotiate custom interchange-plus rates and build backup processing strategies for Stripe-dependent businesses.",
   },
   paypal: {
-    name: 'PayPal', logo: 'https://logo.clearbit.com/paypal.com', brandColor: '#003087',
+    name: 'PayPal', logo: '/logos/paypal.svg', brandColor: '#003087',
     tagline: "The world's most recognized checkout button — with fees to match.",
     subtitle: "The trust signal your customers love. Here's how to use it without overpaying.",
     pros: ['Adds 2–3% conversion lift at checkout — buyers trust the PayPal badge','No monthly fees on standard accounts','PayPal Pay Later (BNPL) available natively with no integration work','Accepted in 200+ countries — strong international consumer trust'],
@@ -45,7 +45,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "Most businesses using PayPal as a primary processor overpay by 0.8–1.5% of gross revenue. We build you a payment stack where PayPal works as a trust layer — not your main cost center.",
   },
   visa: {
-    name: 'Visa', logo: 'https://logo.clearbit.com/visa.com', brandColor: '#1A1F71',
+    name: 'Visa', logo: '/logos/visa.svg', brandColor: '#1A1F71',
     tagline: "The world's largest card network — and the rules 90% of merchants have never read.",
     subtitle: 'Understanding Visa interchange categories alone can save thousands per month.',
     pros: ['Accepted in 200+ countries at 130M+ merchant locations worldwide','Wide product range from basic debit to Infinite Signature cards','3D Secure 2.0 shifts liability away from merchants for authenticated transactions','Visa Direct enables real-time push payments to cardholder accounts'],
@@ -61,7 +61,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We review your Visa interchange categories at no charge. Most merchants discover they're miscoded for $500–$5,000/month in avoidable fees.",
   },
   mastercard: {
-    name: 'Mastercard', logo: 'https://logo.clearbit.com/mastercard.com', brandColor: '#EB001B',
+    name: 'Mastercard', logo: '/logos/mastercard.svg', brandColor: '#EB001B',
     tagline: "The second-largest network with a premium cardholder base — and the fees to match.",
     subtitle: "World and World Elite interchange is higher. Here's how to manage it.",
     pros: ['200+ country acceptance, 90M+ merchant locations globally','World and World Elite cards signal high-value, high-spend customers','Mastercard Send enables real-time disbursements and B2B push payments','Identity Check (3DS2) shifts liability for authenticated CNP transactions'],
@@ -77,7 +77,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We identify your Mastercard World vs. standard transaction split and build surcharging or cash discount programs to offset premium interchange without losing the sale.",
   },
   adyen: {
-    name: 'Adyen', logo: 'https://logo.clearbit.com/adyen.com', brandColor: '#0ABF53',
+    name: 'Adyen', logo: '/logos/adyen.svg', brandColor: '#0ABF53',
     tagline: 'Enterprise payment infrastructure built for global scale — and what it really costs.',
     subtitle: "Powers McDonald's, Spotify, and Uber. The question is whether it's right for your volume.",
     pros: ['Single platform for online, in-store, and in-app payments across 35+ markets','Interchange-plus pricing — transparent and competitive at high volume','Native multi-currency settlement without third-party FX cost','Authorization rate optimization through machine learning and network tokens','No third-party gateway fees — fully integrated acquiring in key markets'],
@@ -93,7 +93,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We help merchants evaluate whether Adyen's total cost of ownership is justified at their volume versus Stripe, Checkout.com, or a direct acquiring relationship.",
   },
   tipalti: {
-    name: 'Tipalti', logo: 'https://logo.clearbit.com/tipalti.com', brandColor: '#0073CF',
+    name: 'Tipalti', logo: '/logos/tipalti.svg', brandColor: '#0073CF',
     tagline: 'The AP automation platform that eliminates supplier payment overhead at scale.',
     subtitle: "Not a merchant processor — a payout powerhouse. Here's when it's worth it.",
     pros: ['Automates the entire accounts payable workflow end-to-end','Supports 196 countries and 120+ currencies with local payment methods','Built-in W-9, W-8BEN collection and 1099/FATCA reporting automation','Self-service supplier portal removes admin burden from your AP team','Strong compliance and OFAC/sanctions screening on every payment'],
@@ -109,7 +109,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We map your accounts payable workflow and build an ROI model comparing your current process against Tipalti — including AP overhead, payment errors, tax compliance risk, and FX costs.",
   },
   braintree: {
-    name: 'Braintree', logo: 'https://logo.clearbit.com/braintreepayments.com', brandColor: '#009CDE',
+    name: 'Braintree', logo: '/logos/braintree.svg', brandColor: '#009CDE',
     tagline: "PayPal's enterprise payments arm — better rates and stability than PayPal's standard product.",
     subtitle: "The under-leveraged option for merchants who want PayPal's network without PayPal's complexity.",
     pros: ['First $50K processed monthly at $0 — genuinely free tier for qualifying accounts','Access to PayPal, Venmo, and PayPal Pay Later within one SDK integration','Full card vaulting and subscription billing infrastructure included','Developer APIs comparable to Stripe for technical capabilities','Interchange-plus pricing available for qualifying volume'],
@@ -125,7 +125,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "Many Stripe merchants don't realize Braintree replicates 80% of Stripe's capabilities at lower cost with PayPal network access included. We model the exact cost difference for your volume.",
   },
   airwallex: {
-    name: 'Airwallex', logo: 'https://logo.clearbit.com/airwallex.com', brandColor: '#1EA8D4',
+    name: 'Airwallex', logo: '/logos/airwallex.svg', brandColor: '#1EA8D4',
     tagline: 'Multi-currency financial infrastructure that turns cross-border complexity into a cost advantage.',
     subtitle: "FX savings of 0.5–2% are real at the right volume. Here's the threshold.",
     pros: ['Multi-currency accounts in 60+ currencies at interbank FX rates','Up to 1–2% savings on FX versus banks, Stripe, or PayPal currency conversion','Global payment acceptance in 180+ countries','Embedded finance APIs for platforms building financial products','$0 international wire fees in many high-volume corridors'],
@@ -141,7 +141,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We calculate your exact FX cost today — including hidden bank conversion margins and Stripe/PayPal surcharges — versus an Airwallex stack tailored to your specific payment corridors.",
   },
   fiserv: {
-    name: 'Fiserv', logo: 'https://logo.clearbit.com/fiserv.com', brandColor: '#FF6600',
+    name: 'Fiserv', logo: '/logos/fiserv.svg', brandColor: '#FF6600',
     tagline: 'The financial infrastructure giant behind more of your payments than you realize.',
     subtitle: 'Clover. First Data. Fiserv. All one company — and what that means for your contract terms.',
     pros: ['Largest US payment processor by volume — $2.5T+ processed annually','Clover POS hardware integration for omnichannel in-store merchants','Deep community bank relationships — merchant services for thousands of banks','Comprehensive B2B payment infrastructure and ACH processing','Strong enterprise features for large omnichannel retailers'],
@@ -157,7 +157,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We audit Fiserv and Clover contracts to identify hardware lease overcharges, hidden fees, and renegotiation leverage. Most merchants we audit save $300–$1,500/month.",
   },
   square: {
-    name: 'Square', logo: 'https://logo.clearbit.com/squareup.com', brandColor: '#3d3d3d',
+    name: 'Square', logo: '/logos/square.svg', brandColor: '#3d3d3d',
     tagline: 'The merchant ecosystem that changed small business payments — and its volume ceiling.',
     subtitle: "Right below $500K/year. Above that, you're probably overpaying significantly.",
     pros: ['Flat 2.6% + 10¢ in-person — simple, predictable, no surprise line items','Free POS software with inventory, employee management, and reporting','Same-day deposits available for 1.5% (next-business-day free)','No monthly fees on basic plan — ideal for seasonal or early-stage merchants','Strong hardware ecosystem: Reader, Terminal, Register for every format'],
@@ -173,7 +173,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "We benchmark your Square fees against interchange-plus processing at your exact volume. Most merchants above $30K/month can save $200–$600/month with the right processor.",
   },
   worldpay: {
-    name: 'Worldpay', logo: 'https://logo.clearbit.com/worldpay.com', brandColor: '#004B87',
+    name: 'Worldpay', logo: '/logos/worldpay.svg', brandColor: '#004B87',
     tagline: "One of the world's largest processors — and one of the most complex contracts to navigate.",
     subtitle: 'The questions you need answered before signing a Worldpay agreement.',
     pros: ['Processes 40+ billion transactions annually — scale and reliability are proven','Operates in 146 countries with broad international acquiring','Multiple acquiring relationships reduce authorization failure rates','Dedicated relationship management for enterprise accounts','Comprehensive fraud and risk management for high-volume merchants'],
@@ -189,7 +189,7 @@ const PROVIDERS: Record<string, ProviderData> = {
     consultationHook: "Before signing any Worldpay contract, we review termination clauses, pricing schedules, and SLA terms. Most merchants who don't negotiate these points spend $50,000–$500,000 more than they needed to.",
   },
   fis: {
-    name: 'FIS', logo: 'https://logo.clearbit.com/fisglobal.com', brandColor: '#2D4E91',
+    name: 'FIS', logo: '/logos/fis.svg', brandColor: '#2D4E91',
     tagline: 'The banking technology giant behind financial infrastructure most merchants never see.',
     subtitle: "If your bank does merchant services, FIS is probably involved. Here's what that means.",
     pros: ['Largest global fintech provider — processes over $10T in volume annually','NYCE, Pulse, and Star PIN debit network ownership provides broad coverage','Strong B2B payment and ACH infrastructure for institutional clients','Established relationships with thousands of banks for integrated solutions','Enterprise-grade security and compliance across all product lines'],

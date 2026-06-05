@@ -5,18 +5,18 @@ import { useRouter } from 'next/navigation'
 import { motion, useAnimation, useInView } from 'framer-motion'
 
 const PARTNERS = [
-  { name: 'Stripe',     slug: 'stripe',     logo: 'https://logo.clearbit.com/stripe.com',            style: { background: '#635BFF', color: '#fff' } },
-  { name: 'Square',     slug: 'square',     logo: 'https://logo.clearbit.com/squareup.com',           style: { background: '#1a1a1a', color: '#fff' } },
-  { name: 'Tipalti',    slug: 'tipalti',    logo: 'https://logo.clearbit.com/tipalti.com',            style: { background: '#0073CF', color: '#fff' } },
-  { name: 'Worldpay',   slug: 'worldpay',   logo: 'https://logo.clearbit.com/worldpay.com',           style: { background: '#004B87', color: '#fff' } },
-  { name: 'Fiserv',     slug: 'fiserv',     logo: 'https://logo.clearbit.com/fiserv.com',             style: { background: '#FF6600', color: '#fff' } },
-  { name: 'Mastercard', slug: 'mastercard', logo: 'https://logo.clearbit.com/mastercard.com',         style: { background: '#EB001B', color: '#fff' } },
-  { name: 'FIS',        slug: 'fis',        logo: 'https://logo.clearbit.com/fisglobal.com',          style: { background: '#2D4E91', color: '#fff' } },
-  { name: 'Braintree',  slug: 'braintree',  logo: 'https://logo.clearbit.com/braintreepayments.com', style: { background: '#009CDE', color: '#fff' } },
-  { name: 'Visa',       slug: 'visa',       logo: 'https://logo.clearbit.com/visa.com',               style: { background: '#1A1F71', color: '#FAA61A' } },
-  { name: 'Adyen',      slug: 'adyen',      logo: 'https://logo.clearbit.com/adyen.com',              style: { background: '#0ABF53', color: '#fff' } },
-  { name: 'Airwallex',  slug: 'airwallex',  logo: 'https://logo.clearbit.com/airwallex.com',          style: { background: '#1B2B4B', color: '#1EA8D4' } },
-  { name: 'PayPal',     slug: 'paypal',     logo: 'https://logo.clearbit.com/paypal.com',             style: { background: '#003087', color: '#F7C94B' } },
+  { name: 'Stripe',     slug: 'stripe',     logo: '/logos/stripe.svg',     style: { background: '#635BFF', color: '#fff' } },
+  { name: 'Square',     slug: 'square',     logo: '/logos/square.svg',     style: { background: '#1a1a1a', color: '#fff' } },
+  { name: 'Tipalti',    slug: 'tipalti',    logo: '/logos/tipalti.svg',    style: { background: '#0073CF', color: '#fff' } },
+  { name: 'Worldpay',   slug: 'worldpay',   logo: '/logos/worldpay.svg',   style: { background: '#004B87', color: '#fff' } },
+  { name: 'Fiserv',     slug: 'fiserv',     logo: '/logos/fiserv.svg',     style: { background: '#FF6600', color: '#fff' } },
+  { name: 'Mastercard', slug: 'mastercard', logo: '/logos/mastercard.svg', style: { background: '#EB001B', color: '#fff' } },
+  { name: 'FIS',        slug: 'fis',        logo: '/logos/fis.svg',        style: { background: '#2D4E91', color: '#fff' } },
+  { name: 'Braintree',  slug: 'braintree',  logo: '/logos/braintree.svg',  style: { background: '#009CDE', color: '#fff' } },
+  { name: 'Visa',       slug: 'visa',       logo: '/logos/visa.svg',       style: { background: '#1A1F71', color: '#FAA61A' } },
+  { name: 'Adyen',      slug: 'adyen',      logo: '/logos/adyen.svg',      style: { background: '#0ABF53', color: '#fff' } },
+  { name: 'Airwallex',  slug: 'airwallex',  logo: '/logos/airwallex.svg',  style: { background: '#1B2B4B', color: '#1EA8D4' } },
+  { name: 'PayPal',     slug: 'paypal',     logo: '/logos/paypal.svg',     style: { background: '#003087', color: '#F7C94B' } },
 ]
 
 const CONTAINER_H = 400
