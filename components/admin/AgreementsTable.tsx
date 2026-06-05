@@ -5,7 +5,7 @@ import {
   Search, X, Plus, ChevronDown, ChevronUp, ChevronsUpDown,
   MoreHorizontal, Eye, Pencil, FileDown, Copy, Download,
   AlertTriangle, CheckCircle2, Clock, Send, PenLine,
-  Activity, Ban, CalendarClock,
+  Activity, Ban, CalendarClock, ExternalLink, RefreshCw,
 } from 'lucide-react'
 import { fmtDate } from '@/lib/utils'
 import { BRAND } from '@/lib/brand'
@@ -388,9 +388,16 @@ function AlertSection({ agreements }: { agreements: Agreement[] }) {
                     <span className="text-xs font-semibold" style={{ color: BRAND.text }}>{a.merchant}</span>
                     <span className="text-[10px] ml-2" style={{ color: BRAND.muted }}>{a.mpa_number}</span>
                   </div>
-                  <span className="text-xs font-bold" style={{ color: days <= 30 ? BRAND.danger : BRAND.warn }}>
-                    {days}d left
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold" style={{ color: days <= 30 ? BRAND.danger : BRAND.warn }}>
+                      {days}d left
+                    </span>
+                    <button
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold whitespace-nowrap"
+                      style={{ backgroundColor: 'rgba(252,211,77,0.12)', color: '#FCD34D', border: '1px solid rgba(252,211,77,0.3)' }}>
+                      <RefreshCw size={9} /> Renew MPA
+                    </button>
+                  </div>
                 </div>
               )
             })}
@@ -579,8 +586,23 @@ export default function AgreementsTable() {
         )}
       </div>
 
-      {/* ── Status filter tabs ── */}
-      <div className="flex flex-wrap gap-1.5 mb-5">
+      {/* ── Status filter — mobile dropdown ── */}
+      <div className="lg:hidden mb-3">
+        <select
+          value={activeStatus}
+          onChange={e => { setActive(e.target.value as AgreementStatus | 'all'); setPage(1) }}
+          className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(144,196,207,0.25)', color: 'rgba(255,255,255,0.85)' }}>
+          {ALL_STATUSES.map(s => (
+            <option key={s} value={s}>
+              {s === 'all' ? 'All' : STATUS_META[s as AgreementStatus].label} ({statCounts[s]})
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* ── Status filter tabs — desktop pills ── */}
+      <div className="hidden lg:flex flex-wrap gap-1.5 mb-5">
         {ALL_STATUSES.map(s => {
           const meta = s === 'all' ? null : STATUS_META[s]
           const isActive = activeStatus === s
@@ -651,7 +673,12 @@ export default function AgreementsTable() {
                         {a.mpa_number}
                       </td>
                       <td className="px-5 py-3.5">
-                        <div className="text-sm font-semibold" style={{ color: BRAND.text }}>{a.merchant}</div>
+                        <a href="/admin/merchants"
+                          className="inline-flex items-center gap-1 hover:underline text-sm font-semibold"
+                          style={{ color: '#90c4cf' }}>
+                          {a.merchant}
+                          <ExternalLink size={11} />
+                        </a>
                         {a.notes && (
                           <div className="text-[10px] mt-0.5 truncate max-w-[180px]" style={{ color: BRAND.muted }}>
                             {a.notes}
@@ -679,7 +706,16 @@ export default function AgreementsTable() {
                         {a.rate_model}
                       </td>
                       <td className="px-5 py-3.5">
-                        <RowMenu agreement={a} onDuplicate={() => duplicateAgreement(a)} />
+                        <div className="flex items-center gap-1.5">
+                          {days !== null && days >= 0 && days <= EXPIRY_WARN_DAYS && (
+                            <button
+                              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold whitespace-nowrap"
+                              style={{ backgroundColor: 'rgba(252,211,77,0.12)', color: '#FCD34D', border: '1px solid rgba(252,211,77,0.3)' }}>
+                              <RefreshCw size={9} /> Renew MPA
+                            </button>
+                          )}
+                          <RowMenu agreement={a} onDuplicate={() => duplicateAgreement(a)} />
+                        </div>
                       </td>
                     </tr>
                   )

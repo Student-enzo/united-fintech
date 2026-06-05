@@ -36,6 +36,10 @@ export type MerchantRecord = {
   date_added: string
   notes?: string
   risk?: 'low' | 'medium' | 'high'
+  basis_points_earned?: number
+  owner_name?: string
+  contact_email?: string
+  contact_phone?: string
 }
 
 // ─── Stage metadata ──────────────────────────────────────────────────────────
@@ -199,23 +203,40 @@ function OverviewTab({ m }: { m: MerchantRecord }) {
   )
 }
 
+const STAGE_ACTIONS: Record<PipelineStage, string[]> = {
+  lead_identified:   ['Send proposal to decision maker', 'Confirm monthly volume estimate', 'Qualify card-present vs e-commerce mix'],
+  proposal_sent:     ['Follow up within 3 business days', 'Address objections on rate sheet', 'Confirm legal entity name matches ID'],
+  agreement_sent:    ['Verify agreement was received', 'Answer questions on terms', 'Set signing deadline reminder'],
+  agreement_signed:  ['Collect setup fee payment', 'Request bank statement + voided check', 'Confirm processor assignment'],
+  setup_fee_paid:    ['Submit underwriting package', 'Upload all KYC documents', 'Assign underwriter and set SLA'],
+  underwriting:      ['Monitor underwriting queue daily', 'Respond to UW info requests <24h', 'Confirm MCC approval with processor'],
+  account_activated: ['Send terminal / gateway credentials', 'Schedule merchant onboarding call', 'Confirm first batch settlement'],
+  merchant_live:     ['Verify first month residual', 'Review chargeback rate after 30 days', 'Schedule 90-day account review'],
+  declined:          ['Document decline reason', 'Notify partner ISO', 'Consider appeal or alternative processor'],
+}
+
 function PipelineTab({
-  m, onStageChange,
-}: { m: MerchantRecord; onStageChange: (id:string, stage:PipelineStage) => void }) {
+  m, onStageChange, addActivity,
+}: {
+  m: MerchantRecord
+  onStageChange: (id:string, stage:PipelineStage) => void
+  addActivity: (text: string, icon: React.ReactNode, color: string) => void
+}) {
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
   const [linkGenerated, setLinkGenerated] = useState(false)
   const curIdx   = STAGES.indexOf(m.pipeline_stage)
   const nextStage = curIdx >= 0 && curIdx < STAGES.length - 1 ? STAGES[curIdx + 1] : null
 
-  const showOnboardLink = ['lead_identified', 'proposal_sent', 'agreement_sent'].includes(m.pipeline_stage)
+  const showOnboardLink = !['account_activated', 'merchant_live', 'declined'].includes(m.pipeline_stage)
   const mockToken = `tok_${m.id.replace('m-', '')}_${m.name.split(' ')[0].toLowerCase()}`
   const applyUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://unitedfintech.com'}/apply/${mockToken}`
 
   function saveNote() {
     if (!note.trim()) return
     setSaving(true)
-    setTimeout(() => { setSaving(false); setNote('') }, 400)
+    addActivity(`Note: ${note.trim()}`, <FileText size={11}/>, BRAND.muted)
+    setTimeout(() => { setSaving(false); setNote('') }, 200)
   }
 
   return (
@@ -248,15 +269,16 @@ function PipelineTab({
                 </div>
                 <div className="flex gap-2">
                   <CopyLinkButton url={applyUrl} />
-                  <button
+                  <a
+                    href={`mailto:?subject=Application%20Link%20%E2%80%94%20${encodeURIComponent(m.name)}&body=Hi%2C%20please%20use%20this%20secure%20link%20to%20complete%20your%20application%3A%0A%0A${encodeURIComponent(applyUrl)}`}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:opacity-80"
                     style={{ backgroundColor:'rgba(255,255,255,0.04)', color:BRAND.muted, border:`1px solid ${BRAND.border}` }}>
                     <Mail size={12}/> Send via Email
-                  </button>
+                  </a>
                 </div>
                 <div className="flex flex-col gap-1.5 mt-1">
                   {[
-                    { label:'Business Info',        done: true },
+                    { label:'Business Info',        done: false },
                     { label:'Owner Details',         done: false },
                     { label:'Processing History',    done: false },
                     { label:'Document Upload',       done: false },
@@ -290,28 +312,17 @@ function PipelineTab({
         </span>
       </div>
 
-      {/* Progress bar */}
+      {/* Stage action checklist */}
       <div>
-        <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color:BRAND.muted }}>Stage Progress</p>
-        <div className="flex gap-1">
-          {STAGES.map((s, i) => {
-            const active = i === curIdx
-            const past   = i < curIdx
-            const sm     = STAGE_META[s]
-            return (
-              <button key={s} onClick={() => onStageChange(m.id, s)}
-                title={sm.label}
-                className="flex-1 h-2 rounded-full transition-all hover:opacity-80"
-                style={{
-                  backgroundColor: active ? sm.color : past ? `${sm.color}55` : 'rgba(255,255,255,0.08)',
-                  boxShadow: active ? `0 0 6px ${sm.color}80` : undefined,
-                }} />
-            )
-          })}
-        </div>
-        <div className="flex justify-between mt-1">
-          <span className="text-[9px]" style={{ color:BRAND.muted }}>Lead</span>
-          <span className="text-[9px]" style={{ color:BRAND.muted }}>Live</span>
+        <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color:BRAND.muted }}>Action Checklist</p>
+        <div className="flex flex-col gap-1.5">
+          {STAGE_ACTIONS[m.pipeline_stage].map((action, i) => (
+            <div key={i} className="flex items-start gap-2 text-xs py-1">
+              <div className="w-3.5 h-3.5 rounded border mt-0.5 flex-shrink-0"
+                style={{ borderColor: STAGE_META[m.pipeline_stage].color, backgroundColor: `${STAGE_META[m.pipeline_stage].color}10` }} />
+              <span style={{ color: BRAND.text }}>{action}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -357,11 +368,12 @@ function PipelineTab({
 }
 
 function FinanceTab({ m }: { m: MerchantRecord }) {
-  const estimatedResidual = Math.round(m.monthly_volume * 0.0015)
+  const bps = (m as any).basis_points_earned ?? 15
+  const estimatedResidual = Math.round(m.monthly_volume * (bps / 10000))
   const ytdVolume         = m.monthly_volume * 12
   const metrics = [
     { label:'Monthly Volume',     value:fmtCurrency(m.monthly_volume),  color:BRAND.cyan,    note:'current month estimate' },
-    { label:'Est. Residual / Mo', value:fmtCurrency(estimatedResidual), color:BRAND.success, note:'~0.15% of volume' },
+    { label:'Est. Residual / Mo', value:fmtCurrency(estimatedResidual), color:BRAND.success, note:`~${(bps/100).toFixed(2)}% of volume` },
     { label:'Avg Ticket',         value:fmtCurrency(m.avg_ticket),      color:BRAND.text,    note:'per transaction' },
     { label:'YTD Volume (est.)',  value:fmtCurrency(ytdVolume),         color:BRAND.silverLo,note:'annualized' },
   ]
@@ -387,13 +399,17 @@ function FinanceTab({ m }: { m: MerchantRecord }) {
 
 function DocumentsTab({ m }: { m: MerchantRecord }) {
   const agreements  = getMockAgreements(m.id)
-  const chargebacks = getMockChargebacks(m)
-  const kycItems = [
-    { label:'Government ID',     status: 'verified' },
-    { label:'Business Licence',  status: m.risk === 'high' ? 'missing' : 'verified' },
-    { label:'Bank Statement',    status: m.risk === 'medium' ? 'pending' : 'verified' },
-    { label:'Voided Check',      status: m.pipeline_stage === 'lead_identified' ? 'pending' : 'verified' },
-  ]
+  const [chargebacks, setChargebacks] = useState(getMockChargebacks(m))
+  const [showCbForm, setShowCbForm] = useState(false)
+  const [cbForm, setCbForm] = useState({ amount: '', reason: '', date: '' })
+  const [kycStatuses, setKycStatuses] = useState<Record<string, string>>({
+    'Government ID': 'verified',
+    'Business Licence': m.risk === 'high' ? 'missing' : 'verified',
+    'Bank Statement': m.risk === 'medium' ? 'pending' : 'verified',
+    'Voided Check': m.pipeline_stage === 'lead_identified' ? 'pending' : 'verified',
+    'PCI SAQ (Self-Assessment)': ['account_activated','merchant_live'].includes(m.pipeline_stage) ? 'verified' : 'pending',
+  })
+  const kycItems = Object.entries(kycStatuses).map(([label, status]) => ({ label, status }))
   const kycColor: Record<string, string> = {
     verified: BRAND.success,
     pending:  BRAND.warn,
@@ -412,10 +428,19 @@ function DocumentsTab({ m }: { m: MerchantRecord }) {
             <div key={item.label} className="flex items-center justify-between px-3.5 py-2.5 rounded-lg"
               style={{ backgroundColor:'rgba(255,255,255,0.03)', border:`1px solid ${BRAND.border}` }}>
               <span className="text-xs" style={{ color:BRAND.text }}>{item.label}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
-                style={{ backgroundColor:`${kycColor[item.status]}15`, color:kycColor[item.status], border:`1px solid ${kycColor[item.status]}35` }}>
-                {item.status}
-              </span>
+              <select
+                value={item.status}
+                onChange={e => setKycStatuses(prev => ({ ...prev, [item.label]: e.target.value }))}
+                className="text-[10px] font-bold px-2 py-0.5 rounded-full focus:outline-none cursor-pointer"
+                style={{
+                  backgroundColor: `${kycColor[item.status]}15`,
+                  color: kycColor[item.status],
+                  border: `1px solid ${kycColor[item.status]}35`,
+                }}>
+                <option value="verified">verified</option>
+                <option value="pending">pending</option>
+                <option value="missing">missing</option>
+              </select>
             </div>
           ))}
         </div>
@@ -450,6 +475,40 @@ function DocumentsTab({ m }: { m: MerchantRecord }) {
                 </span>
               </div>
             ))}
+          </div>
+        )}
+        <button
+          onClick={() => setShowCbForm(v => !v)}
+          className="flex items-center gap-1.5 text-[10px] font-semibold mt-1 transition-opacity hover:opacity-70"
+          style={{ color: BRAND.muted }}>
+          <AlertTriangle size={9}/> {showCbForm ? 'Cancel' : '+ Log Chargeback'}
+        </button>
+        {showCbForm && (
+          <div className="mt-2 flex flex-col gap-2 p-3 rounded-xl"
+            style={{ backgroundColor:'rgba(255,255,255,0.03)', border:`1px solid ${BRAND.border}` }}>
+            <input type="number" placeholder="Amount ($)" value={cbForm.amount}
+              onChange={e => setCbForm(f => ({ ...f, amount: e.target.value }))}
+              className="w-full rounded-lg px-3 py-1.5 text-xs focus:outline-none"
+              style={{ backgroundColor:'rgba(255,255,255,0.05)', border:`1px solid ${BRAND.borderCyan}`, color:BRAND.text }} />
+            <input type="text" placeholder="Reason" value={cbForm.reason}
+              onChange={e => setCbForm(f => ({ ...f, reason: e.target.value }))}
+              className="w-full rounded-lg px-3 py-1.5 text-xs focus:outline-none"
+              style={{ backgroundColor:'rgba(255,255,255,0.05)', border:`1px solid ${BRAND.borderCyan}`, color:BRAND.text }} />
+            <input type="date" value={cbForm.date}
+              onChange={e => setCbForm(f => ({ ...f, date: e.target.value }))}
+              className="w-full rounded-lg px-3 py-1.5 text-xs focus:outline-none"
+              style={{ backgroundColor:'rgba(255,255,255,0.05)', border:`1px solid ${BRAND.borderCyan}`, color:BRAND.text }} />
+            <button
+              onClick={() => {
+                if (!cbForm.amount || !cbForm.reason) return
+                setChargebacks(prev => [{ id:`cb${Date.now()}`, amount:parseFloat(cbForm.amount), date:cbForm.date||new Date().toISOString().split('T')[0], reason:cbForm.reason, status:'open' }, ...prev])
+                setCbForm({ amount:'', reason:'', date:'' })
+                setShowCbForm(false)
+              }}
+              className="w-full py-1.5 rounded-lg text-xs font-bold transition-opacity hover:opacity-85"
+              style={{ backgroundColor:`${BRAND.danger}15`, color:BRAND.danger, border:`1px solid ${BRAND.danger}35` }}>
+              Log Chargeback
+            </button>
           </div>
         )}
       </div>
@@ -491,8 +550,8 @@ function DocumentsTab({ m }: { m: MerchantRecord }) {
   )
 }
 
-function ActivityTab({ m }: { m: MerchantRecord }) {
-  const events = getMockActivity(m)
+function ActivityTab({ m, activityLog }: { m: MerchantRecord; activityLog: Array<{id:string;text:string;date:string;icon:React.ReactNode;color:string}> }) {
+  const events = activityLog
   return (
     <div className="flex flex-col gap-0">
       {events.map((ev, i) => (
@@ -528,6 +587,23 @@ export default function ManageMerchantDrawer({
   onStageChange: (id: string, stage: PipelineStage) => void
 }) {
   const [tab, setTab] = useState<Tab>('overview')
+  const [activityLog, setActivityLog] = useState<Array<{
+    id: string; text: string; date: string; icon: React.ReactNode; color: string
+  }>>(() => [
+    { id:'a1', text:`Stage: ${STAGE_META[merchant.pipeline_stage].label}`, date:'2 days ago', icon:<TrendingUp size={11}/>, color:BRAND.cyan },
+    { id:'a2', text:`Partner assigned: ${merchant.partner}`, date:'5 days ago', icon:<Users size={11}/>, color:'#C4B5FD' },
+    { id:'a3', text:`Merchant record created`, date: fmtDate(merchant.date_added), icon:<Building2 size={11}/>, color:BRAND.muted },
+  ])
+
+  function addActivity(text: string, icon: React.ReactNode, color: string) {
+    setActivityLog(prev => [{
+      id: `a${Date.now()}`,
+      text,
+      date: new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' }) + ' today',
+      icon,
+      color,
+    }, ...prev])
+  }
 
   return (
     <>
@@ -591,10 +667,10 @@ export default function ManageMerchantDrawer({
         <div className="flex-1 overflow-y-auto px-6 py-5"
           style={{ scrollbarWidth:'thin', scrollbarColor:`${BRAND.borderCyan} transparent` }}>
           {tab === 'overview'  && <OverviewTab m={merchant} />}
-          {tab === 'pipeline'  && <PipelineTab m={merchant} onStageChange={onStageChange} />}
+          {tab === 'pipeline'  && <PipelineTab m={merchant} onStageChange={(id, stage) => { addActivity(`Stage → ${STAGE_META[stage].label}`, <TrendingUp size={11}/>, BRAND.cyan); onStageChange(id, stage); }} addActivity={addActivity} />}
           {tab === 'finance'   && <FinanceTab m={merchant} />}
           {tab === 'documents' && <DocumentsTab m={merchant} />}
-          {tab === 'activity'  && <ActivityTab m={merchant} />}
+          {tab === 'activity'  && <ActivityTab m={merchant} activityLog={activityLog} />}
         </div>
 
         {/* ── Footer ── */}

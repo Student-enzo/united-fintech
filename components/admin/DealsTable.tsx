@@ -5,6 +5,7 @@ import {
   Search, X, Plus, ChevronDown, ChevronUp, ChevronsUpDown,
   MoreHorizontal, Eye, Pencil, FileDown, Copy, Calculator,
   Download, AlertCircle, TrendingUp, Clock, CheckCircle2,
+  ExternalLink, FileText,
 } from 'lucide-react'
 import { fmtCurrency, fmtDate } from '@/lib/utils'
 import { BRAND } from '@/lib/brand'
@@ -578,7 +579,11 @@ export default function DealsTable() {
                       {d.deal_number}
                     </td>
                     <td className="px-5 py-3.5">
-                      <div className="text-sm font-semibold" style={{ color: BRAND.text }}>{d.merchant}</div>
+                      <div className="text-sm font-semibold" style={{ color: BRAND.text }}>
+                        <a href="/admin/merchants" className="hover:underline font-semibold" style={{ color: BRAND.cyan }}>
+                          {d.merchant}<ExternalLink size={11} style={{ display: 'inline', marginLeft: 4 }} />
+                        </a>
+                      </div>
                       {d.notes && (
                         <div className="text-[10px] mt-0.5 truncate max-w-[180px]" style={{ color: BRAND.muted }}>
                           {d.notes}
@@ -601,7 +606,15 @@ export default function DealsTable() {
                       {fmtDate(d.created_at)}
                     </td>
                     <td className="px-5 py-3.5">
-                      <RowMenu deal={d} onCalc={() => setCalcDeal(d)} onDuplicate={() => duplicateDeal(d)} />
+                      <div className="flex items-center gap-2">
+                        {d.status === 'accepted' && (
+                          <button className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-semibold"
+                            style={{ backgroundColor: 'rgba(61,214,140,0.1)', color: '#6EE7B7', border: '1px solid rgba(61,214,140,0.25)' }}>
+                            <FileText size={10} /> Convert to MPA
+                          </button>
+                        )}
+                        <RowMenu deal={d} onCalc={() => setCalcDeal(d)} onDuplicate={() => duplicateDeal(d)} />
+                      </div>
                     </td>
                   </tr>
                 ))}

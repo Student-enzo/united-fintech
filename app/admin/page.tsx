@@ -128,6 +128,21 @@ export default function AdminDashboardPage() {
   const today = new Date()
   const dateLabel = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
 
+  // Compute stats from merchant data
+  const activeMerchants = RECENT_ACTIVATIONS.filter(m => m.status === 'active')
+  const activationsMTD = RECENT_ACTIVATIONS.filter(m => {
+    const d = new Date(m.activatedAt)
+    return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear()
+  })
+  const mtdVolume = activeMerchants.reduce((s, m) => s + m.volume, 0)
+  const mtdVolumeLabel = mtdVolume >= 1_000_000
+    ? `$${(mtdVolume / 1_000_000).toFixed(1)}M`
+    : `$${(mtdVolume / 1_000).toFixed(0)}K`
+  const residualMTD = mtdVolume * 0.004 // ~0.4% residual estimate
+  const residualLabel = residualMTD >= 1_000_000
+    ? `$${(residualMTD / 1_000_000).toFixed(1)}M`
+    : `$${(residualMTD / 1_000).toFixed(0)}K`
+
   return (
     <div className="min-h-screen" style={{ fontFamily: "'Inter', 'Poppins', Arial, sans-serif" }}>
 
@@ -196,12 +211,12 @@ export default function AdminDashboardPage() {
           className="flex flex-wrap items-center gap-8 px-6 md:px-8 py-4"
           style={{ borderTop: 'none' }}
         >
-          <StatPill label="MTD Volume"      value="$48.3M"    color={B.text}    />
-          <StatPill label="Active Merchants" value="214"       color={B.cyanBright} />
-          <StatPill label="Activations MTD"  value="18"        color={B.success} />
-          <StatPill label="Residual (MTD)"   value="$193,282"  color={B.success} />
-          <StatPill label="Chargeback Rate"  value="0.38%"     color={B.success} />
-          <StatPill label="Open Alerts"      value="4"         color={B.warn}    />
+          <StatPill label="MTD Volume"      value={mtdVolumeLabel}                    color={B.text}    />
+          <StatPill label="Active Merchants" value={String(activeMerchants.length)} color={B.cyanBright} />
+          <StatPill label="Activations MTD"  value={String(activationsMTD.length)}  color={B.success} />
+          <StatPill label="Residual (MTD)"   value={residualLabel}                  color={B.success} />
+          <StatPill label="Chargeback Rate"  value="0.38%"                          color={B.success} />
+          <StatPill label="Open Alerts"      value="4"                              color={B.warn}    />
         </div>
       </div>
 

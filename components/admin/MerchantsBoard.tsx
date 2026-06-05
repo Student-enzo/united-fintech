@@ -3,46 +3,13 @@
 import { useState, useRef } from 'react'
 import {
   LayoutGrid, List, Search, X, Plus, ChevronUp, ChevronDown,
-  Building2, CreditCard, Globe, Phone, Tag, Users, DollarSign,
-  TrendingUp, AlertCircle, CheckCircle2, Clock, ArrowRight,
-  Filter, SortAsc, MoreHorizontal, ExternalLink, GripVertical,
+  Building2, Users, DollarSign, TrendingUp, AlertCircle,
+  CheckCircle2, Clock, ArrowRight, Filter, SortAsc,
+  MoreHorizontal, ExternalLink, GripVertical,
 } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
-
-// ─── Domain types ─────────────────────────────────────────────────────────────
-
-type PipelineStage =
-  | 'lead_identified'
-  | 'proposal_sent'
-  | 'agreement_sent'
-  | 'agreement_signed'
-  | 'setup_fee_paid'
-  | 'underwriting'
-  | 'account_activated'
-  | 'merchant_live'
-  | 'declined'
-
-type AccountType = 'Card Present' | 'eCommerce' | 'MOTO' | 'ACH'
-
-type MerchantRecord = {
-  id: string
-  name: string
-  dba_name?: string
-  mcc: string
-  mcc_label: string
-  legal_structure: 'LLC' | 'S-Corp' | 'C-Corp' | 'Sole Proprietor' | 'Partnership'
-  account_type: AccountType
-  monthly_volume: number
-  avg_ticket: number
-  card_present_pct: number
-  partner: string
-  partner_iso: string
-  pipeline_stage: PipelineStage
-  days_in_stage: number
-  date_added: string
-  notes?: string
-  risk?: 'low' | 'medium' | 'high'
-}
+import ManageMerchantDrawer from './ManageMerchantDrawer'
+import type { PipelineStage, AccountType, MerchantRecord } from './ManageMerchantDrawer'
 
 // ─── Stage metadata ───────────────────────────────────────────────────────────
 
@@ -333,13 +300,13 @@ function KanbanCard({
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      onClick={onClick}
-      className="cursor-grab active:cursor-grabbing select-none transition-all hover:shadow-lg"
+      className="select-none transition-all hover:shadow-lg"
       style={{
         ...CARD_STYLE,
         opacity: dragging ? 0.4 : 1,
         transform: dragging ? 'scale(0.96)' : undefined,
         border: `1px solid ${dragging ? meta.color : BRAND.border}`,
+        cursor: 'default',
       }}
     >
       <div className="p-3.5 flex flex-col gap-2.5">
@@ -379,6 +346,14 @@ function KanbanCard({
           <Users size={9} />
           <span className="truncate">{merchant.partner}</span>
         </div>
+
+        {/* Manage Client button */}
+        <button
+          onClick={e => { e.stopPropagation(); onClick() }}
+          className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-colors hover:opacity-85 mt-0.5"
+          style={{ backgroundColor: `${BRAND.cyan}15`, color: BRAND.cyan, border: `1px solid ${BRAND.borderCyan}` }}>
+          <ArrowRight size={11} /> Manage Client
+        </button>
       </div>
     </div>
   )
@@ -413,6 +388,9 @@ type NewMerchantForm = {
   card_present_pct: string
   partner: string
   account_type: AccountType | ''
+  owner_name: string
+  contact_email: string
+  contact_phone: string
 }
 
 function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: (m: MerchantRecord) => void }) {
@@ -420,6 +398,7 @@ function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: 
     name: '', dba_name: '', mcc: '', legal_structure: '',
     est_monthly_volume: '', avg_ticket: '', card_present_pct: '',
     partner: '', account_type: '',
+    owner_name: '', contact_email: '', contact_phone: '',
   })
   const [saving, setSaving] = useState(false)
 
@@ -432,7 +411,7 @@ function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: 
     setSaving(true)
     // Build mock record — in production this would POST to /api/merchants
     const mccOption = MCC_OPTIONS.find(o => o.code === form.mcc)
-    const newMerchant: MerchantRecord = {
+    const newMerchant: MerchantRecord & { owner_name?: string; contact_email?: string; contact_phone?: string } = {
       id: `m-${Date.now()}`,
       name: form.name,
       dba_name: form.dba_name || undefined,
@@ -449,6 +428,9 @@ function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: 
       days_in_stage: 0,
       date_added: new Date().toISOString().split('T')[0],
       risk: 'low',
+      owner_name: form.owner_name || undefined,
+      contact_email: form.contact_email || undefined,
+      contact_phone: form.contact_phone || undefined,
     }
     setTimeout(() => {
       onAdded(newMerchant)
@@ -483,6 +465,25 @@ function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: 
             <label className="block mb-1.5" style={LABEL_STYLE}>Business / Legal Name *</label>
             <input required value={form.name} onChange={e => set('name', e.target.value)}
               className={INPUT_BASE} style={INPUT_STYLE} placeholder="Acme Retail LLC" />
+          </div>
+
+          {/* Contact Info */}
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <label className="block mb-1.5" style={LABEL_STYLE}>Owner Name</label>
+              <input value={form.owner_name} onChange={e => set('owner_name', e.target.value)}
+                className={INPUT_BASE} style={INPUT_STYLE} placeholder="John Smith" />
+            </div>
+            <div>
+              <label className="block mb-1.5" style={LABEL_STYLE}>Contact Email</label>
+              <input type="email" value={form.contact_email} onChange={e => set('contact_email', e.target.value)}
+                className={INPUT_BASE} style={INPUT_STYLE} placeholder="owner@business.com" />
+            </div>
+            <div>
+              <label className="block mb-1.5" style={LABEL_STYLE}>Contact Phone</label>
+              <input type="tel" value={form.contact_phone} onChange={e => set('contact_phone', e.target.value)}
+                className={INPUT_BASE} style={INPUT_STYLE} placeholder="+1 (305) 555-0100" />
+            </div>
           </div>
 
           {/* DBA + MCC */}
@@ -595,125 +596,6 @@ function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: 
             </button>
           </div>
         </form>
-      </div>
-    </div>
-  )
-}
-
-// ─── Merchant detail modal ────────────────────────────────────────────────────
-
-function MerchantDetailModal({
-  merchant,
-  onClose,
-  onStageChange,
-}: {
-  merchant: MerchantRecord
-  onClose: () => void
-  onStageChange: (id: string, stage: PipelineStage) => void
-}) {
-  const [moving, setMoving] = useState(false)
-  const meta = STAGE_META[merchant.pipeline_stage]
-  const nextIdx = KANBAN_STAGES.indexOf(merchant.pipeline_stage) + 1
-  const nextStage = nextIdx < KANBAN_STAGES.length ? KANBAN_STAGES[nextIdx] : null
-
-  async function moveTo(stage: PipelineStage) {
-    setMoving(true)
-    onStageChange(merchant.id, stage)
-    // In production: await fetch(`/api/merchants/${merchant.id}`, { method: 'PATCH', ... })
-    setMoving(false)
-    onClose()
-  }
-
-  const allStages = Object.entries(STAGE_META) as [PipelineStage, typeof STAGE_META[PipelineStage]][]
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="rounded-2xl shadow-2xl w-full max-w-sm max-h-[92vh] overflow-y-auto"
-        style={{ backgroundColor: BRAND.cardAlt, border: `1px solid ${BRAND.borderCyan}` }}>
-
-        {/* Header */}
-        <div className="px-5 py-4 flex items-start justify-between"
-          style={{ borderBottom: `1px solid ${BRAND.border}` }}>
-          <div>
-            <p className="font-bold text-base" style={{ color: BRAND.text }}>{merchant.name}</p>
-            {merchant.dba_name && (
-              <p className="text-xs mt-0.5" style={{ color: BRAND.muted }}>DBA: {merchant.dba_name}</p>
-            )}
-            <div className="flex items-center gap-2 mt-2">
-              <StageBadge stage={merchant.pipeline_stage} />
-              <RiskBadge risk={merchant.risk} />
-            </div>
-          </div>
-          <button onClick={onClose} className="hover:opacity-70 transition-opacity mt-0.5"
-            style={{ color: BRAND.muted }}>
-            <X size={18} />
-          </button>
-        </div>
-
-        {/* Details */}
-        <div className="px-5 py-4 flex flex-col gap-3" style={{ borderBottom: `1px solid ${BRAND.border}` }}>
-          {[
-            { icon: <Tag size={11} />,        label: 'MCC',            value: `${merchant.mcc} — ${merchant.mcc_label}` },
-            { icon: <CreditCard size={11} />, label: 'Account Type',   value: merchant.account_type },
-            { icon: <Building2 size={11} />,  label: 'Legal Structure', value: merchant.legal_structure },
-            { icon: <DollarSign size={11} />, label: 'Monthly Volume', value: fmtCurrency(merchant.monthly_volume) },
-            { icon: <TrendingUp size={11} />, label: 'Avg Ticket',     value: fmtCurrency(merchant.avg_ticket) },
-            { icon: <Globe size={11} />,      label: 'CP %',           value: `${merchant.card_present_pct}%` },
-            { icon: <Users size={11} />,      label: 'Partner / ISO',  value: `${merchant.partner} (${merchant.partner_iso})` },
-            { icon: <Clock size={11} />,      label: 'Days in Stage',  value: `${merchant.days_in_stage} days` },
-            { icon: <Phone size={11} />,      label: 'Date Added',     value: fmtDate(merchant.date_added) },
-          ].map(({ icon, label, value }) => (
-            <div key={label} className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs" style={{ color: BRAND.muted }}>
-                {icon} {label}
-              </span>
-              <span className="text-xs font-semibold" style={{ color: BRAND.text }}>{value}</span>
-            </div>
-          ))}
-          {merchant.notes && (
-            <div className="mt-1 px-3 py-2 rounded-lg text-xs italic"
-              style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderLeft: `2px solid ${BRAND.borderCyan}`, color: BRAND.muted }}>
-              {merchant.notes}
-            </div>
-          )}
-        </div>
-
-        {/* Quick advance */}
-        {nextStage && (
-          <div className="px-5 py-3" style={{ borderBottom: `1px solid ${BRAND.border}` }}>
-            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: BRAND.muted }}>
-              Quick Advance
-            </p>
-            <button
-              onClick={() => moveTo(nextStage)}
-              disabled={moving}
-              className="w-full py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-opacity hover:opacity-85 disabled:opacity-50"
-              style={{ backgroundColor: STAGE_META[nextStage].bg, color: STAGE_META[nextStage].color, border: `1px solid ${STAGE_META[nextStage].border}` }}>
-              <ArrowRight size={14} />
-              Move to {STAGE_META[nextStage].label}
-            </button>
-          </div>
-        )}
-
-        {/* Move to any stage */}
-        <div className="px-5 py-3">
-          <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: BRAND.muted }}>
-            Move to Stage
-          </p>
-          <div className="grid grid-cols-2 gap-1.5">
-            {allStages
-              .filter(([key]) => key !== merchant.pipeline_stage)
-              .map(([key, s]) => (
-                <button key={key}
-                  onClick={() => moveTo(key)}
-                  disabled={moving}
-                  className="text-left px-2.5 py-1.5 rounded-lg text-[10px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-40 flex items-center gap-1"
-                  style={{ backgroundColor: s.bg, color: s.color, border: `1px solid ${s.border}` }}>
-                  {s.icon} {s.shortLabel}
-                </button>
-              ))}
-          </div>
-        </div>
       </div>
     </div>
   )
@@ -1154,13 +1036,13 @@ export default function MerchantsBoard() {
                         <DaysChip days={m.days_in_stage} stage={m.pipeline_stage} />
                       </td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-2">
                           <RiskBadge risk={m.risk} />
                           <button
                             onClick={() => setSelected(m)}
-                            className="p-1.5 rounded-lg transition-colors hover:opacity-70"
+                            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
                             style={{ backgroundColor: `${BRAND.cyan}12`, color: BRAND.cyan, border: `1px solid ${BRAND.borderCyan}` }}>
-                            <MoreHorizontal size={12} />
+                            Manage <ArrowRight size={11} />
                           </button>
                         </div>
                       </td>
@@ -1207,7 +1089,7 @@ export default function MerchantsBoard() {
         <AddMerchantModal onClose={() => setShowAddModal(false)} onAdded={handleAdded} />
       )}
       {selected && (
-        <MerchantDetailModal
+        <ManageMerchantDrawer
           merchant={selected}
           onClose={() => setSelected(null)}
           onStageChange={(id, stage) => {

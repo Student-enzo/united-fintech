@@ -318,7 +318,7 @@ function AddPartnerModal({ onClose, onAdded }: { onClose: () => void; onAdded: (
 
 // ─── Action Menu ───────────────────────────────────────────────────────────────
 
-function ActionMenu({ partner, onSuspend }: { partner: Partner; onSuspend: (id: string) => void }) {
+function ActionMenu({ partner, onSuspend, onToast }: { partner: Partner; onSuspend: (id: string) => void; onToast: (msg: string) => void }) {
   const [open, setOpen] = useState(false)
   return (
     <div style={{ position: 'relative' }}>
@@ -337,9 +337,9 @@ function ActionMenu({ partner, onSuspend }: { partner: Partner; onSuspend: (id: 
             borderRadius: 10, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
           }}>
             {[
-              { label: 'View Profile', icon: <UserCheck size={12} />, action: () => {} },
-              { label: 'Edit Commission', icon: <Edit2 size={12} />, action: () => {} },
-              { label: 'Message Partner', icon: <Mail size={12} />, action: () => {} },
+              { label: 'View Profile',    icon: <UserCheck size={12} />, action: () => onToast('Partner profile — coming soon') },
+              { label: 'Edit Commission', icon: <Edit2 size={12} />,    action: () => onToast('Commission editor — coming soon') },
+              { label: 'Message Partner', icon: <Mail size={12} />,     action: () => onToast('Messaging — coming soon') },
             ].map(item => (
               <button key={item.label} onClick={() => { item.action(); setOpen(false) }} style={{
                 display: 'flex', alignItems: 'center', gap: 8, width: '100%',
@@ -388,6 +388,14 @@ function KPICard({ label, value, sub, color, icon }: {
   )
 }
 
+// ─── Money formatter ──────────────────────────────────────────────────────────
+
+function fmtMoney(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`
+  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`
+  return `$${n}`
+}
+
 // ─── Export CSV ───────────────────────────────────────────────────────────────
 
 function exportCSV(partners: Partner[]) {
@@ -410,6 +418,12 @@ export default function PartnersTable() {
   const [statusFilter, setStatusFilter] = useState<'all' | PartnerStatus>('all')
   const [search, setSearch] = useState('')
   const [showAdd, setShowAdd] = useState(false)
+  const [toast, setToast] = useState<string | null>(null)
+
+  function showToast(msg: string) {
+    setToast(msg)
+    setTimeout(() => setToast(null), 2500)
+  }
 
   const filtered = partners.filter(p => {
     if (statusFilter !== 'all' && p.status !== statusFilter) return false
@@ -597,7 +611,7 @@ export default function PartnersTable() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
                   <ISOBadge type={p.iso_type} />
-                  <ActionMenu partner={p} onSuspend={handleSuspend} />
+                  <ActionMenu partner={p} onSuspend={handleSuspend} onToast={showToast} />
                 </div>
               </div>
 
@@ -605,11 +619,12 @@ export default function PartnersTable() {
               <StatusBadge status={p.status} />
 
               {/* Metrics row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {[
-                  { label: 'Merchants',   value: String(p.active_merchants), color: BRAND.text },
-                  { label: 'Volume/Mo',   value: p.monthly_volume > 0 ? fmtCurrency(p.monthly_volume) : '—', color: BRAND.cyan },
-                  { label: 'Commission',  value: `${p.commission_rate}%`, color: BRAND.silver },
+                  { label: 'Merchants',       value: String(p.active_merchants), color: BRAND.text },
+                  { label: 'Volume/Mo',        value: p.monthly_volume > 0 ? fmtCurrency(p.monthly_volume) : '—', color: BRAND.cyan },
+                  { label: 'Commission %',     value: `${p.commission_rate}%`, color: BRAND.silver },
+                  { label: 'Est. Commission',  value: p.monthly_volume > 0 ? fmtMoney(p.monthly_volume * p.commission_rate / 100) : '—', color: BRAND.success },
                 ].map(m => (
                   <div key={m.label} style={{
                     backgroundColor: 'rgba(255,255,255,0.03)', border: `1px solid ${BRAND.border}`,
@@ -632,14 +647,14 @@ export default function PartnersTable() {
                   Joined {fmtDate(p.joined_date)}
                 </p>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button style={{
+                  <button onClick={() => showToast('Partner messaging — coming soon')} style={{
                     display: 'flex', alignItems: 'center', gap: 5,
                     padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer',
                     backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${BRAND.border}`, color: BRAND.muted,
                   }}>
                     <Mail size={10} /> Message
                   </button>
-                  <button style={{
+                  <button onClick={() => showToast('Partner management — coming soon')} style={{
                     display: 'flex', alignItems: 'center', gap: 5,
                     padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer',
                     backgroundColor: `rgba(144,196,207,0.1)`, border: `1px solid rgba(144,196,207,0.25)`, color: BRAND.cyan,
@@ -658,6 +673,13 @@ export default function PartnersTable() {
           onClose={() => setShowAdd(false)}
           onAdded={p => setPartners(prev => [p, ...prev])}
         />
+      )}
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl text-sm font-semibold shadow-lg"
+          style={{ backgroundColor: BRAND.card, border: `1px solid ${BRAND.borderCyan}`, color: BRAND.cyan }}>
+          {toast}
+        </div>
       )}
     </div>
   )
