@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import {
   Building2,
@@ -387,10 +388,14 @@ function Step4({
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function ClientApplyPage() {
+  const params = useParams()
+  const merchantId = Array.isArray(params?.token) ? params.token[0] : (params?.token ?? '')
+
   const [step, setStep] = useState(0)
   const [data, setData] = useState<ClientForm>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   function setField(k: keyof ClientForm, v: string) {
     setData(prev => ({ ...prev, [k]: v }))
@@ -412,9 +417,23 @@ export default function ClientApplyPage() {
 
   async function handleSubmit() {
     setSubmitting(true)
-    await new Promise(r => setTimeout(r, 1400))
-    setSubmitting(false)
-    setSubmitted(true)
+    setSubmitError('')
+    try {
+      const res = await fetch(`/api/apply/${merchantId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error ?? 'Submission failed')
+      }
+      setSubmitted(true)
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -555,6 +574,13 @@ export default function ClientApplyPage() {
             </button>
           )}
         </div>
+
+        {submitError && (
+          <div className="mt-3 px-4 py-2.5 rounded-lg text-xs text-center"
+            style={{ backgroundColor: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.25)', color: '#F87171' }}>
+            {submitError}
+          </div>
+        )}
 
         {/* Footer note */}
         <p className="text-center text-xs mt-8" style={{ color: 'rgba(255,255,255,0.2)' }}>

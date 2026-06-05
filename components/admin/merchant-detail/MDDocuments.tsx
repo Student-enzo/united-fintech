@@ -1,40 +1,78 @@
 'use client'
 
 import { useState } from 'react'
-import { Mail, CheckCircle2, Clock, AlertTriangle, FileText } from 'lucide-react'
+import { Mail, CheckCircle2, Clock, AlertTriangle, FileText, ChevronDown } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
 import type { MerchantRecord, PipelineStage } from '@/lib/mock-merchants'
 import { STAGE_META } from '@/lib/mock-merchants'
+import { saveMerchantProcessor } from '@/lib/merchants-db'
 
-// ── KYC document definitions ──────────────────────────────────────────────────
+// ── Processor definitions ─────────────────────────────────────────────────────
+
+export type Processor = 'Airwallex' | 'Stripe' | 'Helcim' | 'NMI' | 'PaymentCloud'
+
+const PROCESSORS: Processor[] = ['Airwallex', 'Stripe', 'Helcim', 'NMI', 'PaymentCloud']
 
 type KycDoc = { id: string; label: string; description: string }
 
-const KYC_DOCS: KycDoc[] = [
-  { id: 'biz_license',      label: 'Business License',             description: 'State-issued business license or DBA registration' },
-  { id: 'ein',              label: 'EIN / Tax ID Letter',          description: 'IRS EIN confirmation letter' },
-  { id: 'bank_letter',      label: 'Bank Letter',                  description: 'Letter confirming business banking relationship' },
-  { id: 'voided_check',     label: 'Voided Check',                 description: 'For ACH settlement setup' },
-  { id: 'statements',       label: 'Processing Statements (3 mo)', description: '3 months prior processor statements' },
-  { id: 'drivers_license',  label: "Driver's License",             description: 'Owner government-issued photo ID' },
-  { id: 'pci_saq',          label: 'PCI SAQ',                      description: 'Self-Assessment Questionnaire for cardholder data security' },
-  { id: 'signed_agreement', label: 'Signed Merchant Agreement',    description: 'Executed merchant processing agreement' },
-]
+const KYC_BY_PROCESSOR: Record<Processor, KycDoc[]> = {
+  Airwallex: [
+    { id: 'biz_registration', label: 'Business Registration',         description: 'State-issued business license or certificate of incorporation' },
+    { id: 'ein',              label: 'EIN / Tax ID Letter',           description: 'IRS EIN confirmation letter (SS-4)' },
+    { id: 'ubo_id',           label: 'UBO Photo ID (≥25% owners)',    description: 'Government-issued photo ID for all beneficial owners ≥25%' },
+    { id: 'ubo_address',      label: 'UBO Address Proof',             description: 'Utility bill or bank statement showing owner address' },
+    { id: 'bank_statement',   label: 'Bank Account Verification',     description: 'Voided check or bank letter for ACH settlement' },
+    { id: 'website_review',   label: 'Website / Terms of Service',    description: 'Merchant website URL with active checkout + refund policy' },
+    { id: 'mcc_approval',     label: 'MCC Approval Form',             description: 'Airwallex-specific MCC classification form' },
+    { id: 'statements',       label: 'Processing Statements (3 mo)',  description: '3 months prior processor statements if processing elsewhere' },
+    { id: 'signed_agreement', label: 'Signed Merchant Agreement',     description: 'Executed Airwallex merchant services agreement' },
+  ],
+  Stripe: [
+    { id: 'ein',              label: 'EIN / Tax ID',                  description: 'IRS EIN confirmation letter' },
+    { id: 'biz_license',      label: 'Business License',              description: 'State business license or DBA registration' },
+    { id: 'bank_account',     label: 'Bank Account Details',          description: 'Routing + account number for payouts' },
+    { id: 'owner_id',         label: "Owner Photo ID",                description: 'Government-issued photo ID for primary owner' },
+    { id: 'website',          label: 'Website with Checkout',         description: 'Live website with product/service description and pricing' },
+    { id: 'statements',       label: 'Processing Statements (3 mo)',  description: '3 months prior statements if requested' },
+    { id: 'pci_saq',          label: 'PCI SAQ',                       description: 'Self-Assessment Questionnaire if volume > $1M/yr' },
+    { id: 'signed_agreement', label: 'Stripe Services Agreement',     description: 'Executed Stripe Connect or direct agreement' },
+  ],
+  Helcim: [
+    { id: 'ein',              label: 'EIN / Tax ID Letter',           description: 'IRS EIN confirmation letter' },
+    { id: 'biz_license',      label: 'Business License',              description: 'State-issued business license' },
+    { id: 'voided_check',     label: 'Voided Check',                  description: 'For ACH settlement and payout setup' },
+    { id: 'owner_id',         label: "Owner Photo ID",                description: 'Government-issued photo ID' },
+    { id: 'statements',       label: 'Processing Statements (3 mo)',  description: 'Last 3 months of prior processor statements' },
+    { id: 'signed_agreement', label: 'Helcim Merchant Agreement',     description: 'Signed Helcim processing agreement' },
+  ],
+  NMI: [
+    { id: 'ein',              label: 'EIN / Tax ID Letter',           description: 'IRS EIN confirmation letter' },
+    { id: 'biz_license',      label: 'Business License',              description: 'State business license or articles of incorporation' },
+    { id: 'voided_check',     label: 'Voided Check / Bank Letter',    description: 'For settlement account setup' },
+    { id: 'owner_id',         label: "Owner Photo ID",                description: 'Government-issued ID for all owners ≥25%' },
+    { id: 'pci_saq',          label: 'PCI SAQ',                       description: 'Self-Assessment Questionnaire (SAQ A or B)' },
+    { id: 'statements',       label: 'Processing Statements (3 mo)',  description: '3 months prior processor statements' },
+    { id: 'signed_agreement', label: 'NMI Merchant Agreement',        description: 'Executed NMI gateway + processing agreement' },
+  ],
+  PaymentCloud: [
+    { id: 'ein',              label: 'EIN / Tax ID Letter',           description: 'IRS EIN confirmation letter' },
+    { id: 'biz_license',      label: 'Business License',              description: 'State-issued business license' },
+    { id: 'voided_check',     label: 'Voided Check',                  description: 'For ACH settlement' },
+    { id: 'owner_id',         label: "Owner Photo ID (front + back)", description: 'Government photo ID, both sides, for all owners ≥25%' },
+    { id: 'bank_statements',  label: 'Bank Statements (3 mo)',        description: '3 months business bank statements' },
+    { id: 'statements',       label: 'Processing Statements (3 mo)',  description: 'Prior processor statements if applicable' },
+    { id: 'pci_saq',          label: 'PCI SAQ',                       description: 'PCI Self-Assessment Questionnaire' },
+    { id: 'chargeback_letter', label: 'Chargeback Rebuttal Letter',   description: 'Required if CB ratio > 1% in prior 3 months' },
+    { id: 'signed_agreement', label: 'PaymentCloud Agreement',        description: 'Executed merchant services agreement' },
+  ],
+}
+
+// ── Status types ──────────────────────────────────────────────────────────────
 
 type DocStatus = 'pending' | 'received' | 'approved'
 
-function initialDocStatuses(risk: MerchantRecord['risk']): Record<string, DocStatus> {
-  const all = KYC_DOCS.map(d => d.id)
-  if (risk === 'high') {
-    // Most pending, one received
-    return Object.fromEntries(all.map((id, i) => [id, i === 0 ? 'received' : 'pending']))
-  }
-  if (risk === 'medium') {
-    // Half received, half pending
-    return Object.fromEntries(all.map((id, i) => [id, i < 4 ? 'received' : 'pending']))
-  }
-  // low — most approved, 1-2 received
-  return Object.fromEntries(all.map((id, i) => [id, i < 6 ? 'approved' : 'received']))
+function initialStatuses(docs: KycDoc[]): Record<string, DocStatus> {
+  return Object.fromEntries(docs.map(d => [d.id, 'pending' as DocStatus]))
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -62,7 +100,7 @@ function StatusChip({ status }: { status: DocStatus }) {
   )
 }
 
-// ── Chargeback types ─────────────────────────────────────────────────────────
+// ── Chargeback mock ───────────────────────────────────────────────────────────
 
 type Chargeback = { id: string; date: string; amount: number; reason: string; status: 'resolved' | 'pending' }
 
@@ -77,7 +115,7 @@ function mockChargebacks(risk: MerchantRecord['risk']): Chargeback[] {
   return []
 }
 
-// ── Agreement status helper ───────────────────────────────────────────────────
+// ── Agreement helper ──────────────────────────────────────────────────────────
 
 const SIGNED_STAGES: PipelineStage[] = [
   'agreement_signed', 'setup_fee_paid', 'underwriting', 'account_activated', 'merchant_live',
@@ -97,25 +135,42 @@ interface Props {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function MDDocuments({ merchant: m, addActivity }: Props) {
-  const [statuses, setStatuses] = useState<Record<string, DocStatus>>(
-    () => initialDocStatuses(m.risk)
+  const [processor, setProcessor] = useState<Processor | null>(
+    (m.processor as Processor | null) ?? null
   )
+  const [saving, setSaving] = useState(false)
+
+  const docs = processor ? KYC_BY_PROCESSOR[processor] : []
+  const [statuses, setStatuses] = useState<Record<string, DocStatus>>(() => initialStatuses(docs))
 
   const chargebacks = mockChargebacks(m.risk)
   const agrStatus = agreementStatus(m.pipeline_stage)
+  const receivedCount = Object.values(statuses).filter(s => s !== 'pending').length
 
-  const receivedCount = Object.values(statuses).filter(s => s === 'received' || s === 'approved').length
+  async function handleProcessorChange(p: Processor | null) {
+    setProcessor(p)
+    setStatuses(p ? initialStatuses(KYC_BY_PROCESSOR[p]) : {})
+    setSaving(true)
+    try {
+      await saveMerchantProcessor(m.id, p)
+      addActivity(`Processor assigned: ${p ?? 'unassigned'}`, BRAND.cyan)
+    } catch {
+      // non-fatal
+    } finally {
+      setSaving(false)
+    }
+  }
 
   function handleStatusChange(docId: string, newStatus: DocStatus) {
     setStatuses(prev => ({ ...prev, [docId]: newStatus }))
-    const doc = KYC_DOCS.find(d => d.id === docId)
+    const doc = docs.find(d => d.id === docId)
     addActivity(`Document status updated: ${doc?.label} → ${newStatus}`, BRAND.cyan)
   }
 
   function handleRequestDoc(doc: KycDoc) {
     const subject = encodeURIComponent(`Document Request — ${m.name}`)
     const body = encodeURIComponent(
-      `Hi ${m.owner_name || 'there'},\n\nTo continue processing your application, we need your ${doc.label}.\n\nPlease upload it via this secure link: https://docs.unitedfintech.io/upload/${m.id}/${doc.id}\n\nThank you,\nUnited Fintech Team`
+      `Hi ${m.owner_name || 'there'},\n\nTo continue processing your application, we need your ${doc.label}.\n\nPlease reply to this email with the document attached.\n\nThank you,\nUnited Fintech Team`
     )
     const email = m.contact_email || ''
     window.open(`mailto:${email}?subject=${subject}&body=${body}`)
@@ -125,79 +180,113 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
   return (
     <div className="flex flex-col gap-6">
 
-      {/* ── KYC Documents ── */}
+      {/* ── Processor selector ── */}
       <div className="rounded-2xl p-5" style={{ backgroundColor: BRAND.card, border: `1px solid ${BRAND.border}` }}>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: BRAND.muted }}>
-            KYC Documents
+            Assigned Processor
           </p>
-          <span className="text-xs font-semibold" style={{ color: BRAND.text }}>
-            {receivedCount} / {KYC_DOCS.length} received
-          </span>
+          {saving && <span className="text-[10px]" style={{ color: BRAND.muted }}>Saving…</span>}
         </div>
 
-        {/* Progress bar */}
-        <div className="mb-5">
-          <div className="h-2 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
-            <div className="h-2 rounded-full transition-all"
-              style={{
-                width: `${(receivedCount / KYC_DOCS.length) * 100}%`,
-                backgroundColor: receivedCount === KYC_DOCS.length ? BRAND.success : BRAND.cyan,
-              }} />
+        <div className="flex flex-wrap gap-2">
+          {PROCESSORS.map(p => (
+            <button
+              key={p}
+              onClick={() => handleProcessorChange(processor === p ? null : p)}
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+              style={
+                processor === p
+                  ? { backgroundColor: BRAND.cyan, color: '#0A0C12', border: `1px solid ${BRAND.cyan}` }
+                  : { backgroundColor: 'transparent', color: BRAND.muted, border: `1px solid ${BRAND.border}` }
+              }>
+              {p}
+            </button>
+          ))}
+        </div>
+
+        {!processor && (
+          <p className="mt-3 text-[11px]" style={{ color: BRAND.muted }}>
+            Select a processor to load its KYC/KYB checklist.
+          </p>
+        )}
+      </div>
+
+      {/* ── KYC Documents (processor-specific) ── */}
+      {processor && (
+        <div className="rounded-2xl p-5" style={{ backgroundColor: BRAND.card, border: `1px solid ${BRAND.border}` }}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: BRAND.muted }}>
+                {processor} KYC / KYB Requirements
+              </p>
+              <p className="text-[10px] mt-0.5" style={{ color: BRAND.muted }}>
+                {docs.length} documents required for underwriting
+              </p>
+            </div>
+            <span className="text-xs font-semibold" style={{ color: BRAND.text }}>
+              {receivedCount} / {docs.length} received
+            </span>
+          </div>
+
+          {/* Progress bar */}
+          <div className="mb-5">
+            <div className="h-2 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
+              <div className="h-2 rounded-full transition-all"
+                style={{
+                  width: `${docs.length ? (receivedCount / docs.length) * 100 : 0}%`,
+                  backgroundColor: receivedCount === docs.length ? BRAND.success : BRAND.cyan,
+                }} />
+            </div>
+          </div>
+
+          {/* Doc rows */}
+          <div className="flex flex-col divide-y" style={{ borderColor: BRAND.border }}>
+            {docs.map(doc => {
+              const status = statuses[doc.id] ?? 'pending'
+              return (
+                <div key={doc.id} className="flex items-center gap-3 py-3">
+                  <FileText size={14} className="flex-shrink-0" style={{ color: BRAND.muted }} />
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold" style={{ color: BRAND.text }}>{doc.label}</p>
+                    <p className="text-[10px] mt-0.5 truncate" style={{ color: BRAND.muted }}>{doc.description}</p>
+                  </div>
+
+                  <select
+                    value={status}
+                    onChange={e => handleStatusChange(doc.id, e.target.value as DocStatus)}
+                    className="text-[11px] font-semibold rounded-lg px-2 py-1 border outline-none cursor-pointer flex-shrink-0"
+                    style={{
+                      backgroundColor: BRAND.bg,
+                      borderColor: BRAND.border,
+                      color: status === 'approved' ? BRAND.success : status === 'received' ? BRAND.cyan : BRAND.warn,
+                    }}>
+                    <option value="pending">Pending</option>
+                    <option value="received">Received</option>
+                    <option value="approved">Approved</option>
+                  </select>
+
+                  {status === 'pending' && (
+                    <button
+                      onClick={() => handleRequestDoc(doc)}
+                      title="Draft email request"
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold flex-shrink-0 transition-opacity hover:opacity-80"
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: `1px solid ${BRAND.borderCyan}`,
+                        color: BRAND.cyan,
+                      }}>
+                      <Mail size={11} />
+                      Request
+                    </button>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
-
-        {/* Doc rows */}
-        <div className="flex flex-col divide-y" style={{ borderColor: BRAND.border }}>
-          {KYC_DOCS.map(doc => {
-            const status = statuses[doc.id] ?? 'pending'
-            return (
-              <div key={doc.id} className="flex items-center gap-3 py-3">
-
-                {/* Icon */}
-                <FileText size={14} className="flex-shrink-0" style={{ color: BRAND.muted }} />
-
-                {/* Label + description */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold" style={{ color: BRAND.text }}>{doc.label}</p>
-                  <p className="text-[10px] mt-0.5 truncate" style={{ color: BRAND.muted }}>{doc.description}</p>
-                </div>
-
-                {/* Status dropdown */}
-                <select
-                  value={status}
-                  onChange={e => handleStatusChange(doc.id, e.target.value as DocStatus)}
-                  className="text-[11px] font-semibold rounded-lg px-2 py-1 border outline-none cursor-pointer flex-shrink-0"
-                  style={{
-                    backgroundColor: BRAND.bg,
-                    borderColor: BRAND.border,
-                    color: status === 'approved' ? BRAND.success : status === 'received' ? BRAND.cyan : BRAND.warn,
-                  }}>
-                  <option value="pending">Pending</option>
-                  <option value="received">Received</option>
-                  <option value="approved">Approved</option>
-                </select>
-
-                {/* Request email button — only when pending */}
-                {status === 'pending' && (
-                  <button
-                    onClick={() => handleRequestDoc(doc)}
-                    title="Draft email request"
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold flex-shrink-0 transition-opacity hover:opacity-80"
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: `1px solid ${BRAND.borderCyan}`,
-                      color: BRAND.cyan,
-                    }}>
-                    <Mail size={11} />
-                    Request
-                  </button>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
+      )}
 
       {/* ── Chargebacks ── */}
       <div className="rounded-2xl p-5" style={{ backgroundColor: BRAND.card, border: `1px solid ${BRAND.border}` }}>
@@ -236,14 +325,12 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
                       {cb.status === 'resolved' ? (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold"
                           style={{ backgroundColor: 'rgba(110,231,183,0.08)', border: '1px solid rgba(110,231,183,0.2)', color: BRAND.success }}>
-                          <CheckCircle2 size={9} />
-                          Resolved
+                          <CheckCircle2 size={9} /> Resolved
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold"
                           style={{ backgroundColor: 'rgba(252,211,77,0.08)', border: '1px solid rgba(252,211,77,0.2)', color: BRAND.warn }}>
-                          <Clock size={9} />
-                          Pending
+                          <Clock size={9} /> Pending
                         </span>
                       )}
                     </td>
@@ -252,7 +339,6 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
               </tbody>
             </table>
 
-            {/* Summary row */}
             <div className="mt-3 px-3 py-2.5 rounded-xl flex items-center gap-2"
               style={{ backgroundColor: 'rgba(232,80,74,0.05)', border: '1px solid rgba(232,80,74,0.15)' }}>
               <AlertTriangle size={12} style={{ color: BRAND.danger }} />
@@ -279,9 +365,8 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
           ].map(({ label, status }) => {
             const isSigned = status === 'Signed' || status === 'Received'
             const color = isSigned ? BRAND.success : BRAND.warn
-            const bg = isSigned ? 'rgba(110,231,183,0.08)' : 'rgba(252,211,77,0.08)'
+            const bg    = isSigned ? 'rgba(110,231,183,0.08)' : 'rgba(252,211,77,0.08)'
             const border = isSigned ? 'rgba(110,231,183,0.2)' : 'rgba(252,211,77,0.2)'
-
             return (
               <div key={label} className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-2.5">
@@ -297,7 +382,6 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
           })}
         </div>
 
-        {/* Stage context note */}
         <div className="mt-4 px-3 py-2.5 rounded-xl text-[11px] italic"
           style={{ backgroundColor: 'rgba(255,255,255,0.02)', borderLeft: `3px solid ${BRAND.borderCyan}`, color: BRAND.muted }}>
           Agreement status reflects current pipeline stage:{' '}
@@ -306,6 +390,7 @@ export default function MDDocuments({ merchant: m, addActivity }: Props) {
           </span>
         </div>
       </div>
+
     </div>
   )
 }

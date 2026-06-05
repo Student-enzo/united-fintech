@@ -57,6 +57,7 @@ function toMerchantRecord(row: any): MerchantRecord {
     owner_name:         row.contact_name ?? undefined,
     contact_email:      row.contact_email ?? undefined,
     contact_phone:      row.contact_phone ?? undefined,
+    processor:          row.processor ?? null,
   }
 }
 
@@ -117,4 +118,12 @@ export async function insertMerchant(
     .single()
   if (error) throw error
   return toMerchantRecord(row)
+}
+
+export async function saveMerchantProcessor(id: string, processor: string | null): Promise<void> {
+  const { error } = await supabasePublic
+    .from('merchants')
+    .update({ processor })
+    .eq('id', id)
+  if (error) throw error
 }

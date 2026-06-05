@@ -27,6 +27,7 @@ export type MerchantRecord = {
   owner_name?: string
   contact_email?: string
   contact_phone?: string
+  processor?: string | null
 }
 
 export const STAGE_META: Record<PipelineStage, { label: string; shortLabel: string; color: string; bg: string; border: string }> = {

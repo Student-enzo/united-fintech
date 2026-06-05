@@ -53,7 +53,9 @@ export default function MDPipeline({ merchant: m, onStageChange, addActivity }: 
   const [checked, setChecked] = useState<Record<string, boolean>>({})
   const [copied, setCopied] = useState(false)
 
-  const applyLink = `https://apply.unitedfintech.io/${m.id}?token=mock_${m.id}`
+  const applyLink = typeof window !== 'undefined'
+    ? `${window.location.origin}/apply/${m.id}`
+    : `/apply/${m.id}`
 
   const nextStage = currentIdx < ACTIVE_STAGES.length - 1
     ? ACTIVE_STAGES[currentIdx + 1]

@@ -15,6 +15,7 @@ import {
   Calendar,
   Sparkles,
   Mail,
+  Briefcase,
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
 import { BRAND } from '@/lib/brand'
@@ -143,7 +144,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavItem href="/admin" label="Dashboard" icon={LayoutDashboard} pathname={pathname} onClick={onClose} />
         </div>
 
-        <SectionHeader label="CRM" />
+        <SectionHeader label="Pipeline" />
         <div className="flex flex-col gap-0.5">
           <NavItem
             href="/admin/merchants"
@@ -156,6 +157,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               '/admin/agreements', '/admin/chargebacks', '/admin/attrition',
               '/admin/compliance', '/admin/post-activation',
             ]}
+          />
+        </div>
+
+        <SectionHeader label="Portfolio" />
+        <div className="flex flex-col gap-0.5">
+          <NavItem
+            href="/admin/portfolio"
+            label="Live Merchants"
+            icon={Briefcase}
+            pathname={pathname}
+            onClick={onClose}
           />
         </div>
 
