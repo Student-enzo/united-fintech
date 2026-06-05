@@ -28,7 +28,7 @@ function calculateGap(width: number) {
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth))
 }
 
-export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
+export function ServicesCarousel({ items, ctaRef }: { items: ServiceItem[]; ctaRef?: React.Ref<HTMLAnchorElement> }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [hoverPrev, setHoverPrev] = useState(false)
   const [hoverNext, setHoverNext] = useState(false)
@@ -219,6 +219,7 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
 
             {/* CTA Button */}
             <Link
+              ref={ctaRef}
               href={active.href}
               style={{
                 marginLeft: 'auto',

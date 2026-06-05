@@ -60,7 +60,7 @@ const CYAN = '#1EA8D4'
 const TEXT = '#E8EDF2'
 
 export default function IdealClient() {
-  const servicesRef = useCursorArrow<HTMLAnchorElement>()
+  const ctaRef = useCursorArrow<HTMLAnchorElement>()
   return (
     <section id="services" style={{ backgroundColor: '#161616', padding: '6rem 1.5rem' }}>
       <div className="max-w-7xl mx-auto">
@@ -107,7 +107,6 @@ export default function IdealClient() {
           </div>
 
           <Link
-            ref={servicesRef}
             href="/services"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
@@ -131,7 +130,7 @@ export default function IdealClient() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
-          <ServicesCarousel items={SERVICES} />
+          <ServicesCarousel items={SERVICES} ctaRef={ctaRef} />
         </motion.div>
 
       </div>
