@@ -22,8 +22,8 @@ export default function DashboardKPIs() {
 
   useEffect(() => {
     fetch('/api/dashboard/stats')
-      .then(r => r.json())
-      .then((data: KPIs) => setKpis(data))
+      .then(r => r.ok ? r.json() : null)
+      .then((data: KPIs | null) => { if (data) setKpis(data) })
       .finally(() => setLoading(false))
   }, [])
 

@@ -46,8 +46,8 @@ export default function DashboardCharts() {
 
   useEffect(() => {
     fetch('/api/dashboard/charts')
-      .then(r => r.json())
-      .then((d: ChartData) => setData(d))
+      .then(r => r.ok ? r.json() : null)
+      .then((d: ChartData | null) => { if (d) setData(d) })
       .finally(() => setLoading(false))
   }, [])
 
