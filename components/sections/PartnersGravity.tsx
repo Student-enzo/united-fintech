@@ -5,60 +5,55 @@ import { useRouter } from 'next/navigation'
 import { motion, useAnimation, useInView } from 'framer-motion'
 
 const PARTNERS = [
-  { name: 'Stripe',     slug: 'stripe',     logo: '/logos/stripe.svg',     style: { background: '#635BFF', color: '#fff' } },
-  { name: 'Square',     slug: 'square',     logo: '/logos/square.svg',     style: { background: '#1a1a1a', color: '#fff' } },
-  { name: 'Tipalti',    slug: 'tipalti',    logo: '/logos/tipalti.svg',    style: { background: '#0073CF', color: '#fff' } },
-  { name: 'Worldpay',   slug: 'worldpay',   logo: '/logos/worldpay.svg',   style: { background: '#004B87', color: '#fff' } },
-  { name: 'Fiserv',     slug: 'fiserv',     logo: '/logos/fiserv.svg',     style: { background: '#FF6600', color: '#fff' } },
-  { name: 'Mastercard', slug: 'mastercard', logo: '/logos/mastercard.svg', style: { background: '#EB001B', color: '#fff' } },
-  { name: 'FIS',        slug: 'fis',        logo: '/logos/fis.svg',        style: { background: '#2D4E91', color: '#fff' } },
-  { name: 'Braintree',  slug: 'braintree',  logo: '/logos/braintree.svg',  style: { background: '#009CDE', color: '#fff' } },
-  { name: 'Visa',       slug: 'visa',       logo: '/logos/visa.svg',       style: { background: '#1A1F71', color: '#FAA61A' } },
-  { name: 'Adyen',      slug: 'adyen',      logo: '/logos/adyen.svg',      style: { background: '#0ABF53', color: '#fff' } },
-  { name: 'Airwallex',  slug: 'airwallex',  logo: '/logos/airwallex.svg',  style: { background: '#1B2B4B', color: '#1EA8D4' } },
-  { name: 'PayPal',     slug: 'paypal',     logo: '/logos/paypal.svg',     style: { background: '#003087', color: '#F7C94B' } },
+  { name: 'Stripe',     slug: 'stripe',     logo: '/logos/stripe.svg' },
+  { name: 'Square',     slug: 'square',     logo: '/logos/square.svg' },
+  { name: 'Tipalti',    slug: 'tipalti',    logo: '/logos/tipalti.svg' },
+  { name: 'Worldpay',   slug: 'worldpay',   logo: '/logos/worldpay.svg' },
+  { name: 'Fiserv',     slug: 'fiserv',     logo: '/logos/fiserv.svg' },
+  { name: 'Mastercard', slug: 'mastercard', logo: '/logos/mastercard.svg' },
+  { name: 'FIS',        slug: 'fis',        logo: '/logos/fis.svg' },
+  { name: 'Braintree',  slug: 'braintree',  logo: '/logos/braintree.svg' },
+  { name: 'Visa',       slug: 'visa',       logo: '/logos/visa.svg' },
+  { name: 'Adyen',      slug: 'adyen',      logo: '/logos/adyen.svg' },
+  { name: 'Airwallex',  slug: 'airwallex',  logo: '/logos/airwallex.svg' },
+  { name: 'PayPal',     slug: 'paypal',     logo: '/logos/paypal.svg' },
 ]
 
-const CONTAINER_H = 400
+const CONTAINER_H = 440
+const CARD_W = 108
+const CARD_H = 64
 
-const FLOAT_CSS = `
-@keyframes uf-f0{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(18px,-14px)rotate(3deg)}66%{transform:translate(-10px,12px)rotate(-2deg)}}
-@keyframes uf-f1{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-16px,18px)rotate(-4deg)}66%{transform:translate(12px,-10px)rotate(2deg)}}
-@keyframes uf-f2{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(14px,16px)rotate(2deg)}66%{transform:translate(-18px,-8px)rotate(-3deg)}}
-@keyframes uf-f3{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-12px,-16px)rotate(-2deg)}66%{transform:translate(16px,12px)rotate(4deg)}}
-@keyframes uf-f4{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(20px,8px)rotate(4deg)}66%{transform:translate(-8px,-18px)rotate(-3deg)}}
-@keyframes uf-f5{0%,100%{transform:translate(0,0)rotate(0deg)}33%{transform:translate(-20px,-8px)rotate(-4deg)}66%{transform:translate(8px,18px)rotate(3deg)}}
-`
-
-const FLOAT_DURATIONS = [4, 4.5, 3.8, 5, 4.2, 4.8, 4.1, 5.2, 3.9, 4.6, 4.4, 5.5]
-
-type PosData = { left: number; finalY: number; fi: number; d: number }
+type PosData = { left: number; finalY: number }
 type Partner = typeof PARTNERS[number]
 
-function PartnerPill({ p, idx, pos, triggered }: {
+function PartnerCard({
+  p, idx, pos, triggered, containerRef,
+}: {
   p: Partner; idx: number; pos: PosData; triggered: boolean
+  containerRef: React.RefObject<HTMLDivElement | null>
 }) {
   const router = useRouter()
   const controls = useAnimation()
   const [settled, setSettled] = useState(false)
   const animated = useRef(false)
+  const dragStart = useRef({ x: 0, y: 0, moved: false })
 
   useEffect(() => {
     if (!triggered || animated.current) return
     animated.current = true
 
     async function run() {
-      controls.set({ y: -520, opacity: 1 })
-      await new Promise<void>(r => setTimeout(r, idx * 35))
+      controls.set({ y: -560, opacity: 0 })
+      await new Promise<void>(r => setTimeout(r, idx * 45))
+      controls.set({ opacity: 1 })
 
-      // damping:14 limits overshoot to ~8% — pills stay inside the container
       await controls.start({
-        y: CONTAINER_H - 60,
-        transition: { type: 'spring', damping: 14, stiffness: 140, mass: 1, velocity: 18 },
+        y: CONTAINER_H - CARD_H - 4,
+        transition: { type: 'spring', damping: 10, stiffness: 120, mass: 1, velocity: 22 },
       })
       await controls.start({
         y: pos.finalY,
-        transition: { type: 'spring', damping: 14, stiffness: 220, mass: 1 },
+        transition: { type: 'spring', damping: 18, stiffness: 200, mass: 1 },
       })
       setSettled(true)
     }
@@ -68,45 +63,61 @@ function PartnerPill({ p, idx, pos, triggered }: {
   return (
     <motion.div
       animate={controls}
-      initial={{ y: -520, opacity: 0 }}
-      style={{ position: 'absolute', left: `${pos.left}%`, top: 0, cursor: 'pointer', zIndex: 1, touchAction: 'none', userSelect: 'none' }}
-      whileHover={{ scale: 1.1, zIndex: 10 }}
-      onClick={() => router.push(`/providers/${p.slug}`)}
+      initial={{ y: -560, opacity: 0 }}
+      drag={settled}
+      dragMomentum={false}
+      dragElastic={0.06}
+      dragConstraints={containerRef}
+      style={{
+        position: 'absolute',
+        left: `${pos.left}%`,
+        top: 0,
+        width: CARD_W,
+        height: CARD_H,
+        cursor: settled ? 'grab' : 'default',
+        touchAction: 'none',
+        userSelect: 'none',
+        zIndex: 1,
+      }}
+      whileDrag={{ scale: 1.1, zIndex: 20, cursor: 'grabbing' }}
+      whileHover={settled ? { scale: 1.06, zIndex: 10 } : {}}
+      onPointerDown={(e) => {
+        dragStart.current = { x: e.clientX, y: e.clientY, moved: false }
+      }}
+      onPointerMove={(e) => {
+        if (!dragStart.current.moved) {
+          const dx = Math.abs(e.clientX - dragStart.current.x)
+          const dy = Math.abs(e.clientY - dragStart.current.y)
+          if (dx > 4 || dy > 4) dragStart.current.moved = true
+        }
+      }}
+      onClick={() => {
+        if (!dragStart.current.moved) router.push(`/providers/${p.slug}`)
+      }}
     >
-      <div style={{ animation: settled ? `uf-f${pos.fi} ${FLOAT_DURATIONS[idx]}s ease-in-out ${pos.d}s infinite` : 'none' }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '0.45rem',
-          background: 'rgba(255,255,255,0.07)',
-          backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          borderRadius: 9999,
-          padding: '0.4rem 0.9rem 0.4rem 0.45rem',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
-          pointerEvents: 'none', whiteSpace: 'nowrap',
-        }}>
-          <div style={{
-            width: 28, height: 28, borderRadius: '50%', background: '#fff',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            overflow: 'hidden', flexShrink: 0,
-          }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={p.logo} alt={p.name} width={22} height={22}
-              style={{ objectFit: 'contain', display: 'block' }}
-              onError={(e) => {
-                const t = e.currentTarget; t.style.display = 'none'
-                const parent = t.parentElement
-                if (parent) {
-                  parent.style.background = p.style.background
-                  parent.innerHTML = `<span style="color:${p.style.color};font-size:0.55rem;font-weight:900">${p.name.slice(0,2).toUpperCase()}</span>`
-                }
-              }}
-            />
-          </div>
-          <span style={{ color: '#E8EDF2', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.04em' }}>
-            {p.name}
-          </span>
-        </div>
+      <div style={{
+        width: '100%',
+        height: '100%',
+        background: 'rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 14,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '10px 12px',
+        boxShadow: '0 6px 28px rgba(0,0,0,0.45)',
+        overflow: 'hidden',
+        pointerEvents: 'none',
+      }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={p.logo}
+          alt={p.name}
+          draggable={false}
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        />
       </div>
     </motion.div>
   )
@@ -114,15 +125,14 @@ function PartnerPill({ p, idx, pos, triggered }: {
 
 export default function PartnersGravity() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(sectionRef, { once: true, amount: 0.25 })
   const [positions, setPositions] = useState<PosData[] | null>(null)
 
   useEffect(() => {
     setPositions(PARTNERS.map(() => ({
-      left: Math.random() * 78 + 2,
-      finalY: Math.random() * 290 + 15,  // 15–305px, safely inside 400px container
-      fi: Math.floor(Math.random() * 6),
-      d: Math.random() * 2.5,
+      left: Math.random() * 74 + 2,
+      finalY: Math.random() * (CONTAINER_H - CARD_H - 20) + 10,
     })))
   }, [])
 
@@ -139,8 +149,6 @@ export default function PartnersGravity() {
         overflow: 'hidden',
       }}
     >
-      <style>{FLOAT_CSS}</style>
-
       <div style={{ textAlign: 'center', padding: '4rem 1.5rem 2rem' }}>
         <p style={{ color: '#1EA8D4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
           Technology Partners
@@ -150,14 +158,24 @@ export default function PartnersGravity() {
           <span style={{ color: '#1EA8D4', fontStyle: 'italic' }}>payment rails.</span>
         </h2>
         <p style={{ color: 'rgba(232,237,242,0.55)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: 480, margin: '0 auto' }}>
-          We integrate natively with every major processor, gateway, and banking partner. Click any logo to learn more.
+          We integrate natively with every major processor, gateway, and banking partner.
+          Click any logo to learn more, or drag to rearrange.
         </p>
       </div>
 
-      {/* overflow:visible so pills never clip at the bottom boundary */}
-      <div style={{ position: 'relative', height: CONTAINER_H, width: '100%', overflow: 'visible' }}>
+      <div
+        ref={containerRef}
+        style={{ position: 'relative', height: CONTAINER_H, width: '100%', overflow: 'hidden' }}
+      >
         {positions && PARTNERS.map((p, i) => (
-          <PartnerPill key={p.name} p={p} idx={i} pos={positions[i]} triggered={inView} />
+          <PartnerCard
+            key={p.name}
+            p={p}
+            idx={i}
+            pos={positions[i]}
+            triggered={inView}
+            containerRef={containerRef}
+          />
         ))}
       </div>
 
