@@ -6,26 +6,15 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   Users,
-  FileText,
-  ScrollText,
-  TrendingUp,
-  DollarSign,
+  BarChart2,
   Handshake,
-  Shield,
   Activity,
   Settings,
   LogOut,
   X,
   Calendar,
   Sparkles,
-  UserPlus,
-  AlertTriangle,
-  TrendingDown,
-  ClipboardList,
-  BarChart2,
-  Receipt,
   Mail,
-  CreditCard,
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
 import { BRAND } from '@/lib/brand'
@@ -138,7 +127,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           Admin Portal
         </p>
 
-        {/* Mobile close */}
         <button
           className="md:hidden absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-lg"
           style={{ color: 'rgba(255,255,255,0.4)', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
@@ -155,27 +143,27 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavItem href="/admin" label="Dashboard" icon={LayoutDashboard} pathname={pathname} onClick={onClose} />
         </div>
 
-        <SectionHeader label="Pipeline" />
+        <SectionHeader label="CRM" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/merchants"   label="Merchants"        icon={Users}        pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/deals"       label="Deals & Proposals" icon={FileText}     pathname={pathname} onClick={onClose} badge={4} />
-          <NavItem href="/admin/onboarding"  label="Onboarding"       icon={UserPlus}     pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/underwriting" label="Underwriting"    icon={ClipboardList} pathname={pathname} onClick={onClose} badge={3} />
-          <NavItem href="/admin/agreements"  label="Agreements"       icon={ScrollText}   pathname={pathname} onClick={onClose} badge={2} />
-        </div>
-
-        <SectionHeader label="Risk" />
-        <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/chargebacks" label="Chargebacks"      icon={AlertTriangle} pathname={pathname} onClick={onClose} badge={1} />
-          <NavItem href="/admin/attrition"   label="Attrition"        icon={TrendingDown}  pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/compliance"  label="KYC / Compliance" icon={Shield}        pathname={pathname} onClick={onClose} />
+          <NavItem
+            href="/admin/merchants"
+            label="Merchants"
+            icon={Users}
+            pathname={pathname}
+            onClick={onClose}
+            matchPaths={[
+              '/admin/deals', '/admin/onboarding', '/admin/underwriting',
+              '/admin/agreements', '/admin/chargebacks', '/admin/attrition',
+              '/admin/compliance', '/admin/post-activation',
+            ]}
+          />
         </div>
 
         <SectionHeader label="Finance" />
         <div className="flex flex-col gap-0.5">
           <NavItem
             href="/admin/finance"
-            label="Finance"
+            label="Finance Hub"
             icon={BarChart2}
             pathname={pathname}
             onClick={onClose}
@@ -183,12 +171,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           />
         </div>
 
-        <SectionHeader label="Partners" />
+        <SectionHeader label="Network" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/partners" label="Partner Network" icon={Handshake} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/partners" label="Partners" icon={Handshake} pathname={pathname} onClick={onClose} />
         </div>
 
-        <SectionHeader label="Intelligence" />
+        <SectionHeader label="Tools" />
         <div className="flex flex-col gap-0.5">
           <NavItem href="/admin/ai"       label="AI Assistant"    icon={Sparkles}  pathname={pathname} onClick={onClose} />
           <NavItem href="/admin/calendar" label="Calendar"        icon={Calendar}  pathname={pathname} onClick={onClose} />

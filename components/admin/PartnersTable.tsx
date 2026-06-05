@@ -577,68 +577,81 @@ export default function PartnersTable() {
         </div>
       </div>
 
-      {/* Table */}
-      <div style={{ ...CARD, overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ backgroundColor: 'rgba(144,196,207,0.05)', borderBottom: `1px solid rgba(144,196,207,0.12)` }}>
-                {['Partner Name', 'ISO Type', 'Active Merchants', 'Monthly Volume', 'Commission %', 'Status', 'Joined', 'Actions'].map(h => (
-                  <th key={h} style={{
-                    textAlign: 'left', padding: '11px 16px',
-                    color: 'rgba(144,196,207,0.55)', fontSize: 10,
-                    fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em',
-                    whiteSpace: 'nowrap',
-                  }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={8} style={{ textAlign: 'center', padding: '48px 0', color: BRAND.muted, fontSize: 13 }}>
-                    No partners match your filters.
-                  </td>
-                </tr>
-              ) : (
-                filtered.map((p, idx) => (
-                  <tr key={p.id} style={{
-                    borderBottom: idx < filtered.length - 1 ? `1px solid ${BRAND.border}` : 'none',
-                    backgroundColor: 'transparent',
-                  }}
-                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.015)')}
-                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <td style={{ padding: '13px 16px' }}>
-                      <p style={{ color: BRAND.text, fontSize: 13, fontWeight: 600, margin: 0 }}>{p.name}</p>
-                      <p style={{ color: BRAND.muted, fontSize: 11, margin: '2px 0 0' }}>{p.contact_email}</p>
-                    </td>
-                    <td style={{ padding: '13px 16px' }}><ISOBadge type={p.iso_type} /></td>
-                    <td style={{ padding: '13px 16px' }}>
-                      <p style={{ color: BRAND.text, fontSize: 14, fontWeight: 700, margin: 0 }}>{p.active_merchants}</p>
-                    </td>
-                    <td style={{ padding: '13px 16px' }}>
-                      <p style={{ color: BRAND.cyan, fontSize: 13, fontWeight: 700, margin: 0 }}>
-                        {p.monthly_volume > 0 ? fmtCurrency(p.monthly_volume) : '—'}
-                      </p>
-                    </td>
-                    <td style={{ padding: '13px 16px' }}>
-                      <p style={{ color: BRAND.text, fontSize: 13, margin: 0 }}>{p.commission_rate}%</p>
-                    </td>
-                    <td style={{ padding: '13px 16px' }}><StatusBadge status={p.status} /></td>
-                    <td style={{ padding: '13px 16px', color: BRAND.muted, fontSize: 12, whiteSpace: 'nowrap' }}>
-                      {fmtDate(p.joined_date)}
-                    </td>
-                    <td style={{ padding: '13px 16px' }}>
-                      <ActionMenu partner={p} onSuspend={handleSuspend} />
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+      {/* Card Grid */}
+      {filtered.length === 0 ? (
+        <div style={{ ...CARD, padding: '48px 0', textAlign: 'center', color: BRAND.muted, fontSize: 13 }}>
+          No partners match your filters.
         </div>
-      </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {filtered.map(p => (
+            <div key={p.id} style={{ ...CARD, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 14 }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = 'rgba(144,196,207,0.28)')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = BRAND.border)}
+            >
+              {/* Name row */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ color: BRAND.text, fontSize: 14, fontWeight: 700, margin: 0, lineHeight: 1.3 }}>{p.name}</p>
+                  <p style={{ color: BRAND.muted, fontSize: 11, margin: '3px 0 0' }}>{p.contact_email}</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                  <ISOBadge type={p.iso_type} />
+                  <ActionMenu partner={p} onSuspend={handleSuspend} />
+                </div>
+              </div>
+
+              {/* Status */}
+              <StatusBadge status={p.status} />
+
+              {/* Metrics row */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+                {[
+                  { label: 'Merchants',   value: String(p.active_merchants), color: BRAND.text },
+                  { label: 'Volume/Mo',   value: p.monthly_volume > 0 ? fmtCurrency(p.monthly_volume) : '—', color: BRAND.cyan },
+                  { label: 'Commission',  value: `${p.commission_rate}%`, color: BRAND.silver },
+                ].map(m => (
+                  <div key={m.label} style={{
+                    backgroundColor: 'rgba(255,255,255,0.03)', border: `1px solid ${BRAND.border}`,
+                    borderRadius: 10, padding: '8px 10px',
+                  }}>
+                    <p style={{ color: BRAND.muted, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 3px' }}>{m.label}</p>
+                    <p style={{ color: m.color, fontSize: 13, fontWeight: 700, margin: 0 }}>{m.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Notes */}
+              {p.notes && (
+                <p style={{ color: BRAND.muted, fontSize: 11, fontStyle: 'italic', margin: 0, lineHeight: 1.5 }}>{p.notes}</p>
+              )}
+
+              {/* Footer */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: `1px solid ${BRAND.border}` }}>
+                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 10, margin: 0 }}>
+                  Joined {fmtDate(p.joined_date)}
+                </p>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button style={{
+                    display: 'flex', alignItems: 'center', gap: 5,
+                    padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                    backgroundColor: 'rgba(255,255,255,0.04)', border: `1px solid ${BRAND.border}`, color: BRAND.muted,
+                  }}>
+                    <Mail size={10} /> Message
+                  </button>
+                  <button style={{
+                    display: 'flex', alignItems: 'center', gap: 5,
+                    padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                    backgroundColor: `rgba(144,196,207,0.1)`, border: `1px solid rgba(144,196,207,0.25)`, color: BRAND.cyan,
+                  }}>
+                    Manage
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {showAdd && (
         <AddPartnerModal
