@@ -15,7 +15,7 @@ const CARDS: CardStackItem[] = [
     description: 'We place the accounts every mainstream broker declines.',
     imageSrc: '/ugc-merchant-processing.jpg',
     tag: 'Our Specialty',
-    href: '/contact?interest=merchant_processing&topic=High-Risk+Account+Approval',
+    href: '/services/high-risk',
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const CARDS: CardStackItem[] = [
     description: 'Real relationships built over years — not scraped from a database.',
     imageSrc: '/ugc-embedded-finance.jpg',
     tag: 'The Network',
-    href: '/contact?interest=all&topic=Banking+Network+Access',
+    href: '/services/banking-network',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const CARDS: CardStackItem[] = [
     description: 'Cross-border coverage that actually delivers for complex merchants.',
     imageSrc: '/ugc-market-coverage.jpg',
     tag: 'Global Reach',
-    href: '/contact?interest=all&topic=Cross-Border+Payments',
+    href: '/services/global-reach',
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const CARDS: CardStackItem[] = [
     description: 'Reserves, disputes, compliance — handled from day one, not day ninety.',
     imageSrc: '/ugc-risk-mitigation.jpg',
     tag: 'Risk Control',
-    href: '/contact?interest=risk_mitigation&topic=Chargeback+Defense',
+    href: '/services/chargeback-defense',
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const CARDS: CardStackItem[] = [
     description: "You're in good company. Serious merchants trust us with serious money.",
     imageSrc: '/ugc-advisory-strategy.jpg',
     tag: 'Scale',
-    href: '/contact?interest=merchant_processing&topic=High-Volume+Processing',
+    href: '/services/high-volume',
   },
 ]
 

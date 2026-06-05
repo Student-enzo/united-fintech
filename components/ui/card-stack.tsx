@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
@@ -82,6 +83,8 @@ export function CardStack<T extends CardStackItem>({
   onChangeIndex,
   renderCard,
 }: CardStackProps<T>) {
+  const router = useRouter();
+  const dragMoved = React.useRef(false);
   const reduceMotion = useReducedMotion();
   const len = items.length;
 
@@ -180,6 +183,10 @@ export function CardStack<T extends CardStackItem>({
                     drag: "x" as const,
                     dragConstraints: { left: 0, right: 0 },
                     dragElastic: 0.18,
+                    onDragStart: () => { dragMoved.current = false; },
+                    onDrag: (_e: unknown, info: { offset: { x: number } }) => {
+                      if (Math.abs(info.offset.x) > 10) dragMoved.current = true;
+                    },
                     onDragEnd: (
                       _e: unknown,
                       info: { offset: { x: number }; velocity: { x: number } },
@@ -214,7 +221,11 @@ export function CardStack<T extends CardStackItem>({
                   }
                   animate={{ opacity: 1, x, y: y + lift, rotateZ, rotateX, scale }}
                   transition={{ type: "spring", stiffness: springStiffness, damping: springDamping }}
-                  onClick={() => setActive(i)}
+                  onClick={() => {
+                    if (!isActive) { setActive(i); return; }
+                    if (dragMoved.current) { dragMoved.current = false; return; }
+                    if (item.href) router.push(item.href);
+                  }}
                   {...dragProps}
                 >
                   <div
@@ -316,6 +327,14 @@ function DefaultFanCard({ item, active }: { item: CardStackItem; active: boolean
             {item.description}
           </div>
         ) : null}
+        {active && item.href && (
+          <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#1EA8D4', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.04em' }}>
+            View details
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1EA8D4" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );
