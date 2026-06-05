@@ -31,9 +31,12 @@ export async function middleware(request: NextRequest) {
   // Marketing pages — allow
   if (
     pathname === '/' ||
+    pathname === '/services' ||
     pathname.startsWith('/services/') ||
     pathname === '/about' ||
-    pathname === '/contact'
+    pathname === '/contact' ||
+    pathname === '/blog' ||
+    pathname.startsWith('/providers/')
   ) {
     return NextResponse.next()
   }
