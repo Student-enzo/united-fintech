@@ -217,20 +217,22 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
               {String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
             </span>
 
-            {/* Learn More CTA */}
+            {/* CTA Button */}
             <Link
               href={active.href}
               style={{
                 marginLeft: 'auto',
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                color: CYAN, fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
-                transition: 'gap 0.15s',
+                backgroundColor: CYAN, color: '#0A0C12',
+                fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none',
+                padding: '0.55rem 1.25rem', borderRadius: 999,
+                whiteSpace: 'nowrap', transition: 'opacity 0.15s',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.gap = '0.65rem')}
-              onMouseLeave={(e) => (e.currentTarget.style.gap = '0.4rem')}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              Learn more
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CYAN} strokeWidth="2.5">
+              Get Started
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0C12" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
@@ -238,24 +240,9 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
         </div>
       </div>
 
-      {/* Service track — full-width selector */}
-      <div style={{ marginTop: '2.5rem', position: 'relative' }}>
-        {/* Base line */}
-        <div style={{
-          position: 'absolute', top: '10px', left: 0, right: 0, height: '2px',
-          backgroundColor: 'rgba(255,255,255,0.1)',
-        }} />
-        {/* Progress fill */}
-        <div style={{
-          position: 'absolute', top: '10px', left: 0, height: '2px',
-          backgroundColor: CYAN,
-          width: `${(activeIndex / (items.length - 1)) * 100}%`,
-          transition: 'width 0.5s cubic-bezier(0.4,0,0.2,1)',
-          boxShadow: `0 0 10px ${CYAN}`,
-        }} />
-
-        {/* Nodes + labels */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+      {/* Service tabs */}
+      <div style={{ marginTop: '2.5rem', overflowX: 'auto', msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', width: 'max-content' }}>
           {items.map((item, i) => {
             const isActive = i === activeIndex
             const isPast = i < activeIndex
@@ -264,35 +251,22 @@ export function ServicesCarousel({ items }: { items: ServiceItem[] }) {
                 key={item.id}
                 onClick={() => { setActiveIndex(i); stopAutoplay() }}
                 style={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem',
-                  background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                  minWidth: 0,
+                  padding: '0.45rem 1.1rem',
+                  borderRadius: 999,
+                  border: isActive ? `1px solid ${CYAN}` : '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: isActive ? CYAN : isPast ? 'rgba(30,168,212,0.07)' : 'transparent',
+                  color: isActive ? '#0D1117' : isPast ? 'rgba(30,168,212,0.65)' : MUTED,
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.25s ease',
+                  boxShadow: isActive ? `0 0 16px rgba(30,168,212,0.3)` : 'none',
                 }}
               >
-                {/* Node dot */}
-                <div style={{
-                  width: isActive ? 16 : 10,
-                  height: isActive ? 16 : 10,
-                  borderRadius: '50%',
-                  backgroundColor: isActive ? CYAN : isPast ? CYAN : 'rgba(255,255,255,0.2)',
-                  border: isActive ? `2px solid ${CYAN}` : `1px solid rgba(255,255,255,0.25)`,
-                  boxShadow: isActive ? `0 0 12px ${CYAN}, 0 0 24px rgba(30,168,212,0.4)` : isPast ? `0 0 6px rgba(30,168,212,0.3)` : 'none',
-                  transition: 'all 0.3s ease',
-                  flexShrink: 0,
-                }} />
-                {/* Label */}
-                <span style={{
-                  fontSize: '0.72rem',
-                  fontWeight: isActive ? 700 : 500,
-                  color: isActive ? CYAN : isPast ? 'rgba(30,168,212,0.5)' : MUTED,
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  textAlign: 'center',
-                  whiteSpace: 'nowrap',
-                  transition: 'color 0.3s',
-                }}>
-                  {item.subtitle}
-                </span>
+                {item.subtitle}
               </button>
             )
           })}
