@@ -1,39 +1,39 @@
-// United Fintech brand palette — SINGLE SOURCE OF TRUTH
-// Edit this file when the logo/palette changes; keep app/globals.css :root in sync.
+// AYC color palette — SINGLE SOURCE OF TRUTH for admin portal
+// All admin files inherit these values via BRAND imports.
 
 export const BRAND = {
   // Backgrounds
-  bg:           '#0A0C12',   // near-black page background
-  bgNavy:       '#0D1B2A',   // deep navy for hero / feature bands
-  card:         '#141821',   // lifted card surface
-  cardAlt:      '#1A1F2A',   // alternate card / hover
+  bg:           '#1c1c1c',   // dark page background
+  bgNavy:       '#1c1c1c',   // same dark (no navy in AYC palette)
+  card:         '#282626',   // card / panel surface
+  cardAlt:      '#282626',   // alternate card / hover (same as card)
 
-  // Signature cyan accent (CTAs, links, logo F-bar, orbit node, "Global Interchange")
-  cyan:         '#1EA8D4',
-  cyanBright:   '#33BEDE',   // glow highlight
-  cyanDeep:     '#0E8FB8',   // teal "Global Interchange" tone
+  // Primary accent — AYC teal
+  cyan:         '#90c4cf',
+  cyanBright:   '#90c4cf',   // same teal (no separate bright in AYC)
+  cyanDeep:     '#4A9B7F',   // darker teal / emerald
 
   // Chrome / silver (wordmark, logo)
-  silverHi:     '#FFFFFF',   // chrome highlight
-  silver:       '#C9D1D9',   // chrome mid-tone
-  silverLo:     '#8A929C',   // chrome shadow / muted text
+  silverHi:     '#FFFFFF',
+  silver:       '#C9D1D9',
+  silverLo:     '#8A929C',
 
   // Text
-  text:         '#E8EDF2',   // primary off-white
-  muted:        '#7E8794',   // secondary / caption
+  text:         'rgba(255,255,255,0.85)',
+  muted:        'rgba(255,255,255,0.3)',
 
   // Borders
-  border:       'rgba(255,255,255,0.08)',
-  borderCyan:   'rgba(30,168,212,0.25)',
+  border:       'rgba(144,196,207,0.15)',
+  borderCyan:   'rgba(144,196,207,0.25)',
 
   // Status
-  success:      '#3DD68C',
-  warn:         '#F0B23E',
+  success:      '#6EE7B7',
+  warn:         '#FCD34D',
   danger:       '#E8504A',
 
   // Glow helpers
-  glowCyan:     '0 0 24px rgba(30,168,212,0.30)',
-  glowCyanLg:   '0 0 48px rgba(30,168,212,0.20)',
+  glowCyan:     '0 0 24px rgba(144,196,207,0.25)',
+  glowCyanLg:   '0 0 48px rgba(144,196,207,0.15)',
 } as const
 
 export type BrandColors = typeof BRAND

@@ -27,7 +27,7 @@ export interface Colors {
 export const DARK: Colors = {
   bg:             BRAND.bg,
   card:           BRAND.card,
-  sidebarGradient:`linear-gradient(180deg, ${BRAND.cardAlt} 0%, ${BRAND.card} 100%)`,
+  sidebarGradient:`linear-gradient(180deg, #1c1c1c 0%, #141414 100%)`,
   sidebarBorder:  BRAND.borderCyan,
   textPrimary:    BRAND.text,
   textSecondary:  BRAND.muted,
@@ -38,27 +38,27 @@ export const DARK: Colors = {
   inputBorder:    BRAND.borderCyan,
   rowHover:       'rgba(255,255,255,0.03)',
   tableHead:      'rgba(255,255,255,0.03)',
-  tableBorder:    'rgba(30,168,212,0.08)',
-  pillBg:         'rgba(30,168,212,0.1)',
+  tableBorder:    'rgba(144,196,207,0.08)',
+  pillBg:         'rgba(144,196,207,0.1)',
   accent:         BRAND.cyan,
 }
 
 export const LIGHT: Colors = {
   bg:             '#F0F4F8',
   card:           '#FFFFFF',
-  sidebarGradient:'linear-gradient(180deg, #1A1F2A 0%, #141821 100%)',
+  sidebarGradient:'linear-gradient(180deg, #1c1c1c 0%, #141414 100%)',
   sidebarBorder:  BRAND.borderCyan,
   textPrimary:    'rgba(15,23,42,0.88)',
   textSecondary:  'rgba(15,23,42,0.58)',
   textMuted:      'rgba(15,23,42,0.38)',
   border:         'rgba(0,0,0,0.08)',
-  borderAccent:   'rgba(30,168,212,0.35)',
+  borderAccent:   'rgba(144,196,207,0.35)',
   inputBg:        'rgba(0,0,0,0.04)',
   inputBorder:    'rgba(0,0,0,0.14)',
   rowHover:       'rgba(0,0,0,0.025)',
   tableHead:      'rgba(0,0,0,0.03)',
   tableBorder:    'rgba(0,0,0,0.06)',
-  pillBg:         'rgba(30,168,212,0.15)',
+  pillBg:         'rgba(144,196,207,0.15)',
   accent:         BRAND.cyanDeep,
 }
 

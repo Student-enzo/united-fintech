@@ -44,8 +44,8 @@ export default function VolumeChart({ data }: { data: MonthStat[] }) {
       <svg width="0" height="0" style={{ position: 'absolute' }}>
         <defs>
           <linearGradient id="volBarGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#1EA8D4" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#0E8FB8" stopOpacity="0.35" />
+            <stop offset="0%"   stopColor="#90c4cf" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#4A9B7F" stopOpacity="0.35" />
           </linearGradient>
         </defs>
       </svg>
@@ -67,10 +67,10 @@ export default function VolumeChart({ data }: { data: MonthStat[] }) {
                 name === 'volume' ? 'Processing Vol.' : 'Net Residual',
               ]}
               contentStyle={{
-                borderRadius: 10, border: '1px solid rgba(30,168,212,0.2)',
-                fontSize: 12, backgroundColor: '#141821', color: 'rgba(255,255,255,0.85)',
+                borderRadius: 10, border: '1px solid rgba(144,196,207,0.2)',
+                fontSize: 12, backgroundColor: '#282626', color: 'rgba(255,255,255,0.85)',
               }}
-              cursor={{ fill: 'rgba(30,168,212,0.06)' }}
+              cursor={{ fill: 'rgba(144,196,207,0.06)' }}
             />
           )}
           <Bar dataKey="volume" radius={[4, 4, 0, 0]}
@@ -78,8 +78,8 @@ export default function VolumeChart({ data }: { data: MonthStat[] }) {
             maxBarSize={28} />
           {!isEmpty && (
             <Line dataKey="residual" type="natural"
-              stroke="#3DD68C" strokeWidth={2}
-              dot={false} activeDot={{ r: 4, fill: '#3DD68C', strokeWidth: 0 }} />
+              stroke="#6EE7B7" strokeWidth={2}
+              dot={false} activeDot={{ r: 4, fill: '#6EE7B7', strokeWidth: 0 }} />
           )}
         </ComposedChart>
       </ResponsiveContainer>

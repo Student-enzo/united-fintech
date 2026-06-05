@@ -7,7 +7,7 @@ import {
 
 interface PartnerResidual { partner_name: string; residual: number }
 
-const COLORS = ['#1EA8D4', '#33BEDE', '#3DD68C', '#F0B23E', '#0E8FB8', '#C9D1D9']
+const COLORS = ['#90c4cf', '#6EE7B7', '#FCD34D', '#4A9B7F', '#90c4cf', '#C9D1D9']
 
 function fmtY(v: number) {
   if (v >= 1_000) return `$${(v / 1_000).toFixed(0)}k`
@@ -35,10 +35,10 @@ export default function PartnerResidualChart({ data }: { data: PartnerResidual[]
             <Tooltip
               formatter={(v) => [`$${Number(v).toLocaleString()}`, 'Net Residual']}
               contentStyle={{
-                borderRadius: 10, border: '1px solid rgba(30,168,212,0.2)',
-                fontSize: 12, backgroundColor: '#141821', color: 'rgba(255,255,255,0.85)',
+                borderRadius: 10, border: '1px solid rgba(144,196,207,0.2)',
+                fontSize: 12, backgroundColor: '#282626', color: 'rgba(255,255,255,0.85)',
               }}
-              cursor={{ fill: 'rgba(30,168,212,0.06)' }}
+              cursor={{ fill: 'rgba(144,196,207,0.06)' }}
             />
           )}
           <Bar dataKey="residual" radius={[0, 4, 4, 0]} maxBarSize={20}>

@@ -37,15 +37,28 @@ function AppShell({ children }: { children: React.ReactNode }) {
           <button
             className="md:hidden mb-5 flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
             style={{
-              backgroundColor: 'rgba(30,168,212,0.1)',
-              color: '#1EA8D4',
-              border: '1px solid rgba(30,168,212,0.2)',
+              backgroundColor: 'rgba(144,196,207,0.1)',
+              color: '#90c4cf',
+              border: '1px solid rgba(144,196,207,0.2)',
             }}
             onClick={toggleSidebar}
             aria-label="Open navigation"
           >
             <span className="text-lg leading-none">☰</span>
           </button>
+
+          {/* Level-curves topographic background — same technique as AYC */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: 'url(/level-curves.svg)',
+              backgroundRepeat: 'repeat',
+              backgroundSize: '612px 792px',
+              opacity: 0.10,
+              zIndex: 0,
+            }}
+          />
 
           <div className="relative" style={{ zIndex: 1 }}>
             {children}

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
@@ -15,10 +16,20 @@ import {
   Settings,
   LogOut,
   X,
+  Calendar,
+  Sparkles,
+  UserPlus,
+  AlertTriangle,
+  TrendingDown,
+  ClipboardList,
+  BarChart2,
+  Receipt,
+  Mail,
+  CreditCard,
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
 
-const CYAN = '#1EA8D4'
+const CYAN = '#90c4cf'
 
 function SectionHeader({ label }: { label: string }) {
   return (
@@ -55,9 +66,9 @@ function NavItem({
       style={
         isActive
           ? {
-              backgroundColor: 'rgba(30,168,212,0.08)',
+              backgroundColor: 'rgba(144,196,207,0.08)',
               color: CYAN,
-              boxShadow: 'inset 3px 0 0 0 #1EA8D4',
+              boxShadow: 'inset 3px 0 0 0 #90c4cf',
             }
           : { color: 'rgba(255,255,255,0.55)' }
       }
@@ -101,40 +112,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     >
       {/* Logo */}
       <div
-        className="flex items-center gap-3 px-5 pt-6 pb-5"
+        className="flex flex-col items-center pt-7 pb-5 px-5 relative"
         style={{ borderBottom: `1px solid ${colors.sidebarBorder}` }}
       >
-        {/* UF monogram */}
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black"
-          style={{
-            background: `linear-gradient(135deg, ${CYAN} 0%, #0E8FB8 100%)`,
-            color: '#fff',
-            boxShadow: '0 0 14px rgba(30,168,212,0.30)',
-          }}
-        >
-          UF
-        </div>
-        <div>
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.14em]"
-            style={{
-              background: 'linear-gradient(90deg, #C9D1D9 0%, #FFFFFF 50%, #8A929C 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            United Fintech
-          </p>
-          <p className="text-[9px] uppercase tracking-[0.18em]" style={{ color: 'rgba(30,168,212,0.5)' }}>
-            Admin Portal
-          </p>
-        </div>
+        <Image
+          src="/logo-vertical.png"
+          alt="United Fintech"
+          width={140}
+          height={50}
+          className="object-contain"
+          priority
+        />
+        <p className="mt-2 text-[9px] uppercase tracking-[0.18em]" style={{ color: 'rgba(144,196,207,0.5)' }}>
+          Admin Portal
+        </p>
 
         {/* Mobile close */}
         <button
-          className="md:hidden ml-auto flex items-center justify-center w-7 h-7 rounded-lg"
-          style={{ color: 'rgba(255,255,255,0.4)', backgroundColor: 'rgba(255,255,255,0.06)' }}
+          className="md:hidden absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-lg"
+          style={{ color: 'rgba(255,255,255,0.4)', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
           onClick={onClose}
           aria-label="Close navigation"
         >
@@ -150,15 +146,27 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         <SectionHeader label="Pipeline" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/merchants"  label="Merchants"           icon={Users}        pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/deals"      label="Deals & Applications" icon={FileText}     pathname={pathname} onClick={onClose} />
-          <NavItem href="/admin/agreements" label="Agreements"          icon={ScrollText}   pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/merchants"   label="Merchants"        icon={Users}        pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/deals"       label="Deals & Proposals" icon={FileText}     pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/onboarding"  label="Onboarding"       icon={UserPlus}     pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/underwriting" label="Underwriting"    icon={ClipboardList} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/agreements"  label="Agreements"       icon={ScrollText}   pathname={pathname} onClick={onClose} />
+        </div>
+
+        <SectionHeader label="Risk" />
+        <div className="flex flex-col gap-0.5">
+          <NavItem href="/admin/chargebacks" label="Chargebacks"      icon={AlertTriangle} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/attrition"   label="Attrition"        icon={TrendingDown}  pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/compliance"  label="KYC / Compliance" icon={Shield}        pathname={pathname} onClick={onClose} />
         </div>
 
         <SectionHeader label="Finance" />
         <div className="flex flex-col gap-0.5">
           <NavItem href="/admin/residuals"   label="Residuals"   icon={TrendingUp}  pathname={pathname} onClick={onClose} />
           <NavItem href="/admin/commissions" label="Commissions" icon={DollarSign}  pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/cashflow"    label="Cash Flow"   icon={BarChart2}   pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/expenses"    label="Expenses"    icon={Receipt}     pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/payables"    label="Payables"    icon={CreditCard}  pathname={pathname} onClick={onClose} />
         </div>
 
         <SectionHeader label="Partners" />
@@ -166,19 +174,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <NavItem href="/admin/partners" label="Partner Network" icon={Handshake} pathname={pathname} onClick={onClose} />
         </div>
 
-        <SectionHeader label="Compliance" />
+        <SectionHeader label="Intelligence" />
         <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/compliance" label="KYC / Compliance" icon={Shield} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/ai"       label="AI Assistant"    icon={Sparkles}  pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/calendar" label="Calendar"        icon={Calendar}  pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/emails"   label="Communications"  icon={Mail}      pathname={pathname} onClick={onClose} />
         </div>
 
-        <SectionHeader label="Reporting" />
+        <SectionHeader label="System" />
         <div className="flex flex-col gap-0.5">
           <NavItem href="/admin/activity" label="Activity Log" icon={Activity} pathname={pathname} onClick={onClose} />
-        </div>
-
-        <SectionHeader label="Settings" />
-        <div className="flex flex-col gap-0.5">
-          <NavItem href="/admin/settings" label="Settings" icon={Settings} pathname={pathname} onClick={onClose} />
+          <NavItem href="/admin/settings" label="Settings"     icon={Settings} pathname={pathname} onClick={onClose} />
         </div>
 
         <div className="flex-1" />
@@ -187,7 +193,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Footer */}
       <div
         className="px-4 py-4 flex items-center justify-between"
-        style={{ borderTop: `1px solid rgba(30,168,212,0.1)` }}
+        style={{ borderTop: `1px solid rgba(144,196,207,0.1)` }}
       >
         <p className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
           United Fintech

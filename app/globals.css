@@ -321,6 +321,48 @@ body {
   }
 }
 
+/* ─── Admin Panel — AYC-style card & glassmorphism utilities ─────────────── */
+
+/* Admin card — matches AYC's 14-16px radius + border + backdrop blur */
+.admin-card {
+  background-color: #141C28;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color 0.2s ease;
+}
+.admin-card:hover {
+  border-color: rgba(30,168,212,0.22);
+}
+
+/* Admin stat card — subtle lift on hover */
+.admin-stat-card {
+  background-color: #141C28;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.admin-stat-card:hover {
+  border-color: rgba(30,168,212,0.25);
+  transform: translateY(-2px);
+}
+
+/* Admin page title / subtitle — mirrors AYC's ayc-page-title pattern */
+.admin-page-title    { color: rgba(255,255,255,0.88); }
+.admin-page-subtitle { color: rgba(255,255,255,0.45); }
+html.light .admin-page-title    { color: rgba(15,23,42,0.88); }
+html.light .admin-page-subtitle { color: rgba(15,23,42,0.55); }
+
+/* Smooth theme transitions — same as AYC */
+html, body, aside, main {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
 /* ─── Payment Architecture SVG Animations ─────────────────────────────── */
 .cpu-architecture {
   offset-anchor: 10px 0px;
