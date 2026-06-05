@@ -3,7 +3,6 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ScannerCardStream } from '@/components/ui/scanner-card-stream'
 
 const SOLUTIONS = [
   { label: 'Merchant Processing', href: '/services/merchant-processing' },
@@ -75,9 +74,33 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Scanner card stream — nested under brand copy */}
-            <div style={{ marginLeft: '-1.5rem', marginRight: '1rem', overflow: 'hidden', borderRadius: 12, opacity: 0.85 }}>
-              <ScannerCardStream initialSpeed={110} direction={-1} repeat={5} cardGap={40} />
+            {/* Mini card stack — decorative brand element */}
+            <div style={{ position: 'relative', height: 76, width: 168, marginTop: '0.5rem' }}>
+              {[
+                { r: '-7deg', bg: 'linear-gradient(135deg,#182436 0%,#0d1520 100%)', z: 1, x: 0, y: 10 },
+                { r: '2deg',  bg: 'linear-gradient(135deg,#1c2c3e 0%,#101d2c 100%)', z: 2, x: 16, y: 5 },
+                { r: '0deg',  bg: 'linear-gradient(135deg,#1f3148 0%,#13243a 100%)', z: 3, x: 32, y: 0 },
+              ].map((c, i) => (
+                <div key={i} style={{
+                  position: 'absolute', width: 120, height: 72, borderRadius: 8,
+                  background: c.bg, border: '1px solid rgba(30,168,212,0.16)',
+                  transform: `rotate(${c.r})`, left: c.x, top: c.y, zIndex: c.z,
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.55)', overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'absolute', left: 10, top: 16, width: 22, height: 16, borderRadius: 3,
+                    background: 'linear-gradient(135deg,rgba(30,168,212,0.45),rgba(30,168,212,0.18))',
+                    border: '1px solid rgba(30,168,212,0.28)',
+                  }} />
+                  {i === 2 && (
+                    <div style={{
+                      position: 'absolute', bottom: 9, right: 10,
+                      color: 'rgba(30,168,212,0.55)', fontSize: '0.52rem', fontWeight: 800, letterSpacing: '0.1em',
+                    }}>UNITED FINTECH</div>
+                  )}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(255,255,255,0.03) 0%,transparent 55%)', borderRadius: 8 }} />
+                </div>
+              ))}
             </div>
           </div>
 
