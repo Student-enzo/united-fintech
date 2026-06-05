@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { fetchMerchants, saveMerchantStage } from '@/lib/merchants-db'
 import {
   LayoutGrid, List, Search, X, Plus, ChevronUp, ChevronDown,
   Building2, Users, DollarSign, TrendingUp, AlertCircle,
@@ -609,7 +611,9 @@ type SortDir = 'asc' | 'desc'
 // ─── Main board ───────────────────────────────────────────────────────────────
 
 export default function MerchantsBoard() {
-  const [merchants, setMerchants] = useState<MerchantRecord[]>(MOCK_MERCHANTS)
+  const router = useRouter()
+  const [merchants, setMerchants] = useState<MerchantRecord[]>([])
+  const [loading, setLoading]     = useState(true)
   const [view, setView]           = useState<'kanban' | 'list'>('kanban')
   const [search, setSearch]       = useState('')
   const [filterStage, setFilterStage] = useState<PipelineStage | ''>('')
@@ -618,7 +622,7 @@ export default function MerchantsBoard() {
   const [showDeclined, setShowDeclined] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
-  const [selected, setSelected]   = useState<MerchantRecord | null>(null)
+
   const [sortKey, setSortKey]     = useState<SortKey>('date_added')
   const [sortDir, setSortDir]     = useState<SortDir>('desc')
   const [draggingId, setDraggingId] = useState<string | null>(null)
@@ -663,10 +667,20 @@ export default function MerchantsBoard() {
   const totalVolume = active.reduce((s, m) => s + m.monthly_volume, 0)
   const liveCount   = merchants.filter(m => m.pipeline_stage === 'merchant_live').length
 
+  // ── Load from DB ──────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    fetchMerchants()
+      .then(setMerchants)
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
   // ── Helpers ───────────────────────────────────────────────────────────────
 
   function handleStageChange(id: string, stage: PipelineStage) {
     setMerchants(prev => prev.map(m => m.id === id ? { ...m, pipeline_stage: stage, days_in_stage: 0 } : m))
+    saveMerchantStage(id, stage).catch(console.error)
   }
 
   function handleAdded(m: MerchantRecord) {
@@ -691,6 +705,15 @@ export default function MerchantsBoard() {
   const hasActiveFilters = !!filterStage || !!filterPartner || !!filterAcctType
 
   // ── Render ────────────────────────────────────────────────────────────────
+
+  if (loading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: BRAND.cyan, borderTopColor: 'transparent' }} />
+        <span className="text-sm" style={{ color: BRAND.muted }}>Loading merchants…</span>
+      </div>
+    </div>
+  )
 
   return (
     <div>
@@ -920,7 +943,7 @@ export default function MerchantsBoard() {
                           dragging={draggingId === m.id}
                           onDragStart={() => { setDraggingId(m.id) }}
                           onDragEnd={() => { setDraggingId(null); setDragOverStage(null) }}
-                          onClick={() => setSelected(m)}
+                          onClick={() => router.push('/admin/merchants/' + m.id)}
                         />
                       ))
                     )}
@@ -991,7 +1014,7 @@ export default function MerchantsBoard() {
                       <td className="px-4 py-3">
                         <div>
                           <button
-                            onClick={() => setSelected(m)}
+                            onClick={() => router.push('/admin/merchants/' + m.id)}
                             className="text-sm font-bold hover:underline text-left"
                             style={{ color: BRAND.cyan }}>
                             {m.name}
@@ -1039,7 +1062,7 @@ export default function MerchantsBoard() {
                         <div className="flex items-center gap-2">
                           <RiskBadge risk={m.risk} />
                           <button
-                            onClick={() => setSelected(m)}
+                            onClick={() => router.push('/admin/merchants/' + m.id)}
                             className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
                             style={{ backgroundColor: `${BRAND.cyan}12`, color: BRAND.cyan, border: `1px solid ${BRAND.borderCyan}` }}>
                             Manage <ArrowRight size={11} />
@@ -1087,16 +1110,6 @@ export default function MerchantsBoard() {
       {/* ── Modals ── */}
       {showAddModal && (
         <AddMerchantModal onClose={() => setShowAddModal(false)} onAdded={handleAdded} />
-      )}
-      {selected && (
-        <ManageMerchantDrawer
-          merchant={selected}
-          onClose={() => setSelected(null)}
-          onStageChange={(id, stage) => {
-            handleStageChange(id, stage)
-            setSelected(null)
-          }}
-        />
       )}
     </div>
   )

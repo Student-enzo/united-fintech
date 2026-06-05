@@ -1,6 +1,9 @@
 -- Migration: 20260605000010_create_indexes_rls.sql
 -- Purpose: Performance indexes for all tables
 
+-- Required for GIN trigram index on business_name
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 -- ─── users ────────────────────────────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS idx_users_email      ON users (email);
 CREATE INDEX IF NOT EXISTS idx_users_role       ON users (role);
