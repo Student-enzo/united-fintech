@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     // Duplicate check
     const orFilter: string[] = []
     if (ein) orFilter.push(`ein.eq.${ein}`)
-    orFilter.push(`business_name.ilike.${business_name}`)
+    orFilter.push(`business_name.ilike."${business_name}"`)
 
     const { data: duplicates } = await supabase
       .from('onboarding_applications')

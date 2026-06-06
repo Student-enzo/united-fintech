@@ -72,7 +72,7 @@ function NewClientDrawer({ open, onClose }: { open: boolean; onClose: () => void
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      setResult({ link: `${window.location.origin}/apply/${data.intake_token}` })
+      setResult({ link: data.intakeLink ?? `${window.location.origin}/apply/${data.application?.intake_token}` })
     } catch {
       alert('Error creating application. Please try again.')
     } finally {
