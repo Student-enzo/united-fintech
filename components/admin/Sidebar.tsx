@@ -16,6 +16,7 @@ import {
   Sparkles,
   Mail,
   Briefcase,
+  ClipboardList,
 } from 'lucide-react'
 import { useColors } from '@/lib/theme'
 import { BRAND } from '@/lib/brand'
@@ -157,6 +158,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               '/admin/agreements', '/admin/chargebacks', '/admin/attrition',
               '/admin/compliance', '/admin/post-activation',
             ]}
+          />
+        </div>
+
+        <SectionHeader label="Onboarding" />
+        <div className="flex flex-col gap-0.5">
+          <NavItem
+            href="/admin/onboarding-crm"
+            label="Onboarding CRM"
+            icon={ClipboardList}
+            pathname={pathname}
+            onClick={onClose}
+            badge={0}
+            matchPaths={['/admin/onboarding-crm']}
           />
         </div>
 

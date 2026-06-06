@@ -1,589 +1,260 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
+import { CheckCircle, ChevronRight, ChevronLeft, AlertTriangle, Loader2, Shield } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import { BRAND } from '@/lib/brand'
 import {
-  Building2,
-  User,
-  CreditCard,
-  FileUp,
-  CheckCircle,
-  ChevronRight,
-  ChevronLeft,
-  Upload,
-  Shield,
-  Globe,
-} from 'lucide-react'
+  INIT, STEP_LABELS, DOCS, FormData,
+  Step1, Step2, Step3, Step4, Step5, Step6, Gate,
+} from './components'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type LegalStructure = 'sole_proprietor' | 'llc' | 'corporation' | 'partnership' | ''
-
-interface ClientForm {
-  // Step 1 — Business Info
-  businessName: string
-  dba: string
-  legalStructure: LegalStructure
-  mcc: string
-  website: string
-  businessAddress: string
-  city: string
-  state: string
-  zip: string
-  phone: string
-  // Step 2 — Owner Info
-  ownerName: string
-  ownerSSNLast4: string
-  ownerDOB: string
-  ownershipPercent: string
-  ownerAddress: string
-  ownerCity: string
-  ownerState: string
-  ownerZip: string
-  // Step 3 — Processing History
-  currentProcessor: string
-  monthlyVolume: string
-  avgTicket: string
-  cardPresentPercent: string
-  chargebackRate: string
-  chargebackHistory: string
-  // Step 4 — Documents
-  businessLicense: File | null
-  voidedCheck: File | null
-  ownerID: File | null
-  statements: File[]
-  pciSAQ: File | null
-}
-
-const INITIAL: ClientForm = {
-  businessName: '', dba: '', legalStructure: '', mcc: '', website: '', businessAddress: '',
-  city: '', state: '', zip: '', phone: '',
-  ownerName: '', ownerSSNLast4: '', ownerDOB: '', ownershipPercent: '',
-  ownerAddress: '', ownerCity: '', ownerState: '', ownerZip: '',
-  currentProcessor: '', monthlyVolume: '', avgTicket: '', cardPresentPercent: '',
-  chargebackRate: '', chargebackHistory: 'none',
-  businessLicense: null, voidedCheck: null, ownerID: null, statements: [], pciSAQ: null,
-}
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
-
-const INPUT: React.CSSProperties = {
-  backgroundColor: 'rgba(255,255,255,0.07)',
-  border: '1px solid rgba(144,196,207,0.22)',
-  borderRadius: 10,
-  color: 'rgba(255,255,255,0.9)',
-  padding: '10px 14px',
-  fontSize: 14,
-  width: '100%',
-  outline: 'none',
-}
-
-const LABEL: React.CSSProperties = {
-  fontSize: 11,
-  fontWeight: 700,
-  textTransform: 'uppercase',
-  letterSpacing: '0.1em',
-  color: 'rgba(255,255,255,0.45)',
-  display: 'block',
-  marginBottom: 7,
-}
-
-const SELECT: React.CSSProperties = { ...INPUT, cursor: 'pointer' }
-
-const CARD: React.CSSProperties = {
-  backgroundColor: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(144,196,207,0.15)',
-  borderRadius: 16,
-  padding: '28px 32px',
-}
-
-// ─── Sub-components ────────────────────────────────────────────────────────────
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label style={LABEL}>{label}</label>
-      {children}
-    </div>
-  )
-}
-
-function TextInput({
-  value, onChange, placeholder = '', type = 'text',
-}: {
-  value: string; onChange: (v: string) => void; placeholder?: string; type?: string
-}) {
-  return (
-    <input
-      type={type}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      placeholder={placeholder}
-      style={INPUT}
-    />
-  )
-}
-
-function FileZone({
-  label, file, onFile, accept = '*', hint,
-}: {
-  label: string; file: File | null; onFile: (f: File) => void; accept?: string; hint?: string
-}) {
-  return (
-    <div>
-      <label style={LABEL}>{label}</label>
-      <label
-        style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', gap: 8,
-          border: `1px dashed ${file ? 'rgba(144,196,207,0.55)' : 'rgba(144,196,207,0.22)'}`,
-          borderRadius: 12, padding: '22px 16px', cursor: 'pointer',
-          backgroundColor: file ? 'rgba(144,196,207,0.05)' : 'rgba(255,255,255,0.02)',
-          transition: 'all 0.15s',
-        }}
-      >
-        <input type="file" accept={accept} style={{ display: 'none' }}
-          onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
-        <Upload size={18} color={file ? '#90c4cf' : 'rgba(255,255,255,0.28)'} />
-        {file
-          ? <span style={{ fontSize: 12, color: '#90c4cf', fontWeight: 700 }}>{file.name}</span>
-          : <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>{hint ?? 'Click to upload'}</span>
-        }
-      </label>
-    </div>
-  )
-}
-
-// ─── Steps ────────────────────────────────────────────────────────────────────
-
-const STEPS = [
-  { label: 'Business Info',      icon: Building2 },
-  { label: 'Owner Info',         icon: User      },
-  { label: 'Processing History', icon: CreditCard },
-  { label: 'Documents',          icon: FileUp    },
-]
-
-// ─── Step components ──────────────────────────────────────────────────────────
-
-function Step1({ data, set }: { data: ClientForm; set: (k: keyof ClientForm, v: string) => void }) {
-  return (
-    <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field label="Legal Business Name *">
-          <TextInput value={data.businessName} onChange={v => set('businessName', v)} placeholder="Acme Retail LLC" />
-        </Field>
-        <Field label="DBA (if different)">
-          <TextInput value={data.dba} onChange={v => set('dba', v)} placeholder="Trade name (optional)" />
-        </Field>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <Field label="Legal Structure *">
-          <select value={data.legalStructure} onChange={e => set('legalStructure', e.target.value)} style={SELECT}>
-            <option value="">Select…</option>
-            <option value="sole_proprietor">Sole Proprietor</option>
-            <option value="llc">LLC</option>
-            <option value="corporation">Corporation</option>
-            <option value="partnership">Partnership</option>
-          </select>
-        </Field>
-        <Field label="MCC Code *">
-          <TextInput value={data.mcc} onChange={v => set('mcc', v)} placeholder="e.g. 5411" />
-        </Field>
-        <Field label="Business Phone *">
-          <TextInput value={data.phone} onChange={v => set('phone', v)} placeholder="(305) 555-0100" type="tel" />
-        </Field>
-      </div>
-      <Field label="Business Website">
-        <TextInput value={data.website} onChange={v => set('website', v)} placeholder="https://" type="url" />
-      </Field>
-      <Field label="Business Address *">
-        <TextInput value={data.businessAddress} onChange={v => set('businessAddress', v)} placeholder="Street address" />
-      </Field>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-        <div className="col-span-2">
-          <Field label="City *">
-            <TextInput value={data.city} onChange={v => set('city', v)} placeholder="Miami" />
-          </Field>
-        </div>
-        <Field label="State *">
-          <TextInput value={data.state} onChange={v => set('state', v)} placeholder="FL" />
-        </Field>
-        <Field label="ZIP *">
-          <TextInput value={data.zip} onChange={v => set('zip', v)} placeholder="33101" />
-        </Field>
-      </div>
-    </div>
-  )
-}
-
-function Step2({ data, set }: { data: ClientForm; set: (k: keyof ClientForm, v: string) => void }) {
-  return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-start gap-3 px-4 py-3 rounded-xl"
-        style={{ backgroundColor: 'rgba(144,196,207,0.07)', border: '1px solid rgba(144,196,207,0.2)' }}>
-        <Shield size={14} style={{ color: '#90c4cf', flexShrink: 0, marginTop: 2 }} />
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-          Owner information is required for KYC / AML compliance. We collect SSN last 4 only — your full SSN is never stored here.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field label="Principal Owner Full Name *">
-          <TextInput value={data.ownerName} onChange={v => set('ownerName', v)} placeholder="Jane Doe" />
-        </Field>
-        <Field label="SSN Last 4 Digits *">
-          <TextInput value={data.ownerSSNLast4}
-            onChange={v => set('ownerSSNLast4', v.replace(/\D/g, '').slice(0, 4))}
-            placeholder="••••" type="password" />
-        </Field>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field label="Date of Birth *">
-          <TextInput value={data.ownerDOB} onChange={v => set('ownerDOB', v)} type="date" />
-        </Field>
-        <Field label="Ownership % *">
-          <TextInput value={data.ownershipPercent} onChange={v => set('ownershipPercent', v)} placeholder="100" type="number" />
-        </Field>
-      </div>
-      <Field label="Home Address *">
-        <TextInput value={data.ownerAddress} onChange={v => set('ownerAddress', v)} placeholder="Street address" />
-      </Field>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-        <div className="col-span-2">
-          <Field label="City *">
-            <TextInput value={data.ownerCity} onChange={v => set('ownerCity', v)} placeholder="City" />
-          </Field>
-        </div>
-        <Field label="State *">
-          <TextInput value={data.ownerState} onChange={v => set('ownerState', v)} placeholder="FL" />
-        </Field>
-        <Field label="ZIP *">
-          <TextInput value={data.ownerZip} onChange={v => set('ownerZip', v)} placeholder="33101" />
-        </Field>
-      </div>
-    </div>
-  )
-}
-
-function Step3({ data, set }: { data: ClientForm; set: (k: keyof ClientForm, v: string) => void }) {
-  return (
-    <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field label="Current Processor (if any)">
-          <TextInput value={data.currentProcessor} onChange={v => set('currentProcessor', v)} placeholder="e.g. Square, Stripe, none" />
-        </Field>
-        <Field label="Monthly Processing Volume ($) *">
-          <TextInput value={data.monthlyVolume} onChange={v => set('monthlyVolume', v)} placeholder="50000" type="number" />
-        </Field>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <Field label="Average Ticket ($) *">
-          <TextInput value={data.avgTicket} onChange={v => set('avgTicket', v)} placeholder="85" type="number" />
-        </Field>
-        <Field label="Card-Present % *">
-          <TextInput value={data.cardPresentPercent} onChange={v => set('cardPresentPercent', v)} placeholder="75" type="number" />
-        </Field>
-        <Field label="Chargeback Rate (%) *">
-          <TextInput value={data.chargebackRate} onChange={v => set('chargebackRate', v)} placeholder="0.1" type="number" />
-        </Field>
-      </div>
-      <Field label="Chargeback / Dispute History">
-        <select value={data.chargebackHistory} onChange={e => set('chargebackHistory', e.target.value)} style={SELECT}>
-          <option value="none">None — clean history</option>
-          <option value="minimal">Minimal — &lt; 0.5%</option>
-          <option value="moderate">Moderate — 0.5%–1%</option>
-          <option value="elevated">Elevated — &gt; 1%</option>
-          <option value="terminated">Previously terminated</option>
-        </select>
-      </Field>
-      {data.chargebackHistory !== 'none' && data.chargebackHistory !== '' && (
-        <div className="px-4 py-3 rounded-xl"
-          style={{ backgroundColor: 'rgba(251,191,36,0.07)', border: '1px solid rgba(251,191,36,0.2)' }}>
-          <p className="text-xs font-semibold" style={{ color: '#FCD34D' }}>
-            Elevated chargeback history may require additional review and could affect approval.
-          </p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Step4({
-  data,
-  setFile,
-  setStatements,
-}: {
-  data: ClientForm
-  setFile: (k: keyof ClientForm, f: File) => void
-  setStatements: (files: File[]) => void
-}) {
-  return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-start gap-3 px-4 py-3 rounded-xl"
-        style={{ backgroundColor: 'rgba(144,196,207,0.07)', border: '1px solid rgba(144,196,207,0.2)' }}>
-        <span style={{ color: '#90c4cf', fontSize: 15, flexShrink: 0 }}>📎</span>
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-          Upload required documents. Accepted: PDF, JPG, PNG (max 10 MB each). All files are encrypted at rest.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <FileZone
-          label="Business License / Articles *"
-          file={data.businessLicense}
-          onFile={f => setFile('businessLicense', f)}
-          accept=".pdf,.jpg,.jpeg,.png"
-          hint="Business license or articles of incorporation"
-        />
-        <FileZone
-          label="Voided Check *"
-          file={data.voidedCheck}
-          onFile={f => setFile('voidedCheck', f)}
-          accept=".pdf,.jpg,.jpeg,.png"
-          hint="Bank account verification"
-        />
-        <FileZone
-          label="Owner Government ID *"
-          file={data.ownerID}
-          onFile={f => setFile('ownerID', f)}
-          accept=".pdf,.jpg,.jpeg,.png"
-          hint="Driver's license or passport"
-        />
-        <FileZone
-          label="PCI SAQ (if available)"
-          file={data.pciSAQ}
-          onFile={f => setFile('pciSAQ', f)}
-          accept=".pdf"
-          hint="PCI DSS Self-Assessment Questionnaire"
-        />
-      </div>
-      <div>
-        <label style={LABEL}>3 Months Processing Statements *</label>
-        <label style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', gap: 8,
-          border: `1px dashed ${data.statements.length > 0 ? 'rgba(144,196,207,0.55)' : 'rgba(144,196,207,0.22)'}`,
-          borderRadius: 12, padding: '24px 16px', cursor: 'pointer',
-          backgroundColor: data.statements.length > 0 ? 'rgba(144,196,207,0.05)' : 'rgba(255,255,255,0.02)',
-        }}>
-          <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{ display: 'none' }}
-            onChange={e => {
-              const files = Array.from(e.target.files ?? [])
-              setStatements([...data.statements, ...files])
-            }} />
-          <Upload size={18} color={data.statements.length > 0 ? '#90c4cf' : 'rgba(255,255,255,0.25)'} />
-          {data.statements.length === 0
-            ? <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Select up to 3 statement files</span>
-            : <div className="flex flex-col items-center gap-1">
-                {data.statements.map((f, i) => (
-                  <span key={i} style={{ fontSize: 12, color: '#90c4cf', fontWeight: 700 }}>{f.name}</span>
-                ))}
-              </div>
-          }
-        </label>
-      </div>
-    </div>
-  )
-}
-
-// ─── Main ─────────────────────────────────────────────────────────────────────
-
-export default function ClientApplyPage() {
+export default function ApplyPage() {
   const params = useParams()
-  const merchantId = Array.isArray(params?.token) ? params.token[0] : (params?.token ?? '')
+  const token = Array.isArray(params?.token) ? params.token[0] : (params?.token ?? '')
 
+  const [loading, setLoading] = useState(true)
+  const [appId, setAppId] = useState<string | null>(null)
+  const [gateState, setGateState] = useState<'ok' | 'expired' | 'submitted' | 'error'>('ok')
   const [step, setStep] = useState(0)
-  const [data, setData] = useState<ClientForm>(INITIAL)
+  const [data, setData] = useState<FormData>(INIT)
+  const [docFiles, setDocFiles] = useState<Record<string, File | null>>({})
+  const [saving, setSaving] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [submitError, setSubmitError] = useState('')
+  const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
-  function setField(k: keyof ClientForm, v: string) {
+  useEffect(() => {
+    if (!token) return
+    async function boot() {
+      const { data: app, error: err } = await supabase
+        .from('onboarding_applications')
+        .select('id, intake_token_expires_at, intake_submitted_at, business_name, owner_name, intake_data')
+        .eq('intake_token', token)
+        .single()
+
+      if (err || !app) { setGateState('error'); setLoading(false); return }
+      if (app.intake_submitted_at) { setGateState('submitted'); setLoading(false); return }
+      if (app.intake_token_expires_at && new Date(app.intake_token_expires_at) < new Date()) {
+        setGateState('expired'); setLoading(false); return
+      }
+
+      setAppId(app.id)
+      if (app.intake_data && typeof app.intake_data === 'object') {
+        setData(prev => ({ ...prev, ...(app.intake_data as Partial<FormData>) }))
+      }
+      setLoading(false)
+    }
+    boot()
+  }, [token])
+
+  const set = useCallback((k: keyof FormData, v: unknown) => {
     setData(prev => ({ ...prev, [k]: v }))
-  }
-  function setFile(k: keyof ClientForm, f: File) {
-    setData(prev => ({ ...prev, [k]: f }))
-  }
-  function setStatements(files: File[]) {
-    setData(prev => ({ ...prev, statements: files }))
-  }
+  }, [])
 
-  function validateStep(): boolean {
-    if (step === 0) return !!(data.businessName && data.legalStructure && data.mcc && data.phone)
-    if (step === 1) return !!(data.ownerName && data.ownerSSNLast4 && data.ownerDOB && data.ownershipPercent)
-    if (step === 2) return !!(data.monthlyVolume && data.avgTicket && data.cardPresentPercent)
-    if (step === 3) return !!(data.businessLicense && data.voidedCheck && data.ownerID && data.statements.length > 0)
-    return true
+  const setDocFile = useCallback((k: string, f: File) => {
+    setDocFiles(prev => ({ ...prev, [k]: f }))
+  }, [])
+
+  async function saveProgress(nextStep: number) {
+    if (!appId) return
+    setSaving(true)
+    await supabase.from('onboarding_applications').update({
+      intake_data: data,
+      updated_at: new Date().toISOString(),
+    }).eq('id', appId)
+    setSaving(false)
+    setStep(nextStep)
   }
 
   async function handleSubmit() {
+    if (!appId) return
     setSubmitting(true)
-    setSubmitError('')
+    setError('')
     try {
-      const res = await fetch(`/api/apply/${merchantId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        throw new Error(err.error ?? 'Submission failed')
-      }
-      setSubmitted(true)
-    } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : 'Something went wrong. Please try again.')
+      const { error: err } = await supabase.from('onboarding_applications').update({
+        intake_submitted_at: new Date().toISOString(),
+        link_status: 'submitted',
+        current_phase: 'document_review',
+        intake_data: data,
+        co_owners: data.coOwners.length > 0 ? data.coOwners : null,
+        updated_at: new Date().toISOString(),
+      }).eq('id', appId)
+      if (err) throw err
+      setDone(true)
+    } catch {
+      setError('Submission failed. Please try again or contact support.')
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center"
-        style={{ background: 'linear-gradient(160deg, #0A0C12 0%, #0D1421 100%)' }}>
-        <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-          style={{ backgroundColor: 'rgba(74,155,127,0.14)', border: '2px solid rgba(74,155,127,0.4)' }}>
-          <CheckCircle size={36} color="#6EE7B7" />
-        </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Application Submitted!</h2>
-        <p className="text-sm max-w-sm" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>
-          Thank you, <strong style={{ color: 'rgba(255,255,255,0.8)' }}>{data.businessName}</strong>. Your application has been received and is under review.
-          A member of the United Fintech team will be in touch within 1–2 business days.
-        </p>
-        <div className="mt-8 px-4 py-3 rounded-xl text-xs"
-          style={{ backgroundColor: 'rgba(144,196,207,0.07)', border: '1px solid rgba(144,196,207,0.18)', color: 'rgba(255,255,255,0.4)' }}>
-          Questions? Email <span style={{ color: '#90c4cf' }}>apply@unitedfintech.io</span>
-        </div>
-      </div>
-    )
+  function validate(): boolean {
+    if (step === 0) return !!(data.businessName && data.entityType && data.ein && data.stateOfInc && data.yearsInBusiness && data.industry && data.businessPhone && data.businessAddress && data.city && data.state && data.zip)
+    if (step === 1) return !!(data.ownerName && data.ownerDob && data.ownerSsn4.length === 4 && data.ownerPct && data.ownerAddress && data.ownerCity && data.ownerState && data.ownerZip && data.ownerPhone)
+    if (step === 2) return !!(data.monthlyVolume && data.avgTicket)
+    if (step === 3) return !!(data.bankName && data.routingNumber.length === 9 && data.accountNumber)
+    if (step === 4) return DOCS.filter(d => d.required).every(d => !!docFiles[d.key])
+    if (step === 5) {
+      const sigMatch = data.signature.trim().toLowerCase() === data.ownerName.trim().toLowerCase()
+      return data.agreed && sigMatch
+    }
+    return true
   }
 
-  const valid = validateStep()
+  if (loading) return (
+    <div style={{ minHeight: '100vh', backgroundColor: BRAND.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Loader2 size={28} color={BRAND.cyan} style={{ animation: 'spin 1s linear infinite' }} />
+    </div>
+  )
+
+  if (gateState === 'expired') return (
+    <Gate icon={<AlertTriangle size={32} color={BRAND.warn} />} color={`${BRAND.warn}26`} borderColor={`${BRAND.warn}59`}
+      title="This link has expired."
+      body="Contact United Fintech to request a new application link." />
+  )
+
+  if (gateState === 'submitted') return (
+    <Gate icon={<CheckCircle size={32} color={BRAND.success} />} color={`${BRAND.success}1a`} borderColor={`${BRAND.success}59`}
+      title="Application already received."
+      body="Check your email for portal access details. The team will be in touch within 1–2 business days." />
+  )
+
+  if (gateState === 'error') return (
+    <Gate icon={<AlertTriangle size={32} color={BRAND.danger} />} color={`${BRAND.danger}1a`} borderColor={`${BRAND.danger}4d`}
+      title="Invalid or expired link."
+      body="Please contact United Fintech for a new application link." />
+  )
+
+  if (done) return (
+    <div style={{ minHeight: '100vh', backgroundColor: BRAND.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}>
+      <div style={{ width: 72, height: 72, borderRadius: '50%', backgroundColor: `${BRAND.success}1f`, border: `2px solid ${BRAND.success}66`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+        <CheckCircle size={36} color={BRAND.success} />
+      </div>
+      <h2 style={{ color: '#fff', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Application Submitted!</h2>
+      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14, maxWidth: 400, lineHeight: 1.7 }}>
+        Thank you, <strong style={{ color: 'rgba(255,255,255,0.85)' }}>{data.businessName}</strong>. Your application has been submitted successfully.
+      </p>
+      <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, maxWidth: 400, lineHeight: 1.7, marginTop: 12 }}>
+        The United Fintech team will review your documents and be in touch within 1–2 business days.
+        Watch for an email with your portal login details to track your progress.
+      </p>
+      <div style={{ marginTop: 28, padding: '10px 16px', borderRadius: 10, backgroundColor: 'rgba(144,196,207,0.07)', border: '1px solid rgba(144,196,207,0.2)', fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
+        Questions? Email <span style={{ color: BRAND.cyan }}>apply@unitedfintech.io</span>
+      </div>
+    </div>
+  )
+
+  const valid = validate()
+  const progress = ((step + 1) / STEP_LABELS.length) * 100
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #0A0C12 0%, #0D1421 100%)' }}>
-      {/* Top bar */}
-      <div className="border-b px-6 py-4 flex items-center justify-between"
-        style={{ borderColor: 'rgba(144,196,207,0.1)', backgroundColor: 'rgba(0,0,0,0.3)' }}>
-        <Image src="/logo.png" alt="United Fintech" width={160} height={40} className="object-contain" />
-        <div className="flex items-center gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-          <Globe size={12} />
-          <span>Secure Application Portal</span>
-        </div>
+    <div style={{ minHeight: '100vh', backgroundColor: BRAND.bg }}>
+      <div style={{ borderBottom: '1px solid rgba(144,196,207,0.1)', backgroundColor: 'rgba(0,0,0,0.3)', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Image src="/logo-vertical.png" alt="United Fintech" width={120} height={36} style={{ objectFit: 'contain' }} />
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Shield size={11} color={BRAND.cyan} /> Secure Application Portal
+        </span>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-10">
-        {/* Intro */}
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-white">Merchant Application</h1>
-          <p className="text-sm mt-1.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Complete the form below to start your merchant account application.
-            Takes about 5 minutes.
-          </p>
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '36px 16px 60px' }}>
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <h1 style={{ color: '#fff', fontSize: 22, fontWeight: 700, margin: 0 }}>Merchant Application</h1>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, marginTop: 6 }}>Complete all 6 steps to submit. Progress is saved automatically.</p>
         </div>
 
-        {/* Step progress */}
-        <div className="mb-8">
-          <div className="flex items-center gap-0 overflow-x-auto pb-2 justify-center">
-            {STEPS.map((s, i) => {
-              const Icon = s.icon
-              const done = i < step
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+            {STEP_LABELS.map((label, i) => {
+              const isDone = i < step
               const active = i === step
               return (
-                <div key={i} className="flex items-center">
-                  <div
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap"
-                    style={
-                      active
-                        ? { backgroundColor: 'rgba(144,196,207,0.12)', color: '#90c4cf', border: '1px solid rgba(144,196,207,0.35)' }
-                        : done
-                          ? { color: 'rgba(110,231,183,0.8)' }
-                          : { color: 'rgba(255,255,255,0.25)' }
-                    }
-                  >
-                    {done ? <CheckCircle size={12} color="#6EE7B7" /> : <Icon size={12} />}
-                    {s.label}
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700,
+                    border: `1px solid ${active ? BRAND.cyan : isDone ? `${BRAND.success}59` : 'rgba(255,255,255,0.08)'}`,
+                    backgroundColor: active ? 'rgba(144,196,207,0.12)' : isDone ? `${BRAND.success}12` : 'transparent',
+                    color: active ? BRAND.cyan : isDone ? BRAND.success : 'rgba(255,255,255,0.25)',
+                  }}>
+                    {isDone ? <CheckCircle size={10} /> : <span style={{ width: 14, textAlign: 'center' }}>{i + 1}</span>}
+                    {label}
                   </div>
-                  {i < STEPS.length - 1 && (
-                    <ChevronRight size={12} style={{ color: 'rgba(255,255,255,0.15)', flexShrink: 0 }} />
-                  )}
+                  {i < STEP_LABELS.length - 1 && <ChevronRight size={10} color="rgba(255,255,255,0.15)" />}
                 </div>
               )
             })}
           </div>
-          <div className="h-1 rounded-full mt-3 mx-auto max-w-sm" style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}>
-            <div
-              className="h-1 rounded-full transition-all duration-500"
-              style={{ width: `${((step + 1) / STEPS.length) * 100}%`, backgroundColor: '#90c4cf' }}
-            />
+          <div style={{ height: 3, borderRadius: 99, backgroundColor: 'rgba(255,255,255,0.06)', maxWidth: 360, margin: '0 auto' }}>
+            <div style={{ height: 3, borderRadius: 99, width: `${progress}%`, backgroundColor: BRAND.cyan, transition: 'width 0.4s ease', boxShadow: `0 0 10px rgba(144,196,207,0.4)` }} />
           </div>
         </div>
 
-        {/* Card */}
-        <div style={CARD}>
-          <h2 className="text-base font-bold text-white mb-1">{STEPS[step].label}</h2>
-          <p className="text-xs mb-6" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            {step === 0 && "Tell us about your business."}
-            {step === 1 && "Owner information for compliance verification."}
-            {step === 2 && "Your current processing details help us find the best solution."}
-            {step === 3 && "Upload the required compliance documents."}
-          </p>
+        <div style={{ backgroundColor: BRAND.card, border: '1px solid rgba(144,196,207,0.15)', borderRadius: 14, padding: 32 }}>
+          <div style={{ marginBottom: 20 }}>
+            <h2 style={{ color: '#fff', fontSize: 15, fontWeight: 700, margin: 0 }}>
+              Step {step + 1} of {STEP_LABELS.length} — {STEP_LABELS[step]}
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, marginTop: 4 }}>
+              {step === 0 && 'Tell us about your business.'}
+              {step === 1 && 'Owner information required for compliance.'}
+              {step === 2 && 'Your current processing details help us find the best rates.'}
+              {step === 3 && 'Bank account for settlement deposits.'}
+              {step === 4 && 'Upload required compliance documents.'}
+              {step === 5 && 'Review, sign, and submit your application.'}
+            </p>
+          </div>
 
-          {step === 0 && <Step1 data={data} set={setField} />}
-          {step === 1 && <Step2 data={data} set={setField} />}
-          {step === 2 && <Step3 data={data} set={setField} />}
-          {step === 3 && <Step4 data={data} setFile={setFile} setStatements={setStatements} />}
+          {step === 0 && <Step1 d={data} s={set} />}
+          {step === 1 && <Step2 d={data} s={set} />}
+          {step === 2 && <Step3 d={data} s={set} />}
+          {step === 3 && <Step4 d={data} s={set} />}
+          {step === 4 && <Step5 files={docFiles} setFile={setDocFile} />}
+          {step === 5 && <Step6 d={data} s={set} ownerName={data.ownerName} businessName={data.businessName} />}
         </div>
 
-        {/* Nav */}
-        <div className="flex justify-between mt-6">
-          <button
-            type="button"
-            onClick={() => setStep(s => s - 1)}
-            disabled={step === 0}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
-            style={step === 0
-              ? { opacity: 0.3, cursor: 'not-allowed', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }
-              : { color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)' }
-            }
-          >
-            <ChevronLeft size={15} /> Back
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
+          <button type="button" onClick={() => setStep(s => s - 1)} disabled={step === 0}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 9, fontSize: 13, fontWeight: 600, cursor: step === 0 ? 'not-allowed' : 'pointer',
+              border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)',
+              color: step === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.65)',
+            }}>
+            <ChevronLeft size={14} /> Back
           </button>
 
-          {step < STEPS.length - 1 ? (
-            <button
-              type="button"
-              onClick={() => setStep(s => s + 1)}
-              disabled={!valid}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all"
-              style={!valid
-                ? { opacity: 0.4, cursor: 'not-allowed', backgroundColor: '#90c4cf', color: '#1c1c1c' }
-                : { backgroundColor: '#90c4cf', color: '#1c1c1c' }
-              }
-            >
-              Continue <ChevronRight size={15} />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={submitting || !valid}
-              className="flex items-center gap-2 px-7 py-2.5 rounded-lg text-sm font-bold transition-all"
-              style={{ backgroundColor: submitting ? 'rgba(74,155,127,0.5)' : '#4A9B7F', color: '#ffffff' }}
-            >
-              {submitting ? 'Submitting…' : 'Submit Application →'}
-            </button>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {saving && <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>Saving…</span>}
+            {step < STEP_LABELS.length - 1 ? (
+              <button type="button" onClick={() => saveProgress(step + 1)} disabled={!valid}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6, padding: '10px 24px', borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: valid ? 'pointer' : 'not-allowed',
+                  backgroundColor: BRAND.cyan, color: BRAND.bg, opacity: valid ? 1 : 0.4,
+                  boxShadow: valid ? BRAND.glowCyan : 'none',
+                }}>
+                Continue <ChevronRight size={14} />
+              </button>
+            ) : (
+              <button type="button" onClick={handleSubmit} disabled={!valid || submitting}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6, padding: '10px 28px', borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: (valid && !submitting) ? 'pointer' : 'not-allowed',
+                  backgroundColor: BRAND.cyanDeep, color: '#fff', opacity: (valid && !submitting) ? 1 : 0.5,
+                  boxShadow: valid ? `0 0 20px ${BRAND.cyanDeep}4d` : 'none',
+                }}>
+                {submitting ? <><Loader2 size={13} style={{ animation: 'spin 1s linear infinite' }} /> Submitting…</> : 'Submit Application →'}
+              </button>
+            )}
+          </div>
         </div>
 
-        {submitError && (
-          <div className="mt-3 px-4 py-2.5 rounded-lg text-xs text-center"
-            style={{ backgroundColor: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.25)', color: '#F87171' }}>
-            {submitError}
+        {error && (
+          <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 9, backgroundColor: `${BRAND.danger}14`, border: `1px solid ${BRAND.danger}40`, fontSize: 12, color: BRAND.danger, textAlign: 'center' }}>
+            {error}
           </div>
         )}
 
-        {/* Footer note */}
-        <p className="text-center text-xs mt-8" style={{ color: 'rgba(255,255,255,0.2)' }}>
+        <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.2)', marginTop: 28 }}>
           Your information is encrypted and protected. United Fintech will never sell your data.
         </p>
       </div>
