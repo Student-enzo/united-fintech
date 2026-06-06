@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { fetchMerchants } from '@/lib/merchants-db'
 import type { MerchantRecord } from '@/lib/mock-merchants'
 import { BRAND } from '@/lib/brand'
@@ -9,6 +10,28 @@ import {
   Search, X, TrendingUp, DollarSign, Users, ArrowRight,
   CheckCircle2, AlertCircle, Building2,
 } from 'lucide-react'
+
+function MerchantTabs({ active }: { active: 'all' | 'onboarding' | 'live' }) {
+  const tabs = [
+    { key: 'all' as const,        label: 'All Merchants', href: '/admin/merchants' },
+    { key: 'onboarding' as const, label: 'Onboarding',    href: '/admin/onboarding-crm' },
+    { key: 'live' as const,       label: 'Live',          href: '/admin/portfolio' },
+  ]
+  return (
+    <div style={{ display: 'flex', gap: 2, borderBottom: `1px solid rgba(144,196,207,0.12)`, marginBottom: 24 }}>
+      {tabs.map(t => (
+        <Link key={t.key} href={t.href} style={{
+          padding: '8px 16px', fontSize: 13, fontWeight: active === t.key ? 600 : 400,
+          color: active === t.key ? BRAND.cyan : 'rgba(255,255,255,0.4)',
+          borderBottom: active === t.key ? `2px solid ${BRAND.cyan}` : '2px solid transparent',
+          textDecoration: 'none', letterSpacing: '0.02em', transition: 'color 0.15s',
+        }}>
+          {t.label}
+        </Link>
+      ))}
+    </div>
+  )
+}
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 
@@ -179,6 +202,7 @@ export default function PortfolioBoard() {
 
   return (
     <div>
+      <MerchantTabs active="live" />
       {/* Header */}
       <div className="mb-6">
         <h1

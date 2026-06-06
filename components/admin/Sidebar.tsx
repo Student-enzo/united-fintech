@@ -154,34 +154,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             pathname={pathname}
             onClick={onClose}
             matchPaths={[
+              '/admin/onboarding-crm', '/admin/portfolio',
               '/admin/deals', '/admin/onboarding', '/admin/underwriting',
               '/admin/agreements', '/admin/chargebacks', '/admin/attrition',
               '/admin/compliance', '/admin/post-activation',
             ]}
-          />
-        </div>
-
-        <SectionHeader label="Onboarding" />
-        <div className="flex flex-col gap-0.5">
-          <NavItem
-            href="/admin/onboarding-crm"
-            label="Onboarding CRM"
-            icon={ClipboardList}
-            pathname={pathname}
-            onClick={onClose}
-            badge={0}
-            matchPaths={['/admin/onboarding-crm']}
-          />
-        </div>
-
-        <SectionHeader label="Portfolio" />
-        <div className="flex flex-col gap-0.5">
-          <NavItem
-            href="/admin/portfolio"
-            label="Live Merchants"
-            icon={Briefcase}
-            pathname={pathname}
-            onClick={onClose}
           />
         </div>
 

@@ -6,10 +6,35 @@ import { supabase } from '@/lib/supabase'
 import { MOCK_APPLICATIONS } from '@/lib/mock-onboarding'
 import { BRAND } from '@/lib/brand'
 import type { OnboardingApplication, Phase } from '@/lib/onboarding-types'
+import Link from 'next/link'
 import {
   Plus, X, Copy, Mail, CheckCircle, AlertTriangle,
   GripVertical, ArrowRight, Clock, Search,
 } from 'lucide-react'
+
+// ─── Merchant tabs ────────────────────────────────────────────────────────────
+
+function MerchantTabs({ active }: { active: 'all' | 'onboarding' | 'live' }) {
+  const tabs = [
+    { key: 'all' as const,        label: 'All Merchants', href: '/admin/merchants' },
+    { key: 'onboarding' as const, label: 'Onboarding',    href: '/admin/onboarding-crm' },
+    { key: 'live' as const,       label: 'Live',          href: '/admin/portfolio' },
+  ]
+  return (
+    <div style={{ display: 'flex', gap: 2, borderBottom: `1px solid rgba(144,196,207,0.12)`, marginBottom: 24 }}>
+      {tabs.map(t => (
+        <Link key={t.key} href={t.href} style={{
+          padding: '8px 16px', fontSize: 13, fontWeight: active === t.key ? 600 : 400,
+          color: active === t.key ? BRAND.cyan : 'rgba(255,255,255,0.4)',
+          borderBottom: active === t.key ? `2px solid ${BRAND.cyan}` : '2px solid transparent',
+          textDecoration: 'none', letterSpacing: '0.02em', transition: 'color 0.15s',
+        }}>
+          {t.label}
+        </Link>
+      ))}
+    </div>
+  )
+}
 
 // ─── Phase metadata ───────────────────────────────────────────────────────────
 
@@ -374,6 +399,7 @@ export default function OnboardingCRMPage() {
 
   return (
     <div style={{ background: BRAND.bg, minHeight: '100vh', padding: '28px 32px' }}>
+      <MerchantTabs active="onboarding" />
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>

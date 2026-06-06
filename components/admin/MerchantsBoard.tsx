@@ -2,16 +2,192 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { fetchMerchants, saveMerchantStage } from '@/lib/merchants-db'
 import {
   LayoutGrid, List, Search, X, Plus, ChevronUp, ChevronDown,
   Building2, Users, DollarSign, TrendingUp, AlertCircle,
   CheckCircle2, Clock, ArrowRight, Filter, SortAsc,
-  MoreHorizontal, ExternalLink, GripVertical,
+  ExternalLink, GripVertical, Copy, Mail, CheckCircle,
 } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
 import ManageMerchantDrawer from './ManageMerchantDrawer'
 import type { PipelineStage, AccountType, MerchantRecord } from './ManageMerchantDrawer'
+
+// ─── Merchant tabs ────────────────────────────────────────────────────────────
+
+function MerchantTabs({ active }: { active: 'all' | 'onboarding' | 'live' }) {
+  const tabs = [
+    { key: 'all' as const,        label: 'All Merchants', href: '/admin/merchants' },
+    { key: 'onboarding' as const, label: 'Onboarding',    href: '/admin/onboarding-crm' },
+    { key: 'live' as const,       label: 'Live',          href: '/admin/portfolio' },
+  ]
+  return (
+    <div style={{ display: 'flex', gap: 2, borderBottom: `1px solid rgba(144,196,207,0.12)`, marginBottom: 24 }}>
+      {tabs.map(t => (
+        <Link key={t.key} href={t.href} style={{
+          padding: '8px 16px', fontSize: 13, fontWeight: active === t.key ? 600 : 400,
+          color: active === t.key ? BRAND.cyan : 'rgba(255,255,255,0.4)',
+          borderBottom: active === t.key ? `2px solid ${BRAND.cyan}` : '2px solid transparent',
+          textDecoration: 'none', letterSpacing: '0.02em', transition: 'color 0.15s',
+        }}>
+          {t.label}
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+// ─── New Client Drawer (intake link) ─────────────────────────────────────────
+
+const STANDARD_DOCS = [
+  'Government ID', 'Bank Statements (3 months)', 'Voided Check',
+  'Business License / Articles', 'EIN Letter', 'Processing Statements (optional)',
+]
+
+function NewClientDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [businessName, setBusinessName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [checkedDocs, setCheckedDocs] = useState<boolean[]>(STANDARD_DOCS.map(() => true))
+  const [customDocs, setCustomDocs] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<{ link: string } | null>(null)
+  const [copied, setCopied] = useState(false)
+
+  function reset() {
+    setBusinessName(''); setEmail(''); setPhone('')
+    setCheckedDocs(STANDARD_DOCS.map(() => true))
+    setCustomDocs([]); setResult(null); setCopied(false)
+  }
+
+  async function handleSubmit() {
+    if (!businessName.trim() || !email.trim()) return
+    setLoading(true)
+    try {
+      const res = await fetch('/api/onboarding/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ business_name: businessName, owner_email: email, owner_phone: phone || null }),
+      })
+      if (!res.ok) throw new Error('Failed')
+      const data = await res.json()
+      setResult({ link: `${window.location.origin}/apply/${data.intake_token}` })
+    } catch {
+      alert('Error creating application. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function copyLink() {
+    if (!result) return
+    navigator.clipboard.writeText(result.link)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  function openEmail() {
+    if (!result) return
+    const subject = encodeURIComponent(`Your Merchant Account Application — ${businessName}`)
+    const body = encodeURIComponent(`Dear ${businessName} Team,\n\nPlease complete your intake form:\n\n${result.link}\n\nBest regards,\nUnited Fintech`)
+    window.open(`mailto:${email}?subject=${subject}&body=${body}`)
+  }
+
+  const inp: React.CSSProperties = {
+    width: '100%', background: 'rgba(255,255,255,0.05)', border: `1px solid ${BRAND.borderCyan}`,
+    borderRadius: 6, padding: '8px 12px', color: BRAND.text, fontSize: 13, outline: 'none', boxSizing: 'border-box',
+  }
+  const canSubmit = !loading && businessName.trim() && email.trim()
+
+  return (
+    <>
+      {open && <div onClick={() => { reset(); onClose() }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 49 }} />}
+      <div style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: 420, zIndex: 50,
+        background: BRAND.cardAlt, borderLeft: `1px solid ${BRAND.borderCyan}`,
+        transform: open ? 'translateX(0)' : 'translateX(100%)',
+        transition: 'transform 0.25s ease', display: 'flex', flexDirection: 'column',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px', borderBottom: `1px solid ${BRAND.border}` }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: BRAND.text, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            New Merchant Application
+          </div>
+          <button onClick={() => { reset(); onClose() }} style={{ background: 'none', border: 'none', color: BRAND.muted, cursor: 'pointer', padding: 4 }}>
+            <X size={18} />
+          </button>
+        </div>
+        <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+          {result ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: BRAND.success }}>
+                <CheckCircle size={18} /><span style={{ fontSize: 14, fontWeight: 600 }}>Application created!</span>
+              </div>
+              <p style={{ fontSize: 12, color: BRAND.muted }}>Client will appear in the <strong style={{ color: BRAND.cyan }}>Onboarding</strong> tab once they submit.</p>
+              <div style={{ background: 'rgba(110,231,183,0.08)', border: '1px solid rgba(110,231,183,0.2)', borderRadius: 8, padding: '12px 14px' }}>
+                <div style={{ fontSize: 11, color: BRAND.muted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Intake Link</div>
+                <div style={{ fontSize: 12, color: BRAND.silver, wordBreak: 'break-all', marginBottom: 12 }}>{result.link}</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={copyLink} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: copied ? 'rgba(110,231,183,0.15)' : 'rgba(144,196,207,0.1)', border: `1px solid ${BRAND.borderCyan}`, borderRadius: 6, padding: '8px 12px', color: copied ? BRAND.success : BRAND.cyan, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>
+                    <Copy size={14} />{copied ? 'Copied!' : 'Copy Link'}
+                  </button>
+                  <button onClick={openEmail} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(144,196,207,0.1)', border: `1px solid ${BRAND.borderCyan}`, borderRadius: 6, padding: '8px 12px', color: BRAND.cyan, fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>
+                    <Mail size={14} />Open in Email
+                  </button>
+                </div>
+              </div>
+              <button onClick={reset} style={{ background: 'none', border: `1px solid ${BRAND.border}`, borderRadius: 6, padding: 8, color: BRAND.muted, fontSize: 12, cursor: 'pointer' }}>
+                Create Another
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+              <div>
+                <label style={{ fontSize: 11, color: BRAND.muted, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 6 }}>Business Name *</label>
+                <input style={inp} value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Acme Merchant LLC" />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: BRAND.muted, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 6 }}>Owner Email *</label>
+                <input style={inp} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="owner@business.com" />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, color: BRAND.muted, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 6 }}>Owner Phone (optional)</label>
+                <input style={inp} type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 (555) 000-0000" />
+              </div>
+              <div>
+                <div style={{ fontSize: 11, color: BRAND.muted, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>Document Checklist</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {STANDARD_DOCS.map((doc, i) => (
+                    <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                      <input type="checkbox" checked={checkedDocs[i]} onChange={() => setCheckedDocs(p => p.map((v, idx) => idx === i ? !v : v))} style={{ accentColor: BRAND.cyan, width: 14, height: 14 }} />
+                      <span style={{ fontSize: 13, color: checkedDocs[i] ? BRAND.text : BRAND.muted }}>{doc}</span>
+                    </label>
+                  ))}
+                  {customDocs.map((doc, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <input style={{ ...inp, flex: 1 }} value={doc} onChange={e => setCustomDocs(p => p.map((d, idx) => idx === i ? e.target.value : d))} placeholder="Custom document" />
+                      <button onClick={() => setCustomDocs(p => p.filter((_, idx) => idx !== i))} style={{ background: 'none', border: 'none', color: BRAND.muted, cursor: 'pointer', padding: 4 }}><X size={14} /></button>
+                    </div>
+                  ))}
+                  <button onClick={() => setCustomDocs(p => [...p, ''])} style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: `1px dashed ${BRAND.borderCyan}`, borderRadius: 6, padding: '6px 12px', color: BRAND.cyan, fontSize: 12, cursor: 'pointer', marginTop: 4 }}>
+                    <Plus size={13} />Add Custom Document
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        {!result && (
+          <div style={{ padding: '16px 24px', borderTop: `1px solid ${BRAND.border}` }}>
+            <button onClick={handleSubmit} disabled={!canSubmit} style={{ width: '100%', padding: 10, borderRadius: 8, border: 'none', background: canSubmit ? BRAND.cyan : 'rgba(144,196,207,0.2)', color: canSubmit ? '#1c1c1c' : BRAND.muted, fontSize: 13, fontWeight: 700, cursor: canSubmit ? 'pointer' : 'not-allowed', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              {loading ? 'Generating...' : 'Generate Link & Send'}
+            </button>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
 
 // ─── Stage metadata ───────────────────────────────────────────────────────────
 
@@ -361,248 +537,6 @@ function KanbanCard({
   )
 }
 
-// ─── Add Merchant Modal ───────────────────────────────────────────────────────
-
-const MCC_OPTIONS = [
-  { code: '5411', label: 'Grocery Stores' },
-  { code: '5812', label: 'Eating Places & Restaurants' },
-  { code: '5999', label: 'Retail Stores, NEC' },
-  { code: '5047', label: 'Medical & Hospital Equipment' },
-  { code: '5511', label: 'Auto Dealers - New & Used' },
-  { code: '7011', label: 'Hotels & Motels' },
-  { code: '7997', label: 'Membership Sports & Recreation Clubs' },
-  { code: '8111', label: 'Legal Services' },
-  { code: '8299', label: 'Schools & Educational Services' },
-  { code: '5065', label: 'Electrical Parts & Equipment' },
-  { code: '4215', label: 'Courier Services' },
-  { code: '5912', label: 'Drug Stores & Pharmacies' },
-]
-
-const PARTNERS = ['First Capital ISO', 'Meridian Partners', 'Velocity ISO Group', 'HealthPay ISO']
-
-type NewMerchantForm = {
-  name: string
-  dba_name: string
-  mcc: string
-  legal_structure: string
-  est_monthly_volume: string
-  avg_ticket: string
-  card_present_pct: string
-  partner: string
-  account_type: AccountType | ''
-  owner_name: string
-  contact_email: string
-  contact_phone: string
-}
-
-function AddMerchantModal({ onClose, onAdded }: { onClose: () => void; onAdded: (m: MerchantRecord) => void }) {
-  const [form, setForm] = useState<NewMerchantForm>({
-    name: '', dba_name: '', mcc: '', legal_structure: '',
-    est_monthly_volume: '', avg_ticket: '', card_present_pct: '',
-    partner: '', account_type: '',
-    owner_name: '', contact_email: '', contact_phone: '',
-  })
-  const [saving, setSaving] = useState(false)
-
-  function set(k: keyof NewMerchantForm, v: string) {
-    setForm(f => ({ ...f, [k]: v }))
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setSaving(true)
-    // Build mock record — in production this would POST to /api/merchants
-    const mccOption = MCC_OPTIONS.find(o => o.code === form.mcc)
-    const newMerchant: MerchantRecord & { owner_name?: string; contact_email?: string; contact_phone?: string } = {
-      id: `m-${Date.now()}`,
-      name: form.name,
-      dba_name: form.dba_name || undefined,
-      mcc: form.mcc,
-      mcc_label: mccOption?.label ?? 'Unknown',
-      legal_structure: (form.legal_structure as MerchantRecord['legal_structure']) || 'LLC',
-      account_type: (form.account_type as AccountType) || 'Card Present',
-      monthly_volume: parseFloat(form.est_monthly_volume) || 0,
-      avg_ticket: parseFloat(form.avg_ticket) || 0,
-      card_present_pct: parseFloat(form.card_present_pct) || 0,
-      partner: form.partner,
-      partner_iso: form.partner.slice(0, 2).toUpperCase() + '-ISO',
-      pipeline_stage: 'lead_identified',
-      days_in_stage: 0,
-      date_added: new Date().toISOString().split('T')[0],
-      risk: 'low',
-      owner_name: form.owner_name || undefined,
-      contact_email: form.contact_email || undefined,
-      contact_phone: form.contact_phone || undefined,
-    }
-    setTimeout(() => {
-      onAdded(newMerchant)
-      setSaving(false)
-    }, 400)
-  }
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
-        style={{ backgroundColor: BRAND.cardAlt, border: `1px solid ${BRAND.borderCyan}` }}>
-
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 sticky top-0 z-10"
-          style={{ borderBottom: `1px solid ${BRAND.border}`, backgroundColor: BRAND.cardAlt }}>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: `${BRAND.cyan}18`, border: `1px solid ${BRAND.borderCyan}` }}>
-              <Building2 size={15} style={{ color: BRAND.cyan }} />
-            </div>
-            <h2 className="font-bold text-lg" style={{ color: BRAND.text }}>Add Merchant</h2>
-          </div>
-          <button onClick={onClose} style={{ color: BRAND.muted }}
-            className="hover:opacity-70 transition-opacity">
-            <X size={20} />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-5">
-          {/* Business Name */}
-          <div>
-            <label className="block mb-1.5" style={LABEL_STYLE}>Business / Legal Name *</label>
-            <input required value={form.name} onChange={e => set('name', e.target.value)}
-              className={INPUT_BASE} style={INPUT_STYLE} placeholder="Acme Retail LLC" />
-          </div>
-
-          {/* Contact Info */}
-          <div className="grid grid-cols-3 gap-3">
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Owner Name</label>
-              <input value={form.owner_name} onChange={e => set('owner_name', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="John Smith" />
-            </div>
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Contact Email</label>
-              <input type="email" value={form.contact_email} onChange={e => set('contact_email', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="owner@business.com" />
-            </div>
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Contact Phone</label>
-              <input type="tel" value={form.contact_phone} onChange={e => set('contact_phone', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="+1 (305) 555-0100" />
-            </div>
-          </div>
-
-          {/* DBA + MCC */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>DBA Name</label>
-              <input value={form.dba_name} onChange={e => set('dba_name', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="Doing business as…" />
-            </div>
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>MCC Code *</label>
-              <select required value={form.mcc} onChange={e => set('mcc', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE}>
-                <option value="">Select MCC</option>
-                {MCC_OPTIONS.map(o => (
-                  <option key={o.code} value={o.code}>{o.code} — {o.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Legal structure + Account type */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Legal Structure *</label>
-              <select required value={form.legal_structure} onChange={e => set('legal_structure', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE}>
-                <option value="">Select structure</option>
-                <option value="LLC">LLC</option>
-                <option value="S-Corp">S-Corp</option>
-                <option value="C-Corp">C-Corp</option>
-                <option value="Sole Proprietor">Sole Proprietor</option>
-                <option value="Partnership">Partnership</option>
-              </select>
-            </div>
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Account Type *</label>
-              <select required value={form.account_type} onChange={e => set('account_type', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE}>
-                <option value="">Select type</option>
-                <option value="Card Present">Card Present</option>
-                <option value="eCommerce">eCommerce</option>
-                <option value="MOTO">MOTO</option>
-                <option value="ACH">ACH</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Volume + Avg ticket */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Est. Monthly Volume ($) *</label>
-              <input required type="number" min="0" value={form.est_monthly_volume}
-                onChange={e => set('est_monthly_volume', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="100000" />
-            </div>
-            <div>
-              <label className="block mb-1.5" style={LABEL_STYLE}>Avg Ticket ($)</label>
-              <input type="number" min="0" value={form.avg_ticket}
-                onChange={e => set('avg_ticket', e.target.value)}
-                className={INPUT_BASE} style={INPUT_STYLE} placeholder="85" />
-            </div>
-          </div>
-
-          {/* Card present % */}
-          <div>
-            <label className="block mb-1.5" style={LABEL_STYLE}>
-              Card Present % <span style={{ color: BRAND.muted, textTransform: 'none', letterSpacing: 0 }}>(0–100)</span>
-            </label>
-            <div className="flex items-center gap-3">
-              <input type="range" min="0" max="100" value={form.card_present_pct || 0}
-                onChange={e => set('card_present_pct', e.target.value)}
-                className="flex-1 accent-[#90c4cf]" />
-              <span className="text-sm font-bold w-10 text-right" style={{ color: BRAND.cyan }}>
-                {form.card_present_pct || 0}%
-              </span>
-            </div>
-          </div>
-
-          {/* Partner/ISO */}
-          <div>
-            <label className="block mb-1.5" style={LABEL_STYLE}>Assigned Partner / ISO *</label>
-            <select required value={form.partner} onChange={e => set('partner', e.target.value)}
-              className={INPUT_BASE} style={INPUT_STYLE}>
-              <option value="">Select partner</option>
-              {PARTNERS.map(p => <option key={p} value={p}>{p}</option>)}
-            </select>
-          </div>
-
-          {/* Info row */}
-          <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs"
-            style={{ backgroundColor: `${BRAND.cyan}0D`, border: `1px solid ${BRAND.borderCyan}` }}>
-            <AlertCircle size={12} style={{ color: BRAND.cyan, flexShrink: 0 }} />
-            <span style={{ color: BRAND.muted }}>
-              Merchant will be added to <strong style={{ color: BRAND.text }}>Lead Identified</strong> stage and can be advanced through the pipeline.
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-3 pt-1">
-            <button type="button" onClick={onClose}
-              className="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-70"
-              style={{ border: `1px solid ${BRAND.border}`, color: BRAND.muted }}>
-              Cancel
-            </button>
-            <button type="submit" disabled={saving}
-              className="flex-1 py-2.5 rounded-xl text-sm font-bold transition-opacity hover:opacity-85 disabled:opacity-50"
-              style={{ backgroundColor: BRAND.cyan, color: BRAND.bg }}>
-              {saving ? 'Adding…' : 'Add to Pipeline'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
-
 // ─── Sort types ───────────────────────────────────────────────────────────────
 
 type SortKey = 'name' | 'monthly_volume' | 'days_in_stage' | 'date_added'
@@ -621,7 +555,7 @@ export default function MerchantsBoard() {
   const [filterAcctType, setFilterAcctType] = useState<AccountType | ''>('')
   const [showDeclined, setShowDeclined] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
-  const [showAddModal, setShowAddModal] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const [sortKey, setSortKey]     = useState<SortKey>('date_added')
   const [sortDir, setSortDir]     = useState<SortDir>('desc')
@@ -683,11 +617,6 @@ export default function MerchantsBoard() {
     saveMerchantStage(id, stage).catch(console.error)
   }
 
-  function handleAdded(m: MerchantRecord) {
-    setMerchants(prev => [m, ...prev])
-    setShowAddModal(false)
-  }
-
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
     else { setSortKey(key); setSortDir('asc') }
@@ -717,6 +646,7 @@ export default function MerchantsBoard() {
 
   return (
     <div>
+      <MerchantTabs active="all" />
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div>
@@ -777,10 +707,10 @@ export default function MerchantsBoard() {
 
           {/* Add merchant */}
           <button
-            onClick={() => setShowAddModal(true)}
+            onClick={() => setDrawerOpen(true)}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-85"
             style={{ backgroundColor: BRAND.cyan, color: BRAND.bg }}>
-            <Plus size={14} /> Add Merchant
+            <Plus size={14} /> New Client
           </button>
         </div>
       </div>
@@ -854,9 +784,10 @@ export default function MerchantsBoard() {
           style={{ backgroundColor: BRAND.card, border: `1px solid ${BRAND.border}` }}>
           <Building2 size={32} className="mx-auto mb-3" style={{ color: BRAND.muted, opacity: 0.4 }} />
           <p className="text-sm mb-3" style={{ color: BRAND.muted }}>No merchants yet.</p>
-          <button onClick={() => setShowAddModal(true)}
+          <button onClick={() => setDrawerOpen(true)}
             className="text-sm font-semibold hover:opacity-80 transition-opacity"
             style={{ color: BRAND.cyan }}>
+            + New Client
             + Add your first merchant
           </button>
         </div>
@@ -1107,10 +1038,7 @@ export default function MerchantsBoard() {
         </div>
       )}
 
-      {/* ── Modals ── */}
-      {showAddModal && (
-        <AddMerchantModal onClose={() => setShowAddModal(false)} onAdded={handleAdded} />
-      )}
+      <NewClientDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </div>
   )
 }
