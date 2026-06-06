@@ -537,6 +537,8 @@ function KanbanCard({
   )
 }
 
+const PARTNERS = ['First Capital ISO', 'Meridian Partners', 'Velocity ISO Group', 'HealthPay ISO']
+
 // ─── Sort types ───────────────────────────────────────────────────────────────
 
 type SortKey = 'name' | 'monthly_volume' | 'days_in_stage' | 'date_added'
