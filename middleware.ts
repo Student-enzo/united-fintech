@@ -1,3 +1,4 @@
+import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
@@ -7,7 +8,6 @@ async function makeToken(prefix: string, secret: string): Promise<string> {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
-// Inline — do not import from lib to avoid edge runtime issues
 const USERS: Record<string, string> = {
   Enzo:   process.env.USER_ENZO_PASS  ?? 'ChangeMe1!',
   Admin:  process.env.USER_ADMIN_PASS ?? 'ChangeMe2!',
@@ -17,18 +17,55 @@ const USERS: Record<string, string> = {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Public routes — always allow
+  // Static assets — always allow
   if (
-    pathname === '/login' ||
-    pathname.startsWith('/api/auth/') ||
-    pathname.startsWith('/api/consultation') ||
     pathname.startsWith('/_next/') ||
     pathname.match(/\.(png|svg|ico|jpg|webp|woff2?)$/)
   ) {
     return NextResponse.next()
   }
 
-  // Marketing pages — allow
+  // ── Portal routes: Supabase session auth ──────────────────────────────────
+  if (pathname.startsWith('/portal')) {
+    // Public portal routes
+    if (pathname === '/portal/login' || pathname.startsWith('/portal/auth/')) {
+      return NextResponse.next()
+    }
+
+    // Protected portal routes — check Supabase session
+    let response = NextResponse.next({ request })
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() { return request.cookies.getAll() },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            response = NextResponse.next({ request })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
+      }
+    )
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.redirect(new URL('/portal/login', request.url))
+    }
+    return response
+  }
+
+  // ── Admin routes: cookie-based auth ───────────────────────────────────────
+  if (
+    pathname === '/login' ||
+    pathname.startsWith('/api/auth/') ||
+    pathname.startsWith('/api/consultation')
+  ) {
+    return NextResponse.next()
+  }
+
   if (
     pathname === '/' ||
     pathname === '/services' ||
@@ -41,7 +78,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Admin routes + admin API — require uf_session cookie
   const session  = request.cookies.get('uf_session')?.value
   const username = request.cookies.get('uf_user')?.value
 
