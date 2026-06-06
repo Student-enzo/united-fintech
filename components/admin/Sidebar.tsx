@@ -159,10 +159,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               '/admin/compliance', '/admin/post-activation',
             ]}
           />
-        </div>
-
-        <SectionHeader label="Onboarding" />
-        <div className="flex flex-col gap-0.5">
           <NavItem
             href="/admin/onboarding-crm"
             label="Onboarding CRM"
