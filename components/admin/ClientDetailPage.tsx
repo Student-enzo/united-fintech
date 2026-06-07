@@ -5,13 +5,34 @@ import { useRouter } from 'next/navigation'
 import {
   ArrowLeft, Plus, FileText, File, CreditCard, Building2,
   Upload, ExternalLink, AlertCircle, ChevronRight,
-  CheckCircle2, Circle, Pencil, Check, X, RefreshCw,
+  CheckCircle2, Circle, Pencil, Check, X, RefreshCw, Zap,
 } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
-import type { Client, MerchantAccount, ClientDocument, PipelineStage, RiskLevel } from '@/types/clients'
+import type { Client, MerchantAccount, ClientDocument, PipelineStage, RiskLevel, AccountType } from '@/types/clients'
 import { CRM_STAGE_META } from '@/types/clients'
 import { fetchClient, updateAccountStage, fetchDocuments, insertMerchantAccount } from '@/lib/clients-db'
 import AccountRaceTrack from './AccountRaceTrack'
+
+// ─── Partner recommendation engine ────────────────────────────────────────────
+
+interface Partner { name: string; iso: string; types: AccountType[]; risks: RiskLevel[]; tagline: string }
+
+const PARTNERS: Partner[] = [
+  { name: 'Heartland Payment Systems', iso: 'HPS',    types: ['Card Present','eCommerce','ACH'],           risks: ['low','medium'],         tagline: 'Best for retail, restaurants & hospitality' },
+  { name: 'TSYS / Global Payments',    iso: 'TSYS',   types: ['Card Present','eCommerce','MOTO','ACH'],     risks: ['low'],                  tagline: 'Tier-1 processor, preferred for low-risk merchants' },
+  { name: 'First Data / Fiserv',       iso: 'FISERV', types: ['Card Present','eCommerce','MOTO'],           risks: ['low','medium'],         tagline: 'High-volume enterprise merchants' },
+  { name: 'NMI Gateway',               iso: 'NMI',    types: ['eCommerce','MOTO'],                          risks: ['low','medium','high'],  tagline: 'Flexible gateway for online & MOTO merchants' },
+  { name: 'PaymentCloud',              iso: 'PCC',    types: ['Card Present','eCommerce','MOTO','ACH'],     risks: ['medium','high'],        tagline: 'Specializes in high-risk merchant accounts' },
+  { name: 'Durango Merchant Services', iso: 'DMS',    types: ['eCommerce','MOTO'],                          risks: ['high'],                 tagline: 'High-risk & offshore-friendly solutions' },
+  { name: 'PayKings',                  iso: 'PKG',    types: ['Card Present','eCommerce','MOTO'],           risks: ['high'],                 tagline: 'CBD, adult, firearms & restricted MCCs' },
+  { name: 'ACH Genie',                 iso: 'ACHG',   types: ['ACH'],                                       risks: ['low','medium'],         tagline: 'ACH-only, fast next-day settlement' },
+  { name: 'Priority Commerce',         iso: 'PRI',    types: ['Card Present','eCommerce','MOTO','ACH'],     risks: ['low','medium'],         tagline: 'Full-service ISO with competitive pricing' },
+  { name: 'Payline Data',              iso: 'PLD',    types: ['Card Present','eCommerce'],                  risks: ['low'],                  tagline: 'Small business friendly, transparent pricing' },
+]
+
+function getRecommendedPartners(type: AccountType, risk: RiskLevel): Partner[] {
+  return PARTNERS.filter(p => p.types.includes(type) && p.risks.includes(risk)).slice(0, 3)
+}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -105,44 +126,154 @@ function DocRow({ doc }: { doc: ClientDocument }) {
 
 // ─── AddAccountModal ──────────────────────────────────────────────────────────
 
-function AddAccountModal({ clientId, onClose, onAdded }: { clientId:string; onClose:()=>void; onAdded:(a:MerchantAccount)=>void }) {
-  const [form, setForm] = useState({ account_name:'', account_type:'Card Present' as MerchantAccount['account_type'], mcc:'', mcc_label:'', risk:'low' as RiskLevel })
+function AddAccountModal({
+  clientId, client, onClose, onAdded,
+}: {
+  clientId: string
+  client: Client | null
+  onClose: () => void
+  onAdded: (a: MerchantAccount, partner?: Partner) => void
+}) {
+  const [form, setForm] = useState({
+    account_name: '', account_type: 'Card Present' as AccountType, mcc: '', mcc_label: '', risk: 'low' as RiskLevel,
+  })
+  const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null)
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState<string|null>(null)
+
+  const recommendations = getRecommendedPartners(form.account_type, form.risk)
+
+  // Auto-select first match whenever type/risk changes
+  React.useEffect(() => {
+    const recs = getRecommendedPartners(form.account_type, form.risk)
+    setSelectedPartner(recs[0] ?? null)
+  }, [form.account_type, form.risk])
+
   const inp: React.CSSProperties = { width:'100%', backgroundColor:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:6, padding:'8px 10px', fontSize:13, color:BRAND.silver, outline:'none', boxSizing:'border-box' }
   const lbl: React.CSSProperties = { display:'block', fontSize:11, color:BRAND.muted, marginBottom:4, fontWeight:600, letterSpacing:'0.04em' }
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.account_name.trim()) { setErr('Account name required.'); return }
     setLoading(true); setErr(null)
     const now = new Date().toISOString()
-    const base = { client_id:clientId, account_name:form.account_name.trim(), account_type:form.account_type, mcc:form.mcc.trim()||undefined, mcc_label:form.mcc_label.trim()||undefined, risk:form.risk, pipeline_stage:'lead_identified' as PipelineStage, days_in_stage:0, monthly_volume:0, avg_ticket:0, card_present_pct:0, date_added:now.slice(0,10) }
-    try { onAdded(await insertMerchantAccount(base)) }
-    catch { onAdded({ id:`local-${Date.now()}`, created_at:now, ...base }) }
+    const base = {
+      client_id: clientId, account_name: form.account_name.trim(), account_type: form.account_type,
+      mcc: form.mcc.trim()||undefined, mcc_label: form.mcc_label.trim()||undefined, risk: form.risk,
+      pipeline_stage: 'lead_identified' as PipelineStage, days_in_stage: 0,
+      monthly_volume: 0, avg_ticket: 0, card_present_pct: 0, date_added: now.slice(0,10),
+    }
+    try { onAdded(await insertMerchantAccount(base), selectedPartner ?? undefined) }
+    catch { onAdded({ id:`local-${Date.now()}`, created_at:now, ...base }, selectedPartner ?? undefined) }
     setLoading(false)
   }
+
   return (
-    <div onClick={onClose} style={{ position:'fixed', inset:0, backgroundColor:'rgba(0,0,0,0.7)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center' }}>
-      <div onClick={e=>e.stopPropagation()} style={{ backgroundColor:BRAND.card, border:`1px solid ${BRAND.border}`, borderRadius:14, padding:28, width:460, maxWidth:'90vw', boxShadow:'0 24px 64px rgba(0,0,0,0.7)' }}>
+    <div onClick={onClose} style={{ position:'fixed', inset:0, backgroundColor:'rgba(0,0,0,0.72)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <div onClick={e=>e.stopPropagation()} style={{ backgroundColor:BRAND.card, border:`1px solid ${BRAND.border}`, borderRadius:14, padding:28, width:500, maxWidth:'93vw', boxShadow:'0 24px 64px rgba(0,0,0,0.75)', maxHeight:'90vh', overflowY:'auto' }}>
         <div style={{ fontSize:16, fontWeight:700, color:BRAND.silver, marginBottom:20 }}>Add Merchant Account</div>
         <form onSubmit={submit} style={{ display:'flex', flexDirection:'column', gap:14 }}>
-          <div><label style={lbl}>Account Name *</label><input style={inp} value={form.account_name} onChange={e=>setForm(f=>({...f,account_name:e.target.value}))} placeholder="e.g. Main Retail Account"/></div>
+          <div>
+            <label style={lbl}>Account Name *</label>
+            <input style={inp} value={form.account_name} onChange={e=>setForm(f=>({...f,account_name:e.target.value}))} placeholder="e.g. Main Retail Account"/>
+          </div>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-            <div><label style={lbl}>Account Type</label><select style={{...inp,cursor:'pointer'}} value={form.account_type} onChange={e=>setForm(f=>({...f,account_type:e.target.value as MerchantAccount['account_type']}))}>
-              {(['Card Present','eCommerce','MOTO','ACH'] as const).map(t=><option key={t} value={t}>{t}</option>)}
-            </select></div>
-            <div><label style={lbl}>Risk</label><select style={{...inp,cursor:'pointer'}} value={form.risk} onChange={e=>setForm(f=>({...f,risk:e.target.value as RiskLevel}))}>
-              <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option>
-            </select></div>
+            <div>
+              <label style={lbl}>Account Type</label>
+              <select style={{...inp,cursor:'pointer'}} value={form.account_type} onChange={e=>setForm(f=>({...f,account_type:e.target.value as AccountType}))}>
+                {(['Card Present','eCommerce','MOTO','ACH'] as const).map(t=><option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={lbl}>Risk Level</label>
+              <select style={{...inp,cursor:'pointer'}} value={form.risk} onChange={e=>setForm(f=>({...f,risk:e.target.value as RiskLevel}))}>
+                <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option>
+              </select>
+            </div>
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr', gap:12 }}>
-            <div><label style={lbl}>MCC Code</label><input style={inp} value={form.mcc} onChange={e=>setForm(f=>({...f,mcc:e.target.value}))} placeholder="5411" maxLength={4}/></div>
-            <div><label style={lbl}>MCC Label</label><input style={inp} value={form.mcc_label} onChange={e=>setForm(f=>({...f,mcc_label:e.target.value}))} placeholder="Grocery Stores"/></div>
+            <div>
+              <label style={lbl}>MCC Code</label>
+              <input style={inp} value={form.mcc} onChange={e=>setForm(f=>({...f,mcc:e.target.value}))} placeholder="5411" maxLength={4}/>
+            </div>
+            <div>
+              <label style={lbl}>MCC Label</label>
+              <input style={inp} value={form.mcc_label} onChange={e=>setForm(f=>({...f,mcc_label:e.target.value}))} placeholder="Grocery Stores"/>
+            </div>
           </div>
+
+          {/* Smart Partner Match */}
+          <div style={{ borderTop:'1px solid rgba(255,255,255,0.07)', paddingTop:14 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:7, marginBottom:10 }}>
+              <Zap size={13} color={BRAND.cyan}/>
+              <span style={{ fontSize:11, fontWeight:700, color:BRAND.cyan, letterSpacing:'0.06em', textTransform:'uppercase' }}>
+                Smart Partner Match
+              </span>
+              <span style={{ fontSize:10, color:BRAND.muted }}>— auto-selected based on account type & risk</span>
+            </div>
+
+            {recommendations.length === 0 ? (
+              <p style={{ fontSize:12, color:BRAND.muted, margin:0 }}>No partners matched — adjust account type or risk.</p>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+                {recommendations.map((p, i) => {
+                  const active = selectedPartner?.iso === p.iso
+                  return (
+                    <div
+                      key={p.iso}
+                      onClick={() => setSelectedPartner(active ? null : p)}
+                      style={{
+                        display:'flex', alignItems:'center', gap:10, padding:'9px 12px',
+                        borderRadius:8, cursor:'pointer', transition:'all 0.18s',
+                        backgroundColor: active ? `${BRAND.cyan}12` : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${active ? BRAND.cyan + '55' : 'rgba(255,255,255,0.08)'}`,
+                        boxShadow: active ? `0 0 12px ${BRAND.cyan}18` : 'none',
+                      }}
+                    >
+                      {/* Rank badge */}
+                      <span style={{
+                        width:20, height:20, borderRadius:'50%', flexShrink:0,
+                        backgroundColor: i === 0 ? '#F0B23E22' : 'rgba(255,255,255,0.05)',
+                        border: `1px solid ${i === 0 ? '#F0B23E55' : 'rgba(255,255,255,0.1)'}`,
+                        display:'flex', alignItems:'center', justifyContent:'center',
+                        fontSize:9, fontWeight:700,
+                        color: i === 0 ? '#F0B23E' : BRAND.muted,
+                      }}>
+                        {i === 0 ? '★' : i + 1}
+                      </span>
+
+                      <div style={{ flex:1, minWidth:0 }}>
+                        <div style={{ fontSize:12, fontWeight:700, color: active ? BRAND.cyan : BRAND.silver, marginBottom:2 }}>
+                          {p.name}
+                          <span style={{ fontSize:10, color:BRAND.muted, fontWeight:400, marginLeft:6 }}>[{p.iso}]</span>
+                        </div>
+                        <div style={{ fontSize:11, color:BRAND.muted }}>{p.tagline}</div>
+                      </div>
+
+                      {active && (
+                        <CheckCircle2 size={16} color={BRAND.cyan} style={{ flexShrink:0 }}/>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {selectedPartner && (
+              <div style={{ marginTop:8, fontSize:11, color:BRAND.muted }}>
+                This will set <strong style={{ color:BRAND.silver }}>{selectedPartner.name}</strong> as the partner for this client.
+              </div>
+            )}
+          </div>
+
           {err && <div style={{ display:'flex', alignItems:'center', gap:6, color:BRAND.danger, fontSize:12 }}><AlertCircle size={12}/>{err}</div>}
           <div style={{ display:'flex', gap:10, marginTop:4 }}>
-            <button type="submit" disabled={loading} style={{ flex:1, padding:'9px 0', borderRadius:7, border:'none', backgroundColor:BRAND.cyan, color:'#0d0d0d', fontWeight:700, fontSize:13, cursor:loading?'not-allowed':'pointer', opacity:loading?0.7:1, display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}><Plus size={14}/>{loading?'Adding…':'Add Account'}</button>
-            <button type="button" onClick={onClose} style={{ padding:'9px 18px', borderRadius:7, border:'1px solid rgba(255,255,255,0.1)', backgroundColor:'transparent', color:BRAND.muted, fontSize:13, cursor:'pointer' }}>Cancel</button>
+            <button type="submit" disabled={loading} style={{ flex:1, padding:'9px 0', borderRadius:7, border:'none', backgroundColor:BRAND.cyan, color:'#0d0d0d', fontWeight:700, fontSize:13, cursor:loading?'not-allowed':'pointer', opacity:loading?0.7:1, display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}>
+              <Plus size={14}/>{loading?'Adding…':'Add Account'}
+            </button>
+            <button type="button" onClick={onClose} style={{ padding:'9px 18px', borderRadius:7, border:'1px solid rgba(255,255,255,0.1)', backgroundColor:'transparent', color:BRAND.muted, fontSize:13, cursor:'pointer' }}>
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -464,7 +595,21 @@ export default function ClientDetailPage({ clientId }: { clientId: string }) {
         </div>
       </div>
 
-      {showModal && <AddAccountModal clientId={clientId} onClose={()=>setShowModal(false)} onAdded={a=>{setAccounts(p=>[...p,a]);setShowModal(false)}}/>}
+      {showModal && (
+        <AddAccountModal
+          clientId={clientId}
+          client={client}
+          onClose={() => setShowModal(false)}
+          onAdded={(a, partner) => {
+            setAccounts(p => [...p, a])
+            if (partner && client) {
+              setClient(prev => prev ? { ...prev, partner: partner.name, partner_iso: partner.iso } : prev)
+              setEditForm(prev => ({ ...prev, partner: partner.name, partner_iso: partner.iso }))
+            }
+            setShowModal(false)
+          }}
+        />
+      )}
     </div>
   )
 }
