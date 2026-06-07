@@ -43,9 +43,54 @@ function accentFor(account: MerchantAccount): string {
   return TYPE_COLOR[account.account_type] ?? BRAND.muted
 }
 
+// ─── Partner badge ────────────────────────────────────────────────────────────
+
+const PARTNER_COLOR: Record<string, string> = {
+  HPS:    '#22c55e',
+  TSYS:   '#3b82f6',
+  FISERV: '#f97316',
+  NMI:    '#8b5cf6',
+  PCC:    '#ef4444',
+  DMS:    '#6366f1',
+  PKG:    '#eab308',
+  ACHG:   '#14b8a6',
+  PRI:    '#90C4CF',
+  PLD:    '#ec4899',
+}
+
+function PartnerBadge({ iso, name, size = 'sm' }: { iso: string; name: string; size?: 'sm' | 'md' }) {
+  const color = PARTNER_COLOR[iso] ?? BRAND.muted
+  if (size === 'md') {
+    return (
+      <div title={name} style={{
+        display:'inline-flex', alignItems:'center', gap:6, padding:'3px 10px',
+        borderRadius:6, backgroundColor:`${color}18`, border:`1px solid ${color}44`, flexShrink:0,
+      }}>
+        <div style={{ width:8, height:8, borderRadius:'50%', backgroundColor:color, boxShadow:`0 0 6px ${color}` }} />
+        <span style={{ fontSize:11, fontWeight:700, color, letterSpacing:'0.04em' }}>{name}</span>
+      </div>
+    )
+  }
+  return (
+    <div title={name} style={{
+      display:'inline-flex', alignItems:'center', justifyContent:'center',
+      padding:'1px 5px', borderRadius:3, flexShrink:0,
+      backgroundColor:`${color}1A`, border:`1px solid ${color}44`,
+      fontSize:8, fontWeight:800, letterSpacing:'0.04em', textTransform:'uppercase', color,
+    }}>
+      {iso.slice(0, 5)}
+    </div>
+  )
+}
+
 // ─── Car Card ─────────────────────────────────────────────────────────────────
 
-function CarCard({ account, onClick }: { account: MerchantAccount; onClick: () => void }) {
+function CarCard({ account, partnerIso, partnerName, onClick }: {
+  account: MerchantAccount
+  partnerIso?: string
+  partnerName?: string
+  onClick: () => void
+}) {
   const [hov, setHov] = useState(false)
   const color    = accentFor(account)
   const isStall  = account.pipeline_stage !== 'declined' && account.days_in_stage > 14
@@ -90,6 +135,7 @@ function CarCard({ account, onClick }: { account: MerchantAccount; onClick: () =
         }}>
           {account.account_name}
         </span>
+        {partnerIso && partnerName && <PartnerBadge iso={partnerIso} name={partnerName} />}
       </div>
 
       {/* Badges */}
@@ -108,7 +154,7 @@ function CarCard({ account, onClick }: { account: MerchantAccount; onClick: () =
         {actionLabel && (
           <span style={{
             fontSize: 9, fontWeight: 600,
-            color:            actionLabel.startsWith('✓') ? BRAND.success : actionLabel.startsWith('⚡') ? BRAND.warn : BRAND.muted,
+            color: actionLabel.startsWith('✓') ? BRAND.success : actionLabel.startsWith('⚡') ? BRAND.warn : BRAND.muted,
           }}>{actionLabel}</span>
         )}
       </div>
@@ -119,11 +165,11 @@ function CarCard({ account, onClick }: { account: MerchantAccount; onClick: () =
 // ─── Management view ──────────────────────────────────────────────────────────
 
 function AccountManageView({
-  account,
-  onBack,
-  onStageChange,
+  account, partnerIso, partnerName, onBack, onStageChange,
 }: {
   account: MerchantAccount
+  partnerIso?: string
+  partnerName?: string
   onBack: () => void
   onStageChange?: (id: string, stage: PipelineStage) => void
 }) {
@@ -170,6 +216,7 @@ function AccountManageView({
           color: color, backgroundColor: `${color}1A`, border: `1px solid ${color}33`,
           padding: '2px 7px', borderRadius: 4,
         }}>{account.account_type}</span>
+        {partnerIso && partnerName && <PartnerBadge iso={partnerIso} name={partnerName} size="md" />}
         <span style={{
           fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
           color:            account.risk === 'high' ? BRAND.danger : account.risk === 'medium' ? BRAND.warn : BRAND.success,
@@ -325,9 +372,14 @@ function AccountManageView({
 interface AccountRaceTrackProps {
   accounts: MerchantAccount[]
   onStageChange?: (accountId: string, stage: PipelineStage) => void
+  partnerIso?: string
+  partnerName?: string
 }
 
-export default function AccountRaceTrack({ accounts, onStageChange }: AccountRaceTrackProps) {
+const LABEL_W = 96   // px — left column width (stage labels)
+const TRACK_GAP = 16 // px — padding from track line to car zone
+
+export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, partnerName }: AccountRaceTrackProps) {
   const [selected, setSelected] = useState<MerchantAccount | null>(null)
 
   const handleStageChange = useCallback((id: string, stage: PipelineStage) => {
@@ -342,6 +394,8 @@ export default function AccountRaceTrack({ accounts, onStageChange }: AccountRac
     return (
       <AccountManageView
         account={{ ...live, pipeline_stage: selected.pipeline_stage, days_in_stage: selected.days_in_stage }}
+        partnerIso={partnerIso}
+        partnerName={partnerName}
         onBack={() => setSelected(null)}
         onStageChange={handleStageChange}
       />
@@ -362,9 +416,9 @@ export default function AccountRaceTrack({ accounts, onStageChange }: AccountRac
       `}</style>
 
       <div style={{ width: '100%', position: 'relative' }}>
-        {/* Start flag */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4, paddingLeft: 148 }}>
-          <span style={{ fontSize: 13 }}>🚦</span>
+        {/* Start flag — aligned with car zone */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2, paddingLeft: LABEL_W + 2 + TRACK_GAP }}>
+          <span style={{ fontSize: 12 }}>🚦</span>
           <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: BRAND.muted }}>Start</span>
         </div>
 
@@ -373,51 +427,59 @@ export default function AccountRaceTrack({ accounts, onStageChange }: AccountRac
           const meta     = PIPELINE_STAGE_META[stage]
           const cars     = accounts.filter(a => a.pipeline_stage === stage)
           const isFinish = stage === 'merchant_live'
-          const hasLive  = cars.length > 0
+          const hasCars  = cars.length > 0
 
           return (
-            <div key={stage} style={{ display: 'flex', position: 'relative', minHeight: 88 }}>
+            <div key={stage} style={{ display: 'flex', position: 'relative', minHeight: hasCars ? 'auto' : 42 }}>
               {/* Left: stage label column */}
               <div style={{
-                width: 140, minWidth: 140, flexShrink: 0,
-                borderRight: `2px solid ${isFinish ? '#F0B23E66' : hasLive ? BRAND.cyan + '44' : 'rgba(255,255,255,0.1)'}`,
-                paddingRight: 14, paddingTop: 14, paddingBottom: 14,
+                width: LABEL_W, minWidth: LABEL_W, flexShrink: 0,
+                borderRight: `2px solid ${isFinish ? '#F0B23E66' : hasCars ? BRAND.cyan + '55' : 'rgba(255,255,255,0.08)'}`,
+                paddingRight: 10, paddingTop: hasCars ? 12 : 8, paddingBottom: hasCars ? 12 : 8,
                 display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-start',
                 position: 'relative',
               }}>
                 {/* Track node */}
                 <div style={{
-                  position: 'absolute', right: -7, top: 18,
-                  width: 12, height: 12, borderRadius: '50%',
-                  backgroundColor: hasLive ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.08)',
-                  border: `2px solid ${hasLive ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.14)'}`,
-                  boxShadow: hasLive ? `0 0 10px ${isFinish ? '#F0B23E' : BRAND.cyan}55` : 'none',
+                  position: 'absolute', right: -6, top: 14,
+                  width: hasCars ? 12 : 9, height: hasCars ? 12 : 9, borderRadius: '50%',
+                  backgroundColor: hasCars ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.07)',
+                  border: `2px solid ${hasCars ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.12)'}`,
+                  boxShadow: hasCars ? `0 0 10px ${isFinish ? '#F0B23E' : BRAND.cyan}55` : 'none',
                   zIndex: 2,
                 }} />
 
-                <span style={{ fontSize: 9, fontWeight: 700, color: BRAND.muted, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>
+                <span style={{ fontSize: 9, fontWeight: 700, color: hasCars ? BRAND.muted : 'rgba(255,255,255,0.2)', letterSpacing: '0.06em' }}>
                   {String(idx + 1).padStart(2, '0')}
                 </span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: hasLive ? BRAND.silver : BRAND.muted, textAlign: 'right', lineHeight: 1.3 }}>
+                <span style={{ fontSize: 10, fontWeight: 600, color: hasCars ? BRAND.silver : 'rgba(255,255,255,0.22)', textAlign: 'right', lineHeight: 1.3 }}>
                   {meta.shortLabel}
                 </span>
-                {hasLive && (
-                  <span style={{ fontSize: 9, color: isFinish ? '#F0B23E' : BRAND.cyan, marginTop: 3, fontWeight: 600 }}>
-                    {cars.length} car{cars.length !== 1 ? 's' : ''}
+                {hasCars && (
+                  <span style={{ fontSize: 9, color: isFinish ? '#F0B23E' : BRAND.cyan, marginTop: 2, fontWeight: 600 }}>
+                    {cars.length}×
                   </span>
                 )}
               </div>
 
-              {/* Right: cars */}
+              {/* Right: car zone */}
               <div style={{
-                flex: 1, padding: '14px 0 14px 20px',
-                display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
-                borderBottom: idx < ORDERED_STAGES.length - 1 ? '1px solid rgba(255,255,255,0.035)' : 'none',
-                backgroundColor: hasLive ? `${isFinish ? '#F0B23E' : BRAND.cyan}08` : 'transparent',
-                transition: 'background-color 0.3s',
+                flex: 1, minWidth: 0,
+                paddingLeft: TRACK_GAP,
+                paddingTop: hasCars ? 10 : 6, paddingBottom: hasCars ? 10 : 6,
+                display: 'flex', alignItems: hasCars ? 'flex-start' : 'center',
+                flexWrap: 'wrap', gap: 8,
+                borderBottom: idx < ORDERED_STAGES.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
+                backgroundColor: hasCars ? `${isFinish ? '#F0B23E' : BRAND.cyan}06` : 'transparent',
               }}>
                 {cars.map(a => (
-                  <CarCard key={a.id} account={a} onClick={() => setSelected(a)} />
+                  <CarCard
+                    key={a.id}
+                    account={a}
+                    partnerIso={partnerIso}
+                    partnerName={partnerName}
+                    onClick={() => setSelected(a)}
+                  />
                 ))}
               </div>
             </div>
@@ -425,28 +487,28 @@ export default function AccountRaceTrack({ accounts, onStageChange }: AccountRac
         })}
 
         {/* Finish line */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4, paddingTop: 10, borderTop: '2px solid rgba(240,178,62,0.4)' }}>
-          <div style={{ width: 140, minWidth: 140, display: 'flex', justifyContent: 'flex-end', paddingRight: 14 }}>
-            <span style={{ fontSize: 14 }}>🏁</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 3, paddingTop: 8, borderTop: '2px solid rgba(240,178,62,0.4)' }}>
+          <div style={{ width: LABEL_W, minWidth: LABEL_W, display: 'flex', justifyContent: 'flex-end', paddingRight: 10 }}>
+            <span style={{ fontSize: 13 }}>🏁</span>
           </div>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#F0B23E' }}>
+          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#F0B23E' }}>
             Finish Line — Merchant Live
           </span>
         </div>
 
         {/* Declined section */}
         {declined.length > 0 && (
-          <div style={{ display: 'flex', marginTop: 16, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', marginTop: 14, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <div style={{
-              width: 140, minWidth: 140, flexShrink: 0,
-              borderRight: `2px solid ${BRAND.danger}44`, paddingRight: 14,
+              width: LABEL_W, minWidth: LABEL_W, flexShrink: 0,
+              borderRight: `2px solid ${BRAND.danger}44`, paddingRight: 10,
               display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
             }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: BRAND.danger }}>Declined</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: BRAND.danger }}>Declined</span>
             </div>
-            <div style={{ flex: 1, padding: '0 0 0 20px', display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ flex: 1, paddingLeft: TRACK_GAP, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               {declined.map(a => (
-                <CarCard key={a.id} account={a} onClick={() => setSelected(a)} />
+                <CarCard key={a.id} account={a} partnerIso={partnerIso} partnerName={partnerName} onClick={() => setSelected(a)} />
               ))}
             </div>
           </div>

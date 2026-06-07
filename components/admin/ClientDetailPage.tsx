@@ -6,6 +6,7 @@ import {
   ArrowLeft, Plus, FileText, File, CreditCard, Building2,
   Upload, ExternalLink, AlertCircle, ChevronRight,
   CheckCircle2, Circle, Pencil, Check, X, RefreshCw, Zap,
+  Download, Trash2, Mail,
 } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
 import type { Client, MerchantAccount, ClientDocument, PipelineStage, RiskLevel, AccountType } from '@/types/clients'
@@ -99,27 +100,119 @@ const Divider = () => <div style={{ height:1, backgroundColor:'rgba(255,255,255,
 
 // ─── DocRow ───────────────────────────────────────────────────────────────────
 
-function DocRow({ doc }: { doc: ClientDocument }) {
+function DocRow({ doc, onDelete }: { doc: ClientDocument; onDelete: (id: string) => void }) {
   const [requested, setRequested] = useState(false)
+  const [hov, setHov] = useState(false)
   const color = docColor(doc.doc_type)
+  const btn: React.CSSProperties = {
+    display:'flex', alignItems:'center', gap:4, padding:'3px 8px', borderRadius:5,
+    border:'1px solid rgba(255,255,255,0.1)', backgroundColor:'transparent',
+    color:BRAND.muted, fontSize:10, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap', flexShrink:0,
+  }
   return (
-    <div style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 10px', borderRadius:7, backgroundColor:'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.06)' }}>
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 10px', borderRadius:7, backgroundColor: hov ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.06)', transition:'background-color 0.15s' }}
+    >
       <span style={{ color:BRAND.muted, flexShrink:0 }}>{docIcon(doc.doc_type)}</span>
       <div style={{ flex:1, minWidth:0 }}>
         <div style={{ fontSize:12, color:BRAND.silver, fontWeight:600, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{doc.file_name}</div>
-        <div style={{ fontSize:12, color:BRAND.muted }}>{fmt.date(doc.uploaded_at)}{doc.file_size ? ` · ${fmt.bytes(doc.file_size)}` : ''}</div>
+        <div style={{ fontSize:11, color:BRAND.muted }}>{fmt.date(doc.uploaded_at)}{doc.file_size ? ` · ${fmt.bytes(doc.file_size)}` : ''}</div>
       </div>
       {doc.doc_type && (
-        <span style={{ fontSize:11, fontWeight:700, letterSpacing:'0.06em', textTransform:'uppercase', color, backgroundColor:`${color}1A`, border:`1px solid ${color}33`, padding:'2px 6px', borderRadius:4, whiteSpace:'nowrap', flexShrink:0 }}>{doc.doc_type}</span>
+        <span style={{ fontSize:10, fontWeight:700, letterSpacing:'0.06em', textTransform:'uppercase', color, backgroundColor:`${color}1A`, border:`1px solid ${color}33`, padding:'2px 6px', borderRadius:4, whiteSpace:'nowrap', flexShrink:0 }}>{doc.doc_type}</span>
       )}
-      <button
-        onClick={() => setRequested(r => !r)}
-        title={requested ? 'Re-upload requested' : 'Request client to re-upload'}
-        style={{ display:'flex', alignItems:'center', gap:4, padding:'3px 8px', borderRadius:5, border:`1px solid ${requested ? 'rgba(110,231,183,0.3)' : 'rgba(255,255,255,0.1)'}`, backgroundColor:'transparent', color:requested ? BRAND.success : BRAND.muted, fontSize:10, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap', flexShrink:0 }}
-      >
-        <RefreshCw size={10}/>{requested ? 'Requested' : 'Request'}
-      </button>
-      <a href={doc.file_url} target="_blank" rel="noopener noreferrer" style={{ color:BRAND.cyan, flexShrink:0 }}><ExternalLink size={13}/></a>
+      {/* Action buttons — visible on hover */}
+      <div style={{ display:'flex', gap:4, alignItems:'center', opacity: hov ? 1 : 0, transition:'opacity 0.15s' }}>
+        {/* View */}
+        <a
+          href={doc.file_url} target="_blank" rel="noopener noreferrer"
+          title="View document"
+          style={{ ...btn, color:BRAND.cyan, border:'1px solid rgba(144,196,207,0.25)', textDecoration:'none' }}
+        >
+          <ExternalLink size={10}/>View
+        </a>
+        {/* Download */}
+        <a
+          href={doc.file_url} download={doc.file_name}
+          title="Download document"
+          style={{ ...btn, textDecoration:'none' }}
+        >
+          <Download size={10}/>Download
+        </a>
+        {/* Request re-upload */}
+        <button
+          onClick={() => setRequested(r => !r)}
+          title={requested ? 'Re-upload requested' : 'Request merchant to re-upload'}
+          style={{ ...btn, color: requested ? BRAND.success : BRAND.muted, border:`1px solid ${requested ? 'rgba(110,231,183,0.3)' : 'rgba(255,255,255,0.1)'}` }}
+        >
+          <RefreshCw size={10}/>{requested ? 'Sent' : 'Re-request'}
+        </button>
+        {/* Delete */}
+        <button
+          onClick={() => onDelete(doc.id)}
+          title="Remove document"
+          style={{ ...btn, color:BRAND.danger, border:'1px solid rgba(232,80,74,0.25)' }}
+        >
+          <Trash2 size={10}/>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── RequiredDocRow ───────────────────────────────────────────────────────────
+
+function RequiredDocRow({
+  rd, submitted, contactEmail, clientId, onUploaded,
+}: {
+  rd: { label: string; key: DocType; required: boolean }
+  submitted: boolean
+  contactEmail: string
+  clientId: string
+  onUploaded: (d: ClientDocument) => void
+}) {
+  const uploadRef = useRef<HTMLInputElement>(null)
+  const mailtoLink = `mailto:${contactEmail}?subject=Document Request: ${encodeURIComponent(rd.label)}&body=${encodeURIComponent(`Hello,\n\nWe need the following document to process your merchant account:\n\n${rd.label}\n\nPlease reply to this email with the document attached.\n\nThank you.`)}`
+
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8, padding:'5px 6px', borderRadius:6, backgroundColor:'rgba(255,255,255,0.015)', border:'1px solid rgba(255,255,255,0.05)' }}>
+      {submitted
+        ? <CheckCircle2 size={13} color={BRAND.success} style={{ flexShrink:0 }}/>
+        : <Circle size={13} color={rd.required ? BRAND.danger : BRAND.muted} style={{ flexShrink:0 }}/>
+      }
+      <span style={{ flex:1, fontSize:11, color:submitted ? BRAND.silver : rd.required ? BRAND.danger : BRAND.muted }}>{rd.label}</span>
+      <div style={{ display:'flex', gap:4, alignItems:'center' }}>
+        {submitted ? (
+          <span style={{ fontSize:10, fontWeight:600, padding:'1px 6px', borderRadius:4, color:BRAND.success, backgroundColor:'rgba(110,231,183,0.10)', border:'1px solid rgba(110,231,183,0.22)' }}>✓ Received</span>
+        ) : (
+          <>
+            <button
+              onClick={() => uploadRef.current?.click()}
+              style={{ display:'flex', alignItems:'center', gap:4, padding:'2px 7px', borderRadius:4, border:'1px solid rgba(144,196,207,0.3)', backgroundColor:'rgba(144,196,207,0.06)', color:BRAND.cyan, fontSize:10, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap' }}
+            >
+              <Upload size={9}/>Upload
+            </button>
+            <input
+              ref={uploadRef} type="file" style={{ display:'none' }}
+              onChange={e => {
+                const f = e.target.files?.[0]; if (!f) return
+                onUploaded({ id:`upload-${Date.now()}`, client_id:clientId, file_name:f.name, file_url:URL.createObjectURL(f), doc_type:rd.key, file_size:f.size, uploaded_at:new Date().toISOString() })
+                e.target.value = ''
+              }}
+            />
+            {contactEmail && (
+              <a href={mailtoLink} style={{ display:'flex', alignItems:'center', gap:4, padding:'2px 7px', borderRadius:4, border:'1px solid rgba(255,255,255,0.1)', backgroundColor:'transparent', color:BRAND.muted, fontSize:10, fontWeight:600, cursor:'pointer', whiteSpace:'nowrap', textDecoration:'none' }}>
+                <Mail size={9}/>Request
+              </a>
+            )}
+            <span style={{ fontSize:10, fontWeight:600, padding:'1px 5px', borderRadius:4, color:rd.required ? BRAND.danger : BRAND.muted, backgroundColor:rd.required ? 'rgba(232,80,74,0.08)' : 'rgba(255,255,255,0.04)', border:`1px solid ${rd.required ? 'rgba(232,80,74,0.22)' : 'rgba(255,255,255,0.08)'}` }}>
+              {rd.required ? 'Missing' : 'Optional'}
+            </span>
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -429,7 +522,12 @@ export default function ClientDetailPage({ clientId }: { clientId: string }) {
         <div style={{ flex:3, minWidth:0 }}>
           <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:BRAND.cyan, marginBottom:12 }}>Account Pipeline</div>
           {accounts.length > 0
-            ? <AccountRaceTrack accounts={accounts} onStageChange={handleStageChange}/>
+            ? <AccountRaceTrack
+                accounts={accounts}
+                onStageChange={handleStageChange}
+                partnerIso={client?.partner_iso ?? undefined}
+                partnerName={client?.partner ?? undefined}
+              />
             : (
               <div style={{ padding:'40px 24px', textAlign:'center', backgroundColor:'rgba(255,255,255,0.02)', borderRadius:12, border:'1px dashed rgba(255,255,255,0.08)', marginBottom:16 }}>
                 <ChevronRight size={28} color={BRAND.muted} style={{ marginBottom:10, opacity:0.5 }}/>
@@ -560,33 +658,33 @@ export default function ClientDetailPage({ clientId }: { clientId: string }) {
 
           {/* ── Documents Card ── */}
           <Card>
-            <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:BRAND.cyan, marginBottom:14 }}>Documents</div>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14 }}>
+              <span style={{ fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:BRAND.cyan }}>Documents</span>
+              <span style={{ fontSize:10, color:BRAND.muted }}>{documents.length} uploaded · {REQUIRED_DOCS.filter(rd=>rd.required&&!documents.some(d=>d.doc_type===rd.key)).length} missing</span>
+            </div>
 
-            {/* Required checklist */}
+            {/* Required checklist with action buttons */}
             <div style={{ marginBottom:14 }}>
               <div style={{ fontSize:10, fontWeight:700, color:BRAND.muted, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:8 }}>Required Documents</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-                {REQUIRED_DOCS.map(rd => {
-                  const submitted = documents.some(d=>d.doc_type===rd.key)
-                  return (
-                    <div key={rd.key} style={{ display:'flex', alignItems:'center', gap:8, fontSize:12 }}>
-                      {submitted
-                        ? <CheckCircle2 size={14} color={BRAND.success} style={{ flexShrink:0 }}/>
-                        : <Circle size={14} color={rd.required ? BRAND.danger : BRAND.muted} style={{ flexShrink:0 }}/>
-                      }
-                      <span style={{ flex:1, color:submitted ? BRAND.silver : rd.required ? BRAND.danger : BRAND.muted }}>{rd.label}</span>
-                      <span style={{ fontSize:11, fontWeight:600, padding:'1px 6px', borderRadius:4, ...(submitted ? { color:BRAND.success, backgroundColor:'rgba(110,231,183,0.10)', border:'1px solid rgba(110,231,183,0.22)' } : rd.required ? { color:BRAND.danger, backgroundColor:'rgba(232,80,74,0.08)', border:'1px solid rgba(232,80,74,0.22)' } : { color:BRAND.muted, backgroundColor:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)' }) }}>
-                        {submitted ? 'Received' : rd.required ? 'Missing' : 'Optional'}
-                      </span>
-                    </div>
-                  )
-                })}
+              <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
+                {REQUIRED_DOCS.map(rd => (
+                  <RequiredDocRow
+                    key={rd.key}
+                    rd={rd}
+                    submitted={documents.some(d=>d.doc_type===rd.key)}
+                    contactEmail={client?.contact_email ?? ''}
+                    clientId={clientId}
+                    onUploaded={d=>setDocuments(prev=>[d,...prev])}
+                  />
+                ))}
               </div>
             </div>
 
             {/* Uploaded files */}
             {documents.length > 0
-              ? <div style={{ display:'flex', flexDirection:'column', gap:6, marginBottom:8 }}>{documents.map(d=><DocRow key={d.id} doc={d}/>)}</div>
+              ? <div style={{ display:'flex', flexDirection:'column', gap:5, marginBottom:8 }}>
+                  {documents.map(d=><DocRow key={d.id} doc={d} onDelete={id=>setDocuments(prev=>prev.filter(x=>x.id!==id))}/>)}
+                </div>
               : <div style={{ fontSize:12, color:BRAND.muted, marginBottom:8, textAlign:'center', padding:'8px 0' }}>No documents uploaded yet.</div>
             }
 
