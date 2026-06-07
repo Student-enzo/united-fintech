@@ -1,7 +1,6 @@
-import MerchantsBoard from '@/components/admin/MerchantsBoard'
-
 export const dynamic = 'force-dynamic'
+import ClientsBoard from '@/components/admin/ClientsBoard'
 
 export default function MerchantsPage() {
-  return <MerchantsBoard />
+  return <ClientsBoard />
 }
