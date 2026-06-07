@@ -416,10 +416,10 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
       `}</style>
 
       <div style={{ width: '100%', position: 'relative' }}>
-        {/* Start flag — aligned with car zone */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2, paddingLeft: LABEL_W + 2 + TRACK_GAP }}>
-          <span style={{ fontSize: 12 }}>🚦</span>
-          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: BRAND.muted }}>Start</span>
+        {/* Start flag */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 1, paddingLeft: LABEL_W + 2 + TRACK_GAP }}>
+          <span style={{ fontSize: 11 }}>🚦</span>
+          <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)' }}>Start</span>
         </div>
 
         {/* Stage rows */}
@@ -428,35 +428,65 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
           const cars     = accounts.filter(a => a.pipeline_stage === stage)
           const isFinish = stage === 'merchant_live'
           const hasCars  = cars.length > 0
+          const nodeColor = isFinish ? '#F0B23E' : BRAND.cyan
 
           return (
-            <div key={stage} style={{ display: 'flex', position: 'relative', minHeight: hasCars ? 'auto' : 42 }}>
-              {/* Left: stage label column */}
+            <div
+              key={stage}
+              style={{
+                display: 'flex',
+                alignItems: hasCars ? 'flex-start' : 'center',
+                position: 'relative',
+                // occupied rows auto-expand; empty rows are one tight line
+                minHeight: hasCars ? 'auto' : 0,
+              }}
+            >
+              {/* Left: track line + label */}
               <div style={{
                 width: LABEL_W, minWidth: LABEL_W, flexShrink: 0,
-                borderRight: `2px solid ${isFinish ? '#F0B23E66' : hasCars ? BRAND.cyan + '55' : 'rgba(255,255,255,0.08)'}`,
-                paddingRight: 10, paddingTop: hasCars ? 12 : 8, paddingBottom: hasCars ? 12 : 8,
-                display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-start',
-                position: 'relative',
+                borderRight: `2px solid ${hasCars ? nodeColor + '55' : 'rgba(255,255,255,0.07)'}`,
+                paddingRight: 10,
+                paddingTop:    hasCars ? 10 : 3,
+                paddingBottom: hasCars ? 10 : 3,
+                display: 'flex', position: 'relative',
+                // empty: single line inline; occupied: stacked column
+                flexDirection: hasCars ? 'column' : 'row',
+                alignItems: hasCars ? 'flex-end' : 'center',
+                justifyContent: hasCars ? 'flex-start' : 'flex-end',
+                gap: hasCars ? 1 : 5,
               }}>
                 {/* Track node */}
                 <div style={{
-                  position: 'absolute', right: -6, top: 14,
-                  width: hasCars ? 12 : 9, height: hasCars ? 12 : 9, borderRadius: '50%',
-                  backgroundColor: hasCars ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.07)',
-                  border: `2px solid ${hasCars ? (isFinish ? '#F0B23E' : BRAND.cyan) : 'rgba(255,255,255,0.12)'}`,
-                  boxShadow: hasCars ? `0 0 10px ${isFinish ? '#F0B23E' : BRAND.cyan}55` : 'none',
+                  position: 'absolute',
+                  right: hasCars ? -7 : -5,
+                  top: hasCars ? 14 : '50%',
+                  transform: hasCars ? 'none' : 'translateY(-50%)',
+                  width:  hasCars ? 12 : 7,
+                  height: hasCars ? 12 : 7,
+                  borderRadius: '50%',
+                  backgroundColor: hasCars ? nodeColor : 'rgba(255,255,255,0.06)',
+                  border: `${hasCars ? 2 : 1}px solid ${hasCars ? nodeColor : 'rgba(255,255,255,0.1)'}`,
+                  boxShadow: hasCars ? `0 0 10px ${nodeColor}55` : 'none',
                   zIndex: 2,
                 }} />
 
-                <span style={{ fontSize: 9, fontWeight: 700, color: hasCars ? BRAND.muted : 'rgba(255,255,255,0.2)', letterSpacing: '0.06em' }}>
+                {/* Stage number */}
+                <span style={{
+                  fontSize: 8, fontWeight: 700, letterSpacing: '0.06em',
+                  color: hasCars ? BRAND.muted : 'rgba(255,255,255,0.18)',
+                }}>
                   {String(idx + 1).padStart(2, '0')}
                 </span>
-                <span style={{ fontSize: 10, fontWeight: 600, color: hasCars ? BRAND.silver : 'rgba(255,255,255,0.22)', textAlign: 'right', lineHeight: 1.3 }}>
+                {/* Stage short label */}
+                <span style={{
+                  fontSize: hasCars ? 10 : 9, fontWeight: 600,
+                  color: hasCars ? BRAND.silver : 'rgba(255,255,255,0.2)',
+                  textAlign: 'right', lineHeight: 1.2,
+                }}>
                   {meta.shortLabel}
                 </span>
                 {hasCars && (
-                  <span style={{ fontSize: 9, color: isFinish ? '#F0B23E' : BRAND.cyan, marginTop: 2, fontWeight: 600 }}>
+                  <span style={{ fontSize: 9, color: nodeColor, fontWeight: 700 }}>
                     {cars.length}×
                   </span>
                 )}
@@ -466,11 +496,14 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
               <div style={{
                 flex: 1, minWidth: 0,
                 paddingLeft: TRACK_GAP,
-                paddingTop: hasCars ? 10 : 6, paddingBottom: hasCars ? 10 : 6,
+                paddingTop:    hasCars ? 10 : 3,
+                paddingBottom: hasCars ? 10 : 3,
                 display: 'flex', alignItems: hasCars ? 'flex-start' : 'center',
                 flexWrap: 'wrap', gap: 8,
-                borderBottom: idx < ORDERED_STAGES.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
-                backgroundColor: hasCars ? `${isFinish ? '#F0B23E' : BRAND.cyan}06` : 'transparent',
+                borderBottom: idx < ORDERED_STAGES.length - 1
+                  ? `1px solid rgba(255,255,255,${hasCars ? '0.05' : '0.02'})`
+                  : 'none',
+                backgroundColor: hasCars ? `${nodeColor}07` : 'transparent',
               }}>
                 {cars.map(a => (
                   <CarCard
@@ -487,12 +520,12 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
         })}
 
         {/* Finish line */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 3, paddingTop: 8, borderTop: '2px solid rgba(240,178,62,0.4)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2, paddingTop: 5, borderTop: '2px solid rgba(240,178,62,0.35)' }}>
           <div style={{ width: LABEL_W, minWidth: LABEL_W, display: 'flex', justifyContent: 'flex-end', paddingRight: 10 }}>
-            <span style={{ fontSize: 13 }}>🏁</span>
+            <span style={{ fontSize: 12 }}>🏁</span>
           </div>
-          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#F0B23E' }}>
-            Finish Line — Merchant Live
+          <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#F0B23E' }}>
+            Finish — Merchant Live
           </span>
         </div>
 
