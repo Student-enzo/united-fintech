@@ -59,45 +59,15 @@ const RISK_COLOR: Record<string, string> = {
 
 // ─── KPI Card ─────────────────────────────────────────────────────────────────
 
-function KPICard({
-  label, value, sub, icon, accent,
-}: {
-  label: string
-  value: string
-  sub?: string
-  icon: React.ReactNode
-  accent: string
+function KPICard({ label, value, sub, icon, accent }: {
+  label: string; value: string; sub?: string; icon: React.ReactNode; accent: string
 }) {
   return (
-    <div style={{
-      flex: 1, minWidth: 0,
-      backgroundColor: BRAND.card,
-      border: `1px solid rgba(255,255,255,0.07)`,
-      borderRadius: 14,
-      padding: '16px 20px',
-      display: 'flex', flexDirection: 'column', gap: 10,
-      position: 'relative', overflow: 'hidden',
-    }}>
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-        background: `linear-gradient(90deg, ${accent}00, ${accent}70, ${accent}00)`,
-      }} />
+    <div style={{ flex: 1, minWidth: 0, backgroundColor: BRAND.card, border: `1px solid rgba(255,255,255,0.07)`, borderRadius: 14, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${accent}00, ${accent}70, ${accent}00)` }} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{
-          fontSize: 10, fontWeight: 600, letterSpacing: '0.08em',
-          textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)',
-        }}>
-          {label}
-        </span>
-        <span style={{
-          width: 28, height: 28, borderRadius: 8,
-          backgroundColor: `${accent}15`,
-          border: `1px solid ${accent}30`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: accent,
-        }}>
-          {icon}
-        </span>
+        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>{label}</span>
+        <span style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${accent}15`, border: `1px solid ${accent}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accent }}>{icon}</span>
       </div>
       <div>
         <p style={{ fontSize: 22, fontWeight: 700, color: BRAND.silver, lineHeight: 1 }}>{value}</p>
@@ -112,39 +82,19 @@ function KPICard({
 function RiskDot({ risk }: { risk?: 'low' | 'medium' | 'high' }) {
   const level = risk ?? 'low'
   const color = RISK_COLOR[level] ?? BRAND.success
-  return (
-    <span
-      title={`${level} risk`}
-      style={{
-        display: 'inline-block',
-        width: 8, height: 8, borderRadius: '50%',
-        backgroundColor: color, flexShrink: 0,
-      }}
-    />
-  )
+  return <span title={`${level} risk`} style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
 }
 
 // ─── Empty state ──────────────────────────────────────────────────────────────
 
 function EmptyState() {
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      padding: '64px 24px', gap: 16,
-    }}>
-      <div style={{
-        width: 56, height: 56, borderRadius: 16,
-        backgroundColor: `${BRAND.cyan}12`,
-        border: `1px solid ${BRAND.cyan}30`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '64px 24px', gap: 16 }}>
+      <div style={{ width: 56, height: 56, borderRadius: 16, backgroundColor: `${BRAND.cyan}12`, border: `1px solid ${BRAND.cyan}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Zap size={24} style={{ color: BRAND.cyan, opacity: 0.7 }} />
       </div>
       <p style={{ fontSize: 15, fontWeight: 700, color: BRAND.silver }}>No live merchants yet</p>
-      <p style={{
-        fontSize: 13, color: 'rgba(255,255,255,0.35)',
-        textAlign: 'center', maxWidth: 320, lineHeight: 1.6,
-      }}>
+      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', textAlign: 'center', maxWidth: 320, lineHeight: 1.6 }}>
         Merchants appear here once they reach Account Activated or Merchant Live stage.
       </p>
     </div>
