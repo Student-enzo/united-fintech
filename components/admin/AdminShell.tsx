@@ -47,15 +47,13 @@ function AppShell({ children }: { children: React.ReactNode }) {
             <span className="text-lg leading-none">☰</span>
           </button>
 
-          {/* Level-curves topographic background — same technique as AYC */}
+          {/* Dot-grid background */}
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: 'url(/level-curves.svg)',
-              backgroundRepeat: 'repeat',
-              backgroundSize: '612px 792px',
-              opacity: 0.10,
+              backgroundImage: 'radial-gradient(circle, rgba(144,196,207,0.13) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
               zIndex: 0,
             }}
           />

@@ -23,12 +23,14 @@ import { BRAND } from '@/lib/brand'
 
 function SectionHeader({ label }: { label: string }) {
   return (
-    <p
-      className="mt-5 mb-1 px-4 text-[9px] font-bold uppercase tracking-[0.22em]"
-      style={{ color: 'rgba(255,255,255,0.22)' }}
-    >
-      {label}
-    </p>
+    <div className="mt-6 mb-1 px-4 flex items-center gap-2">
+      <div style={{ flex: 1, height: 1, background: 'rgba(144,196,207,0.1)' }} />
+      <p className="text-[9px] font-bold uppercase tracking-[0.22em] shrink-0"
+        style={{ color: 'rgba(144,196,207,0.4)' }}>
+        {label}
+      </p>
+      <div style={{ flex: 1, height: 1, background: 'rgba(144,196,207,0.1)' }} />
+    </div>
   )
 }
 
@@ -58,28 +60,43 @@ function NavItem({
     <Link
       href={href}
       onClick={onClick}
-      className="py-2.5 px-4 rounded-lg text-sm flex items-center gap-3 transition-all cursor-pointer"
+      className="py-2 px-3 rounded-lg text-sm flex items-center gap-3 transition-all cursor-pointer"
       style={
         isActive
           ? {
-              backgroundColor: 'rgba(144,196,207,0.08)',
+              backgroundColor: 'rgba(144,196,207,0.1)',
               color: BRAND.cyan,
-              boxShadow: 'inset 3px 0 0 0 #90c4cf',
+              boxShadow: 'inset 3px 0 0 0 #90c4cf, 0 0 12px rgba(144,196,207,0.08)',
+              fontWeight: 600,
             }
-          : { color: 'rgba(255,255,255,0.55)' }
+          : { color: 'rgba(255,255,255,0.45)', fontWeight: 400 }
       }
       onMouseEnter={e => {
-        if (!isActive) (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)'
+        if (!isActive) {
+          ;(e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.8)'
+          ;(e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.04)'
+        }
       }}
       onMouseLeave={e => {
-        if (!isActive) (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.55)'
+        if (!isActive) {
+          ;(e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.45)'
+          ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+        }
       }}
     >
-      <Icon size={15} />
-      <span className="tracking-wide">{label}</span>
+      <span style={{
+        width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        backgroundColor: isActive ? 'rgba(144,196,207,0.12)' : 'rgba(255,255,255,0.04)',
+        border: `1px solid ${isActive ? 'rgba(144,196,207,0.25)' : 'rgba(255,255,255,0.06)'}`,
+        color: isActive ? BRAND.cyan : 'inherit',
+      }}>
+        <Icon size={14} />
+      </span>
+      <span className="tracking-wide text-[13px]">{label}</span>
       {badge !== undefined && badge > 0 && (
         <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
-          style={{ backgroundColor: 'rgba(240,178,62,0.2)', color: '#FCD34D', border: '1px solid rgba(240,178,62,0.3)' }}>
+          style={{ backgroundColor: 'rgba(240,178,62,0.18)', color: '#FCD34D', border: '1px solid rgba(240,178,62,0.25)' }}>
           {badge}
         </span>
       )}
