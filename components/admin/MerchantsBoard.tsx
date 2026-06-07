@@ -398,26 +398,36 @@ function NewClientDrawer({ open, onClose }: { open: boolean; onClose: () => void
   const [loading, setLoading]   = useState(false)
   const [result, setResult]     = useState<{ link: string } | null>(null)
   const [copied, setCopied]     = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   function reset() {
     setBusinessName(''); setEmail(''); setPhone('')
-    setCheckedDocs(STANDARD_DOCS.map(() => true)); setCustomDocs([]); setResult(null); setCopied(false)
+    setCheckedDocs(STANDARD_DOCS.map(() => true)); setCustomDocs([])
+    setResult(null); setCopied(false); setErrorMsg(null)
   }
 
   async function handleSubmit() {
     if (!businessName.trim() || !email.trim()) return
     setLoading(true)
+    setErrorMsg(null)
     try {
       const res = await fetch('/api/onboarding/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ business_name: businessName, owner_email: email, owner_phone: phone || null }),
       })
-      if (!res.ok) throw new Error('Failed')
       const data = await res.json()
+      if (res.status === 409) {
+        setErrorMsg(`"${businessName}" already exists. Check the Onboarding tab.`)
+        return
+      }
+      if (!res.ok) {
+        setErrorMsg(data?.error ?? 'Failed to create application — please try again.')
+        return
+      }
       setResult({ link: data.intakeLink ?? `${window.location.origin}/apply/${data.application?.intake_token}` })
     } catch {
-      alert('Error creating application. Please try again.')
+      setErrorMsg('Network error — check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -456,6 +466,12 @@ function NewClientDrawer({ open, onClose }: { open: boolean; onClose: () => void
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+          {errorMsg && (
+            <div style={{ marginBottom: 16, padding: '10px 14px', borderRadius: 8, backgroundColor: `${BRAND.danger}12`, border: `1px solid ${BRAND.danger}40`, display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+              <AlertCircle size={14} style={{ color: BRAND.danger, flexShrink: 0, marginTop: 1 }} />
+              <p style={{ fontSize: 12, color: BRAND.danger, lineHeight: 1.5 }}>{errorMsg}</p>
+            </div>
+          )}
           {result ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: BRAND.success }}>
