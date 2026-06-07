@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
-import PortfolioBoard from '@/components/admin/PortfolioBoard'
+import LiveBoard from '@/components/admin/LiveBoard'
 
 export default function PortfolioPage() {
-  return <PortfolioBoard />
+  return <LiveBoard />
 }
