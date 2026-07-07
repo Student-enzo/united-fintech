@@ -1,5 +1,3 @@
-'use client'
-
 import { supabasePublic } from './supabase-public'
 import type { MerchantRecord, PipelineStage, AccountType } from './mock-merchants'
 
@@ -90,34 +88,83 @@ export async function saveMerchantStage(id: string, stage: PipelineStage): Promi
   if (error) throw error
 }
 
+type ApplicationFields = Pick<MerchantRecord, 'name' | 'dba_name' | 'mcc' | 'mcc_label' | 'legal_structure' | 'account_type' |
+  'monthly_volume' | 'avg_ticket' | 'card_present_pct' | 'owner_name' | 'contact_email' | 'contact_phone'>
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapApplicationToRow(data: ApplicationFields): Record<string, any> {
+  return {
+    business_name:      data.name,
+    dba_name:           data.dba_name           ?? null,
+    mcc_code:           data.mcc                || null,
+    mcc_label:          data.mcc_label          || null,
+    legal_structure:    data.legal_structure.toLowerCase().replace(/\s+/g, '_').replace('c-corp','corporation').replace('s-corp','s_corp') || 'llc',
+    account_type:       toDBAccountType(data.account_type),
+    monthly_volume_est: (data.monthly_volume    ?? 0) * 100,
+    avg_ticket:         (data.avg_ticket        ?? 0) * 100,
+    card_present_pct:   data.card_present_pct   ?? 0,
+    contact_name:       data.owner_name         || data.name,
+    contact_email:      data.contact_email      ?? null,
+    contact_phone:      data.contact_phone      ?? null,
+  }
+}
+
 export async function insertMerchant(
-  data: Pick<MerchantRecord, 'name' | 'dba_name' | 'mcc' | 'mcc_label' | 'legal_structure' | 'account_type' |
-    'monthly_volume' | 'avg_ticket' | 'card_present_pct' | 'risk' | 'basis_points_earned' |
-    'owner_name' | 'contact_email' | 'contact_phone'>
+  data: ApplicationFields & Pick<MerchantRecord, 'risk' | 'basis_points_earned'>
 ): Promise<MerchantRecord> {
   const { data: row, error } = await supabasePublic
     .from('merchants')
     .insert({
-      business_name:      data.name,
-      dba_name:           data.dba_name           ?? null,
-      mcc_code:           data.mcc                || null,
-      mcc_label:          data.mcc_label          || null,
-      legal_structure:    data.legal_structure.toLowerCase().replace(/\s+/g, '_').replace('c-corp','corporation').replace('s-corp','s_corp') || 'llc',
-      account_type:       toDBAccountType(data.account_type),
-      monthly_volume_est: (data.monthly_volume    ?? 0) * 100,
-      avg_ticket:         (data.avg_ticket        ?? 0) * 100,
-      card_present_pct:   data.card_present_pct   ?? 0,
-      contact_name:       data.owner_name         || data.name,
-      contact_email:      data.contact_email      ?? null,
-      contact_phone:      data.contact_phone      ?? null,
-      risk_level:         data.risk               ?? 'low',
-      basis_points_earned: data.basis_points_earned ?? 15,
-      pipeline_stage:     'lead_identified',
+      ...mapApplicationToRow(data),
+      risk_level:     data.risk ?? 'low',
+      pipeline_stage: 'lead_identified',
     })
     .select('*, partners(id, name, iso_type)')
     .single()
   if (error) throw error
   return toMerchantRecord(row)
+}
+
+// Finds an existing merchant by contact email (preferred) or exact business name match.
+async function findMerchantIdByEmailOrName(email: string | undefined, name: string): Promise<string | null> {
+  if (email) {
+    const { data, error } = await supabasePublic
+      .from('merchants')
+      .select('id')
+      .ilike('contact_email', email)
+      .limit(1)
+      .maybeSingle()
+    if (error) throw error
+    if (data) return data.id
+  }
+  const { data, error } = await supabasePublic
+    .from('merchants')
+    .select('id')
+    .ilike('business_name', name)
+    .limit(1)
+    .maybeSingle()
+  if (error) throw error
+  return data?.id ?? null
+}
+
+// Used by the public apply form: creates a new lead, or updates the matching
+// merchant's application details in place without disturbing its pipeline stage.
+export async function upsertMerchantFromApplication(data: ApplicationFields): Promise<{ merchant: MerchantRecord; created: boolean }> {
+  const existingId = await findMerchantIdByEmailOrName(data.contact_email, data.name)
+
+  if (!existingId) {
+    const merchant = await insertMerchant(data)
+    return { merchant, created: true }
+  }
+
+  const { data: row, error } = await supabasePublic
+    .from('merchants')
+    .update(mapApplicationToRow(data))
+    .eq('id', existingId)
+    .select('*, partners(id, name, iso_type)')
+    .single()
+  if (error) throw error
+  return { merchant: toMerchantRecord(row), created: false }
 }
 
 export async function saveMerchantProcessor(id: string, processor: string | null): Promise<void> {
