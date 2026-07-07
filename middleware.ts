@@ -61,7 +61,8 @@ export async function middleware(request: NextRequest) {
   if (
     pathname === '/login' ||
     pathname.startsWith('/api/auth/') ||
-    pathname.startsWith('/api/consultation')
+    pathname.startsWith('/api/consultation') ||
+    pathname === '/api/merchants/apply'
   ) {
     return NextResponse.next()
   }
@@ -73,7 +74,8 @@ export async function middleware(request: NextRequest) {
     pathname === '/about' ||
     pathname === '/contact' ||
     pathname === '/blog' ||
-    pathname.startsWith('/providers/')
+    pathname.startsWith('/providers/') ||
+    pathname === '/apply'
   ) {
     return NextResponse.next()
   }
