@@ -517,25 +517,27 @@ export default function ClientDetailPage({ clientId }: { clientId: string }) {
       </div>
 
       {/* Body */}
-      <div style={{ display:'flex', gap:32, alignItems:'flex-start' }}>
+      <div style={{ display:'flex', gap:32, alignItems:'stretch' }}>
         {/* Left: Account Pipeline */}
-        <div style={{ flex:3, minWidth:0 }}>
+        <div style={{ flex:3, minWidth:0, display:'flex', flexDirection:'column' }}>
           <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:BRAND.cyan, marginBottom:12 }}>Account Pipeline</div>
-          {accounts.length > 0
-            ? <AccountRaceTrack
-                accounts={accounts}
-                onStageChange={handleStageChange}
-                partnerIso={client?.partner_iso ?? undefined}
-                partnerName={client?.partner ?? undefined}
-              />
-            : (
-              <div style={{ padding:'40px 24px', textAlign:'center', backgroundColor:'rgba(255,255,255,0.02)', borderRadius:12, border:'1px dashed rgba(255,255,255,0.08)', marginBottom:16 }}>
-                <ChevronRight size={28} color={BRAND.muted} style={{ marginBottom:10, opacity:0.5 }}/>
-                <div style={{ fontSize:14, color:BRAND.muted, marginBottom:6 }}>No merchant accounts yet.</div>
-                <div style={{ fontSize:12, color:BRAND.muted, opacity:0.7 }}>Add your first account to start tracking.</div>
-              </div>
-            )
-          }
+          <div style={{ flex:1, minHeight:0 }}>
+            {accounts.length > 0
+              ? <AccountRaceTrack
+                  accounts={accounts}
+                  onStageChange={handleStageChange}
+                  partnerIso={client?.partner_iso ?? undefined}
+                  partnerName={client?.partner ?? undefined}
+                />
+              : (
+                <div style={{ padding:'40px 24px', textAlign:'center', backgroundColor:'rgba(255,255,255,0.02)', borderRadius:12, border:'1px dashed rgba(255,255,255,0.08)', marginBottom:16 }}>
+                  <ChevronRight size={28} color={BRAND.muted} style={{ marginBottom:10, opacity:0.5 }}/>
+                  <div style={{ fontSize:14, color:BRAND.muted, marginBottom:6 }}>No merchant accounts yet.</div>
+                  <div style={{ fontSize:12, color:BRAND.muted, opacity:0.7 }}>Add your first account to start tracking.</div>
+                </div>
+              )
+            }
+          </div>
           <button onClick={()=>setShowModal(true)} onMouseEnter={e=>(e.currentTarget.style.backgroundColor='rgba(144,196,207,0.06)')} onMouseLeave={e=>(e.currentTarget.style.backgroundColor='transparent')}
             style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 16px', borderRadius:7, border:`1px solid ${BRAND.borderCyan}`, backgroundColor:'transparent', color:BRAND.cyan, fontSize:12, fontWeight:600, cursor:'pointer', marginTop:8, letterSpacing:'0.04em', transition:'background-color 0.15s' }}>
             <Plus size={13}/>Add Merchant Account

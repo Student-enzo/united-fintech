@@ -415,7 +415,7 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
         @media (prefers-reduced-motion:reduce) { .car-idle { animation:none; } }
       `}</style>
 
-      <div style={{ width: '100%', position: 'relative' }}>
+      <div style={{ width: '100%', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column' }}>
         {/* Start flag */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 1, paddingLeft: LABEL_W + 2 + TRACK_GAP }}>
           <span style={{ fontSize: 11 }}>🚦</span>
@@ -441,6 +441,19 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
                 minHeight: hasCars ? 'auto' : 0,
               }}
             >
+              {/* Horizontal connector from track node to car zone */}
+              {hasCars && (
+                <div style={{
+                  position: 'absolute',
+                  left: LABEL_W - 1,
+                  width: TRACK_GAP + 12,
+                  top: 20,
+                  height: 1,
+                  background: `linear-gradient(to right, ${nodeColor}55, transparent)`,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }} />
+              )}
               {/* Left: track line + label */}
               <div style={{
                 width: LABEL_W, minWidth: LABEL_W, flexShrink: 0,
@@ -518,6 +531,11 @@ export default function AccountRaceTrack({ accounts, onStageChange, partnerIso, 
             </div>
           )
         })}
+
+        {/* Track line filler — stretches to fill remaining height before finish */}
+        <div style={{ flex: 1, minHeight: 16, display: 'flex' }}>
+          <div style={{ width: LABEL_W, minWidth: LABEL_W, borderRight: '2px solid rgba(255,255,255,0.07)' }} />
+        </div>
 
         {/* Finish line */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2, paddingTop: 5, borderTop: '2px solid rgba(240,178,62,0.35)' }}>
