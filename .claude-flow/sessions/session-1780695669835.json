@@ -1,0 +1,14 @@
+{
+  "id": "session-1780695669835",
+  "startedAt": "2026-06-05T21:41:09.835Z",
+  "cwd": "/Users/enissongodoy/Developer/united-fintech",
+  "context": {},
+  "metrics": {
+    "edits": 0,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "endedAt": "2026-06-05T21:43:20.667Z",
+  "duration": 130833
+}

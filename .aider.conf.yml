@@ -1,0 +1,10 @@
+# Aider config — United Fintech
+model: claude-sonnet-4-6
+weak-model: claude-haiku-4-5-20251001
+editor-model: claude-sonnet-4-6
+
+map-tokens: 2048
+auto-commits: false
+dirty-commits: false
+show-diffs: true
+aiderignore: .aiderignore
